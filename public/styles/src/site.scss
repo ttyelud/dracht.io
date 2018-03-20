@@ -1,0 +1,79 @@
+// Code particular to the site itself.
+
+.btn-special {
+  height: auto;
+  padding: .8em 2em ;
+  font-size: 16px;
+}
+
+a#version {
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  padding: .2em 1em;
+  border-radius: $border-radius;
+  font-weight: 600;
+  &:hover {
+    text-decoration: none;
+    background: $primary-color;
+    color: white;
+  }
+}
+
+.code-box {
+  text-align: left;
+  pre, code {
+    background: none;
+  }
+
+  box-shadow: 0 0 9px rgba(0, 0, 0, 0.1);
+  margin: 4em 0;
+
+  .circle-one,
+  .circle-two {
+    width: 15px;
+    height: 15px;
+    border-radius: 30px;
+    margin-right: .5em;
+    display: inline-block;
+  }
+    .circle-one { background: $primary-color; }
+    .circle-two { background: #E8D4DB; }
+
+  .card-header {
+    border-bottom: 1px solid #f3f3f3;
+    padding-bottom: 1em;
+  }
+  animation: 1s ease-out 0s 1 fadeIn;
+
+}
+
+.card {
+  .card-body { padding: 1.5em; }
+}
+
+// Landing Page
+
+#intro {
+  padding: 15em 0 8em;
+  text-align: center;
+}
+
+#intro-alt {
+  padding: 15em 0 8em;
+  text-align: left;
+  .code-box {
+    margin-top: 0;
+  }
+}
+
+// headroom
+.headroom {
+    will-change: transform;
+    transition: transform 200ms linear;
+}
+.headroom--pinned {
+    transform: translateY(0%);
+}
+.headroom--unpinned {
+    transform: translateY(-100%);
+}

@@ -1,0 +1,29 @@
+extends layouts/default
+
+block header
+  #intro: .container.grid-lg
+    h1 The node.js SIP application #[br] server framework.
+    .card.code-box
+      .card-header
+        .circle-one
+        .circle-two
+        .circle-two
+      .card-body
+        include:markdown-it markdown/home-box.md
+    .btn.btn-special Get Started
+        
+  
+block content
+  .content: .container.grid-lg
+    .columns
+      .column
+      .column
+        
+  .content: .container.grid-lg
+    .columns
+      .column
+      .column
+
+block scripts
+  script.
+    hljs.initHighlightingOnLoad();

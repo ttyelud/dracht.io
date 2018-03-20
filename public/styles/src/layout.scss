@@ -1,0 +1,57 @@
+// Navigation
+
+header {
+  background: white;
+  border-bottom: 1px solid #DFDFDF;
+  padding: 1.5em 0 1.8em;
+  position: fixed;
+  top: 0; width: 100%;
+
+  .links {
+    float: left;
+    margin: .5em 0 0 3em;
+    a {
+      color: $dark-color; margin: 0 1em;
+      font-weight: 600;
+      &.active {
+        text-decoration: none;
+        color: $primary-color;
+      }
+      &:hover {
+        text-decoration: none;
+        color: $gray-color-dark;
+      }
+    }
+  }
+  .version {
+    margin: .5em 0 0 0;
+    float: right;
+  }
+}
+
+#fixed {
+  position: fixed;
+  display: none; top: 0; width: 100%;
+  border-bottom: 0;
+  box-shadow: 1px 0 9px 0 rgba(0, 0, 0, 0.1);
+}
+
+.headroom--pinned {
+  display: block;
+}
+.headroom--unpinned {
+    display: none;
+}
+
+.navbar {
+  .logo {
+    float: left;
+    img { height: 1.9em }
+  }
+}
+
+// Content
+
+.content {
+    padding: 3em 0;
+}

@@ -1,0 +1,33 @@
+{
+  "name": "drachtio",
+  "version": "1.0.0",
+  "description": "Client and server for dracht.io",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "http": "0.0.0",
+    "jstransformer-markdown-it": "^2.0.0",
+    "micro": "^9.1.4",
+    "morgan": "^1.9.0",
+    "npm": "^5.7.1",
+    "pug": "^2.0.1",
+    "spectre.css": "^0.5.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "gulp": "^3.9.1",
+    "gulp-csso": "^3.0.1",
+    "gulp-jshint": "^2.1.0",
+    "gulp-less": "^4.0.0",
+    "gulp-sass": "^3.1.0",
+    "jshint": "^2.9.5",
+    "jshint-stylish": "^2.2.1",
+    "nodemon": "^1.17.2"
+  }
+}

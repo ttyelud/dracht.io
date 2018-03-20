@@ -1,0 +1,28 @@
+// Buttons
+.btn {
+  border: none;
+  box-shadow: 0 0 0 5px $border-color;
+  background: $dark-color;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1.03;
+  font-weight: 600;
+
+  &:focus,
+  &:hover {
+    background: $primary-color;
+    border-color: $border-color;
+    text-decoration: none;
+    color: white;
+  }
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-weight: 600;
+  color: #565656;
+}
+
+a:focus {
+  border-radius: 1px;
+  text-decoration: none !important;
+}
