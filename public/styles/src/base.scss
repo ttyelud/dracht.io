@@ -2,7 +2,7 @@
 .btn {
   border: none;
   box-shadow: 0 0 0 5px $border-color;
-  background: $dark-color;
+  background-color: $dark-color;
   color: white;
   text-transform: uppercase;
   letter-spacing: 1.03;
@@ -10,7 +10,7 @@
 
   &:focus,
   &:hover {
-    background: $primary-color;
+    background-color: $primary-color;
     border-color: $border-color;
     text-decoration: none;
     color: white;

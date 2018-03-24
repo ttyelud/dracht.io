@@ -5,6 +5,7 @@ var sass = require('gulp-sass')
 var minifyCSS = require('gulp-csso')
 var nodemon = require('nodemon')
 var browserSync = require('browser-sync')
+var jsdoc = require('gulp-jsdoc3')
 
 var paths = {
   'src':['index.js', 'router.js'],
@@ -59,6 +60,10 @@ gulp.task('nodemon', function (cb) {
 	})
 })
 
+gulp.task('doc', function (cb) {
+    gulp.src(['README.md', './drachtio/lib/*.js', './drachtio/lib/*.jsdoc'], {read: false})
+        .pipe(jsdoc(cb));
+});
 
 
 gulp.task('default', ['serve'])
