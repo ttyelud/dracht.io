@@ -74,7 +74,7 @@ gulp.task('doc', function (cb) {
 gulp.task('jsdoc', shell.task(['./node_modules/jsdoc/jsdoc .']));
 
 gulp.task('docs', function () {
-  return gulp.src('drachtio/lib/*.js')
+  return gulp.src(['drachtio-srf/lib/*.js', 'drachtio-srf/lib/*.jsdoc'])
     .pipe(gulpJsdoc2md())
     .on('error', function (err) {
       gutil.log(gutil.colors.red('jsdoc2md failed'), err.message)

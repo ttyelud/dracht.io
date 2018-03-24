@@ -1,3 +1,5 @@
 node_modules/
 drachtio/
+drachtio-srf/
+.DS_Store
 .env
