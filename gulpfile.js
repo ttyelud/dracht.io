@@ -6,6 +6,12 @@ var minifyCSS = require('gulp-csso')
 var nodemon = require('nodemon')
 var browserSync = require('browser-sync')
 var jsdoc = require('gulp-jsdoc3')
+var shell = require('gulp-shell');
+var fs = require('fs')
+var gutil = require('gulp-util')
+var gulpJsdoc2md = require('gulp-jsdoc-to-markdown')
+var rename = require('gulp-rename')
+var concat = require('gulp-concat')
 
 var paths = {
   'src':['index.js', 'router.js'],
@@ -64,6 +70,20 @@ gulp.task('doc', function (cb) {
     gulp.src(['README.md', './drachtio/lib/*.js', './drachtio/lib/*.jsdoc'], {read: false})
         .pipe(jsdoc(cb));
 });
+
+gulp.task('jsdoc', shell.task(['./node_modules/jsdoc/jsdoc .']));
+
+gulp.task('docs', function () {
+  return gulp.src('drachtio/lib/*.js')
+    .pipe(gulpJsdoc2md())
+    .on('error', function (err) {
+      gutil.log(gutil.colors.red('jsdoc2md failed'), err.message)
+    })
+    .pipe(rename(function (path) {
+      path.extname = '.md'
+    }))
+    .pipe(gulp.dest('api'))
+})
 
 
 gulp.task('default', ['serve'])
