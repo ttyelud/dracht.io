@@ -53,11 +53,14 @@ header {
 // Content
 
 .content {
-  padding: 8em 0 6em;
+  padding: 10em 0 8em;
   border-bottom: 1px solid #E1E1E1;
   img {
     width: 100%; margin-top: 2em;
     @media (min-width: $size-md) { width: 100%; margin: 0; float: right;}
+  }
+  &.post-content img {
+    width: auto;
   }
 
   h3 {
@@ -84,7 +87,7 @@ header {
     font-weight: 200;
   }
   &#top {
-    padding: 17em 0 6em;
+    padding: 17em 0 8em;
     h3 { margin-top: 2.5em; }
     p { padding-right: 5%; }
   }

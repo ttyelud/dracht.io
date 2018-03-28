@@ -87,11 +87,10 @@ a#version {
     padding-bottom: 1em;
   }
   animation: 1s ease-out 0s 1 fadeIn;
+  .card {
+    .card-body { padding: 1.5em; }
+  }
 
-}
-
-.card {
-  .card-body { padding: 1.5em; }
 }
 
 // Landing Page

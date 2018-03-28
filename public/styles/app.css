@@ -3351,6 +3351,12 @@ a:focus {
   border-radius: 1px;
   text-decoration: none !important; }
 
+.card .card-body {
+  padding: 2.25em; }
+
+a.no-underline:hover {
+  text-decoration: none; }
+
 header {
   background: white;
   border-bottom: 1px solid #DFDFDF;
@@ -3395,7 +3401,7 @@ header {
     height: 1.9em; }
 
 .content {
-  padding: 8em 0 6em;
+  padding: 10em 0 8em;
   border-bottom: 1px solid #E1E1E1; }
   .content img {
     width: 100%;
@@ -3405,6 +3411,8 @@ header {
         width: 100%;
         margin: 0;
         float: right; } }
+  .content.post-content img {
+    width: auto; }
   .content h3 {
     font-size: 24px;
     color: #696969;
@@ -3426,7 +3434,7 @@ header {
     letter-spacing: 0.13;
     font-weight: 200; }
   .content#top {
-    padding: 17em 0 6em; }
+    padding: 17em 0 8em; }
     .content#top h3 {
       margin-top: 2.5em; }
     .content#top p {
@@ -3545,9 +3553,8 @@ a#version {
   .code-box .card-header {
     border-bottom: 1px solid #f3f3f3;
     padding-bottom: 1em; }
-
-.card .card-body {
-  padding: 1.5em; }
+  .code-box .card .card-body {
+    padding: 1.5em; }
 
 #intro {
   padding: 15em 0 8em;
@@ -3588,3 +3595,52 @@ a#version {
 
 .col-copyright {
   position: relative; }
+
+.blog .column {
+  padding: 0 1.25rem; }
+
+.blog .card {
+  overflow: hidden;
+  margin-bottom: 4em;
+  border: none;
+  border-radius: 0;
+  transition: all .2s ease; }
+  .blog .card .card-body {
+    padding: 2.25em 2em 1.25em 0; }
+  .blog .card:hover {
+    transition: all .2s ease; }
+    .blog .card:hover h1, .blog .card:hover h2, .blog .card:hover h3, .blog .card:hover h4 {
+      color: #D91C5C;
+      transition: all .2s ease; }
+
+.blog .featured-post a {
+  text-decoration: none; }
+
+.blog .post-tags {
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #D91C5C;
+  font-weight: 300; }
+
+.blog .content.post-feed {
+  padding: 8em 0; }
+
+.featured-posts {
+  background: #F9F9F9; }
+  .featured-posts h1 {
+    margin-top: .6em; }
+  .featured-posts .content {
+    padding: 15em 0 6em;
+    border: none; }
+  .featured-posts .post-tags {
+    font-size: 20px; }
+    .featured-posts .post-tags img {
+      width: 28px;
+      float: none;
+      margin: 0 .8em -6px 0; }
+
+.post-card-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  width: 100%; }

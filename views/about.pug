@@ -1,55 +1,17 @@
 extends layouts/default
 
 block header
-  #intro: .container.grid-lg
-    h1 The node.js SIP application #[br] server framework.
-    .card.code-box
-      .card-header
-        .circle-one
-        .circle-two
-        .circle-two
-      .card-body
-        include:markdown-it markdown/home-box.md
-    .btn.btn-special Get Started
-    .arrow-down
+  #interior-top
+  
         
   
 block content
-  .content#top: .container.grid-lg
+  .content: .container.grid-lg
     .columns
-      .column.col-6.col-md-12
-        h3 The complete solution to VoIP. 
-        hr
-        p 
-          | dracht.io lets you integrate Voice-over-IP functionality into your 
-          | web applications by using middleware patterns that you are already 
-          | familiar with.
-        p 
-          | The distributed client-server architecture allows multiple web 
-          | applications to connect to and share the services of one or more 
-          | always-running SIP servers.
-      .column.col-6.col-md-12
-        img(src="/images/VoIP.png")
-        
-  .content#bottom: .container.grid-lg
+
+  .content: .container.grid-lg
     .columns
-      .column.col-6.col-md-12
-        .btn.btn-box.dark
-          | See the docs.
-          hr
-        .btn.btn-box.light
-          | View the source.
-          hr
-      .column.col-6.col-md-12#content-right
-        div: h3 The carrier-class SIP middleware developers love. 
-        hr
-        p 
-          | drachtio-srf bundles a lower-level sip middleware library drachtio 
-          | and requires a network connection to a drachtio server process. 
-          | The drachtio server provides the sip transaction processing engine
-          | and is controlled by nodejs applications using the drachtio-srf module.
-        p 
-          | dracht.io provides a layered set of APIs that are easy to use and extend.
+
 
 block scripts
   script.

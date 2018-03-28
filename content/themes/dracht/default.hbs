@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     {{!-- Styles'n'Scripts --}}
-    <link rel="stylesheet" type="text/css" href="{{asset "/styles/app.css"}}" />
+    <link rel="stylesheet" type="text/css" href="/styles/app.css" />
     <script src="/js/headroom.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -20,25 +20,24 @@
     {{ghost_head}}
 
 </head>
-<body class="{{body_class}}">
-    {{> "site-nav"}}
-    <div class="site-wrapper">
+<body>
+
+    <div class="site-wrapper blog">
+      <header data-headroom="data-headroom" class="navbar">
+        <div class="container grid-xl">
+          <div class="logo">
+            <a href="/"><img src="/images/logo.svg" alt="dracht.io, the node.js SIP applciation framework."/></a>
+          </div>
+          <div class="links hide-sm"><a href="#">API</a><a href="#">Getting Started</a><a href="#">Tutorials</a><a href="/blog" class="active">Blog</a></div>
+          <div class="version"><a id="version" href="#">v4.2.10</a></div>
+        </div>
+      </header>
 
         {{!-- All the main content gets inserted here, index.hbs, post.hbs, etc --}}
-        {{{body}}}
-        dsfasdfasdfdsfsdafdsf
+
+            {{{body}}}
         {{!-- The footer at the very bottom of the screen --}}
-        <footer class="site-footer outer">
-            <div class="site-footer-content inner">
-                <section class="copyright"><a href="{{@blog.url}}">{{@blog.title}}</a> &copy; {{date format="YYYY"}}</section>
-                <nav class="site-footer-nav">
-                    <a href="{{@blog.url}}">Latest Posts</a>
-                    {{#if @blog.facebook}}<a href="{{facebook_url @blog.facebook}}" target="_blank" rel="noopener">Facebook</a>{{/if}}
-                    {{#if @blog.twitter}}<a href="{{twitter_url @blog.twitter}}" target="_blank" rel="noopener">Twitter</a>{{/if}}
-                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
-                </nav>
-            </div>
-        </footer>
+
 
     </div>
 
@@ -56,6 +55,41 @@
         </div>
     </div>
     {{/if}}
+    <footer>
+      <div class="container grid-xl">
+        <div class="columns">
+          <div class="column col-copyright col-5 col-md-12"><img src="/images/icon_transparent.png" class="logo-icon"/>
+            <div class="copyright">© 2018</div>
+          </div>
+          <div class="column col-md-12">
+            <h3>Developers</h3>
+            <ul>
+              <li><a href="#">Getting Started</a></li>
+              <li><a href="#">Create an Application</a></li>
+              <li><a href="#">Servers</a></li>
+              <li><a href="#">Api Reference</a></li>
+            </ul>
+          </div>
+          <div class="column col-md-12">
+            <h3>Tutorials</h3>
+            <ul>
+              <li><a href="#">Tutorial Name Here</a></li>
+              <li><a href="#">Another Tutorial Here</a></li>
+              <li><a href="#">And Another</a></li>
+              <li><a href="#">And Here</a></li>
+              <li><a href="#">Examples</a></li>
+            </ul>
+          </div>
+          <div class="column col-md-12">
+            <h3>Blog</h3>
+            <ul>
+              <li><a href="#">Why Drachtio?</a></li>
+              <li><a href="#">Hello World!</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
 
     {{!-- jQuery + Fitvids, which makes all video embeds responsive --}}
     <script
@@ -73,6 +107,19 @@
     {{/if}}
 
     {{!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. --}}
+    <script>
+      var elem = document.querySelector("header");
+      var headroom = new Headroom(elem, {
+      "offset": 150,
+      "tolerance": 5,
+      "classes": {
+        "initial": "animated",
+        "pinned": "slideDown",
+        "unpinned": "slideUp"
+      }
+      });
+      headroom.init();
+    </script>
     {{{block "scripts"}}}
 
     {{!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag --}}
