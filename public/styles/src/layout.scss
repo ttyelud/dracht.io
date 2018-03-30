@@ -6,6 +6,7 @@ header {
   padding: 1.5em 0 1.8em;
   position: fixed;
   top: 0; width: 100%;
+  z-index: 1;
 
   .links {
     float: left;
@@ -59,9 +60,7 @@ header {
     width: 100%; margin-top: 2em;
     @media (min-width: $size-md) { width: 100%; margin: 0; float: right;}
   }
-  &.post-content img {
-    width: auto;
-  }
+
 
   h3 {
     font-size: 24px;

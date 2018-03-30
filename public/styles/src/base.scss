@@ -26,3 +26,24 @@ a:focus {
   border-radius: 1px;
   text-decoration: none !important;
 }
+
+ol, ul {
+  font-size: 15px;
+  li {
+    color: rgb(137, 141, 144);
+  }
+  margin-bottom: 2em;
+}
+ol {
+  list-style: decimal;
+  li { padding-left: 1em; }
+}
+ul {
+  list-style: disc;
+  li { padding-left: 1em; }
+}
+
+code {
+  background: lighten($primary-color, 50%);
+  color: $primary-color;
+}

@@ -12,6 +12,7 @@ var gutil = require('gulp-util')
 var gulpJsdoc2md = require('gulp-jsdoc-to-markdown')
 var rename = require('gulp-rename')
 var concat = require('gulp-concat')
+var doxdox = require("gulp-doxdox");
 
 var paths = {
   'src':['index.js', 'router.js'],
@@ -66,13 +67,6 @@ gulp.task('nodemon', function (cb) {
 	})
 })
 
-gulp.task('doc', function (cb) {
-    gulp.src(['README.md', './drachtio/lib/*.js', './drachtio/lib/*.jsdoc'], {read: false})
-        .pipe(jsdoc(cb));
-});
-
-gulp.task('jsdoc', shell.task(['./node_modules/jsdoc/jsdoc .']));
-
 gulp.task('docs', function () {
   return gulp.src(['drachtio-srf/lib/*.js', 'drachtio-srf/lib/*.jsdoc'])
     .pipe(gulpJsdoc2md())
@@ -82,7 +76,16 @@ gulp.task('docs', function () {
     .pipe(rename(function (path) {
       path.extname = '.md'
     }))
-    .pipe(gulp.dest('api'))
+    .pipe(gulp.dest('docs/api'))
+
+})
+
+gulp.task('dox', function() {
+  return gulp.src(['drachtio-srf/lib/*.js', 'drachtio-srf/lib/*.jsdoc'])
+      .pipe(doxdox({
+          msg: "Hello Gulp!"
+      }))
+      .pipe(gulp.dest("./docs/api"));
 })
 
 

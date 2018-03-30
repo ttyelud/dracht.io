@@ -18,16 +18,4 @@ html
         
     include ../partials/footer
     
-    script.
-      var elem = document.querySelector("header");
-      var headroom = new Headroom(elem, {
-      "offset": 150,
-      "tolerance": 5,
-      "classes": {
-        "initial": "animated",
-        "pinned": "slideDown",
-        "unpinned": "slideUp"
-      }
-      });
-      headroom.init();
     block scripts

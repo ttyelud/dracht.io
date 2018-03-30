@@ -1,0 +1,48 @@
+extends layouts/default
+
+mixin nav-list(p, statement)
+  if statement
+    li(class=(active == p.file ? 'active' : null))
+      a(href=p.file)= p.name
+      ul.children
+        if p.children.length > 0
+          each c in p.children
+            li.active: a(href="#")= c.name
+
+block content
+  .docs.container.padded
+    .columns
+      .column.col-3.sidebar: #docs-menu
+        ul.parents
+          if tree
+            each p in tree
+              +nav-list(p, p.name != 'Api')
+            each p in tree
+              +nav-list(p, p.name == 'Api')
+            
+            
+      .column.doc
+        p= active
+        if active == 'getting-started'
+          each p in tree
+            if p.children.length > 0
+              each c in p.children
+                div!= c.content
+        if active == 'api'
+          each p in tree
+            if p.children.length > 0
+              each c in p.children
+                div!= c.content
+        else
+          h2 Error
+
+block scripts
+  script.
+    $(window).scroll(function(){
+      var scroll_top = $(this).scrollTop(); 
+      var height_element_parent =  $("#docs-menu").parent().outerHeight(); 
+      var height_element = $("#docs-menu").height(); 
+      var position_fixed_max = height_element_parent - height_element - 70; 
+      var position_fixed = scroll_top < 104 ? 104 - scroll_top : position_fixed_max > scroll_top ? 0 : position_fixed_max - scroll_top;
+      $("#docs-menu").css("top",position_fixed);
+    });

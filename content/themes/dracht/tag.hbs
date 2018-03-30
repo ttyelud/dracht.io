@@ -3,11 +3,10 @@
 
 {{!-- The big featured header, it uses blog cover image as a BG if available --}}
 {{#tag}}
-<header class="site-header outer {{#if feature_image}}" style="background-image: url({{feature_image}}){{else}}no-cover{{/if}}">
-    <div class="inner">
-        {{> "site-nav"}}
+<section class="tag-header outer">
+    <div class="container grid-lg">
         <div class="site-header-content">
-            <h1 class="site-title">{{name}}</h1>
+            <div class="tag-title">{{name}}</div>
             <h2 class="site-description">
                 {{#if description}}
                     {{description}}
@@ -17,13 +16,13 @@
             </h2>
         </div>
     </div>
-</header>
+</section>
 {{/tag}}
 
 {{!-- The main content area --}}
-<main id="site-main" class="site-main outer" role="main">
-    <div class="inner">
-        <div class="post-feed">
+<main id="site-main" class="content" role="main">
+    <div class="container grid-lg">
+        <div class="columns">
             {{#foreach posts}}
                 {{!-- The tag below includes the markup for each post - partials/post-card.hbs --}}
                 {{> "post-card"}}

@@ -1,0 +1,49 @@
+.docs { border-bottom: 1px solid #e1e1e1; }
+.sidebar, .doc {
+  padding-top: 110px;
+}
+#docs-menu { padding: 3em 0 0 2em }
+
+.sidebar {
+  max-width: 300px;
+  min-width: 300px;
+  background: #f9f9f9;
+  border-right: 1px solid #e1e1e1;
+  #docs-menu {
+    position: fixed;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    li {
+      font-size: 16px;
+      margin: 0 0 1em;
+      a {
+        color: 717171;
+      }
+      ul {
+        padding: 1em 0 0;
+        list-style: none;
+        margin: 0;
+        li {
+          font-size: 15px;
+          margin: 0 0 0 1em;
+          border-left: 2px solid #eee;
+          padding: .4em 1em;
+          a {
+
+          }
+        }
+      }
+      &.active {
+        font-weight: 600;
+        a { color: #565656; }
+      }
+    }
+  }
+}
+
+.doc {
+  padding-bottom: 8em;
+  min-height: 80vh;
+}
