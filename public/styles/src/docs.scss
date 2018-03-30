@@ -1,12 +1,13 @@
 .docs { border-bottom: 1px solid #e1e1e1; }
-.sidebar, .doc {
+.doc {
   padding-top: 110px;
 }
 #docs-menu { padding: 3em 0 0 2em }
 
 .sidebar {
-  max-width: 300px;
-  min-width: 300px;
+  padding: 80px 0 0 1.5em ;
+  max-width: 280px;
+  min-width: 280px;
   background: #f9f9f9;
   border-right: 1px solid #e1e1e1;
   #docs-menu {
@@ -22,16 +23,19 @@
         color: 717171;
       }
       ul {
-        padding: 1em 0 0;
+        padding: 1em 0 .5em;
         list-style: none;
         margin: 0;
         li {
           font-size: 15px;
           margin: 0 0 0 1em;
+          font-weight: 300;
           border-left: 2px solid #eee;
           padding: .4em 1em;
-          a {
-
+          &.active {
+            font-weight: 300;
+            border-color: $primary-color;
+            a { color: $primary-color; }
           }
         }
       }
@@ -44,6 +48,108 @@
 }
 
 .doc {
-  padding-bottom: 8em;
+  .start {
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: $primary-color;
+    font-weight: 300;
+    font-size: 20px;
+    img {
+      width: 28px;
+      float: none;
+      margin: 0 .8em -6px 0;
+    }
+  }
+  font-size: 14px;
+  padding: 10em 6em 6em 6em;
   min-height: 80vh;
+  max-width: 1000px;
+  h1, h2 {
+    font-size: 36px;
+    padding: .3em 0 .3em;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 1.5em;
+  }
+  h3 {
+    font-weight: 300;
+    padding: 1em 0 .5em;
+    color: #858585;
+    font-size: 24px;
+  }
+  .api {
+    ul {
+      display: none;
+    }
+  }
+  .hljs {
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.1);
+    margin: 4em 0;
+    padding: 3.5em !important;
+    background: white !important;
+  }
+  .break {
+    height: 3em;
+  }
+}
+
+table {
+  //border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  margin: 2em 0 3em;
+  @if $rtl == true {
+    text-align: right;
+  } @else {
+    text-align: left;
+  }
+
+  &.table-striped {
+    tbody {
+      tr:nth-of-type(odd) {
+        background: $bg-color;
+      }
+    }
+  }
+
+  &,
+  &.table-striped {
+    tbody {
+      tr {
+        &.active {
+          background: $bg-color-dark;
+        }
+      }
+    }
+  }
+
+  &.table-hover {
+    tbody {
+      tr {
+        &:hover {
+          background: $bg-color-dark;
+        }
+      }
+    }
+  }
+
+  // Tables with horizontal scrollbar
+  &.table-scroll {
+    display: block;
+    overflow-x: auto;
+    padding-bottom: .75rem;
+    white-space: nowrap;
+  }
+
+  td,
+  th {
+    border-bottom: $border-width solid $border-color;
+    padding: $unit-3 $unit-2;
+    padding: 1.2em;
+  }
+  th {
+    border-bottom-width: $border-width-lg;
+    padding: 1.2em;
+  }
 }

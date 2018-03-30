@@ -5,21 +5,33 @@ Applications create an instance of Srf in order to create and manage SIP [Dialog
 and SIP transactions.  An application may have one or more Srf instances, although for most cases a single
 instance is sufficient.
 
-**Kind**: global class  
 
 * [Srf](#Srf)
+
     * [new Srf()](#new_Srf_new)
-    * [.createUAS(req, res, opts, [callback])](#Srf+createUAS) ⇒ <code>[Srf](#Srf)</code> &#124; <code>Promise</code>
-    * [.createUAC(uri, opts, [progressCallbacks], [callback])](#Srf+createUAC) ⇒ <code>[Srf](#Srf)</code> &#124; <code>Promise</code>
-    * [.createB2BUA(req, res, uri, opts, [progressCallbacks], [callback])](#Srf+createB2BUA) ⇒ <code>[Srf](#Srf)</code> &#124; <code>Promise</code>
-    * [.proxyRequest(req, [destination], [opts], [callback])](#Srf+proxyRequest) ⇒ <code>[Srf](#Srf)</code> &#124; <code>Promise</code>
+
+    * [.createUAS(req, res, opts, [callback])](#Srf+createUAS)
+
+    * [.createUAC(uri, opts, [progressCallbacks], [callback])](#Srf+createUAC)
+
+    * [.createB2BUA(req, res, uri, opts, [progressCallbacks], [callback])](#Srf+createB2BUA)
+
+    * [.proxyRequest(req, [destination], [opts], [callback])](#Srf+proxyRequest)
+
     * [.request(uri, opts, [headers], [body], [callback])](#Srf+request)
+
     * [.connect(opts)](#Srf+connect)
+
     * [.listen(opts)](#Srf+listen)
+
     * ["connect" (err, hostport)](#Srf+event_connect)
+
     * ["cdr:attempt" (source, time, msg)](#Srf+cdr_attempt)
+
     * ["cdr:start" (source, time, role, msg)](#Srf+cdr_start)
+
     * ["cdr:stop" (source, time, reason, msg)](#Srf+cdr_stop)
+
 
 <a name="new_Srf_new"></a>
 
@@ -28,18 +40,7 @@ Creates an Srf instance.  No arguments are supplied.
 
 <a name="Srf+createUAS"></a>
 
-### srf.createUAS(req, res, opts, [callback]) ⇒ <code>[Srf](#Srf)</code> &#124; <code>Promise</code>
-create a SIP dialog, acting as a UAS (user agent server); i.e.
-respond to an incoming SIP INVITE with a 200 OK
-(or to a SUBSCRIBE request with a 202 Accepted).
-
-Note that the [Dialog](Dialog) is generated (i.e. the callback invoked / the Promise resolved)
-at the moment that the 200 OK is sent back towards the requestor, not when the ACK is subsequently received.
-
-**Kind**: instance method of <code>[Srf](#Srf)</code>  
-**Returns**: <code>[Srf](#Srf)</code> &#124; <code>Promise</code> - if a callback is supplied, a reference to the Srf instance.
-<br/>If no callback is supplied, then a Promise that is resolved
-with the [sip dialog](Dialog) that is created.  
+### *srf*.createUAS(req, res, opts, [callback])
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -50,6 +51,16 @@ with the [sip dialog](Dialog) that is created.
 | [opts.headers] | <code>Object</code> | SIP headers to include on the SIP response to the INVITE |
 | [callback] | <code>function</code> | if provided, callback with signature <code>(err, dialog)</code> |
 
+create a SIP dialog, acting as a UAS (user agent server); i.e.
+respond to an incoming SIP INVITE with a 200 OK
+(or to a SUBSCRIBE request with a 202 Accepted).
+
+Note that the [Dialog](Dialog) is generated (i.e. the callback invoked / the Promise resolved)
+at the moment that the 200 OK is sent back towards the requestor, not when the ACK is subsequently received.
+
+**Returns**: <code>[Srf](#Srf)</code> &#124; <code>Promise</code> - if a callback is supplied, a reference to the Srf instance.
+<br/>If no callback is supplied, then a Promise that is resolved
+with the [sip dialog](Dialog) that is created.  
 **Example** *(returning a Promise)*  
 ```js
 const Srf = require('drachtio-srf');
@@ -100,13 +111,7 @@ srf.createUas(req, res, {
 ```
 <a name="Srf+createUAC"></a>
 
-### srf.createUAC(uri, opts, [progressCallbacks], [callback]) ⇒ <code>[Srf](#Srf)</code> &#124; <code>Promise</code>
-create a SIP dialog, acting as a UAC (user agent client)
-
-**Kind**: instance method of <code>[Srf](#Srf)</code>  
-**Returns**: <code>[Srf](#Srf)</code> &#124; <code>Promise</code> - if a callback is supplied, a reference to the Srf instance.
-<br/>If no callback is supplied, then a Promise that is resolved
-with the [sip dialog](Dialog) that is created.  
+### *srf*.createUAC(uri, opts, [progressCallbacks], [callback])
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -119,6 +124,11 @@ with the [sip dialog](Dialog) that is created.
 | [progressCallbacks.cbProvisional] | <code>function</code> | callback that provides a provisional response with signature (provisionalRes) |
 | [callback] | <code>function</code> | if provided, callback with signature <code>(err, dialog)</code> |
 
+create a SIP dialog, acting as a UAC (user agent client)
+
+**Returns**: <code>[Srf](#Srf)</code> &#124; <code>Promise</code> - if a callback is supplied, a reference to the Srf instance.
+<br/>If no callback is supplied, then a Promise that is resolved
+with the [sip dialog](Dialog) that is created.  
 **Example** *(returning a Promise)*  
 ```js
 const Srf = require('drachtio-srf');
@@ -180,15 +190,7 @@ setTimeout(() => {
 ```
 <a name="Srf+createB2BUA"></a>
 
-### srf.createB2BUA(req, res, uri, opts, [progressCallbacks], [callback]) ⇒ <code>[Srf](#Srf)</code> &#124; <code>Promise</code>
-create back-to-back dialogs; i.e. act as a back-to-back user agent (B2BUA), creating a
-pair of dialogs {uas, uac} -- a UAS dialog facing the caller or A party, and a UAC dialog
-facing the callee or B party such that media flows between them
-
-**Kind**: instance method of <code>[Srf](#Srf)</code>  
-**Returns**: <code>[Srf](#Srf)</code> &#124; <code>Promise</code> - if a callback is supplied, a reference to the Srf instance.
-<br/>If no callback is supplied, then a Promise that is resolved
-with the [sip dialog](Dialog) that is created.  
+### *srf*.createB2BUA(req, res, uri, opts, [progressCallbacks], [callback])
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -207,6 +209,13 @@ with the [sip dialog](Dialog) that is created.
 | [progressCallbacks.cbProvisional] | <code>function</code> |  | callback that provides a provisional response with signature (provisionalRes) |
 | [callback] | <code>function</code> |  | if provided, callback with signature <code>(err, {uas, uac})</code> |
 
+create back-to-back dialogs; i.e. act as a back-to-back user agent (B2BUA), creating a
+pair of dialogs {uas, uac} -- a UAS dialog facing the caller or A party, and a UAC dialog
+facing the callee or B party such that media flows between them
+
+**Returns**: <code>[Srf](#Srf)</code> &#124; <code>Promise</code> - if a callback is supplied, a reference to the Srf instance.
+<br/>If no callback is supplied, then a Promise that is resolved
+with the [sip dialog](Dialog) that is created.  
 **Example** *(simple B2BUA)*  
 ```js
 const Srf = require('drachtio-srf');
@@ -314,11 +323,7 @@ srf.invite((req, res) => {
 ```
 <a name="Srf+proxyRequest"></a>
 
-### srf.proxyRequest(req, [destination], [opts], [callback]) ⇒ <code>[Srf](#Srf)</code> &#124; <code>Promise</code>
-proxy an incoming request
-
-**Kind**: instance method of <code>[Srf](#Srf)</code>  
-**Returns**: <code>[Srf](#Srf)</code> &#124; <code>Promise</code> - returns a Promise if no callback is supplied, otherwise the Srf object  
+### *srf*.proxyRequest(req, [destination], [opts], [callback])
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -332,6 +337,9 @@ proxy an incoming request
 | [opts.followRedirects] | <code>Boolean</code> | <code>false</code> | if true, handle 3XX redirect responses by generating a new request as per the Contact header; otherwise, proxy the 3XX response back upstream without generating a new response |
 | [callback] | <code>function</code> |  | callback invoked when proxy operation completes, signature (err, results) where `results` is a JSON object describing the individual sip call attempts and results |
 
+proxy an incoming request
+
+**Returns**: <code>[Srf](#Srf)</code> &#124; <code>Promise</code> - returns a Promise if no callback is supplied, otherwise the Srf object  
 **Example** *(simple proxy)*  
 ```js
 const Srf = require('drachtio-srf');
@@ -358,10 +366,7 @@ srf.invite((req, res) => {
 ```
 <a name="Srf+request"></a>
 
-### srf.request(uri, opts, [headers], [body], [callback])
-send a SIP request outside of a dialog
-
-**Kind**: instance method of <code>[Srf](#Srf)</code>  
+### *srf*.request(uri, opts, [headers], [body], [callback])
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -371,6 +376,8 @@ send a SIP request outside of a dialog
 | [headers] | <code>Object</code> | SIP headers to apply to the outbound request |
 | [body] | <code>String</code> | body to send with the SIP request |
 | [callback] | <code>function</code> | callback invoked when sip request has been sent, invoked with signature (err, request) where `request` is a sip request object representing the sip message that was sent. |
+
+send a SIP request outside of a dialog
 
 **Example** *(sending OPTIONS request)*  
 ```js
@@ -387,10 +394,7 @@ srf.request('sip.example.com', {
 ```
 <a name="Srf+connect"></a>
 
-### srf.connect(opts)
-make an inbound connection to a drachtio server
-
-**Kind**: instance method of <code>[Srf](#Srf)</code>  
+### *srf*.connect(opts)
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -398,6 +402,8 @@ make an inbound connection to a drachtio server
 | [opts.host] | <code>string</code> | <code>&quot;&#x27;localhost&#x27;&quot;</code> | address drachtio server is listening on for client connections |
 | [opts.port] | <code>Number</code> | <code>9022</code> | address drachtio server is listening on for client connections |
 | opts.secret | <code>String</code> |  | shared secret used to authenticate connections |
+
+make an inbound connection to a drachtio server
 
 **Example**  
 ```js
@@ -416,16 +422,15 @@ srf.invite((req, res) => {..});
 ```
 <a name="Srf+listen"></a>
 
-### srf.listen(opts)
-listen for outbound connections from a drachtio server
-
-**Kind**: instance method of <code>[Srf](#Srf)</code>  
+### *srf*.listen(opts)
 
 | Param | Type | Description |
 | --- | --- | --- |
 | opts | <code>Object</code> | listen options |
 | opts.port | <code>number</code> | address drachtio server is listening on for client connections |
 | opts.secret | <code>string</code> | shared secret used to authenticate connections |
+
+listen for outbound connections from a drachtio server
 
 **Example**  
 ```js
@@ -439,23 +444,18 @@ srf.invite((req, res) => {..});
 <a name="Srf+event_connect"></a>
 
 ### "connect" (err, hostport)
-a <code>connect</code> event is emitted by an Srf instance when a connect method completes
-with either success or failure
-
-**Kind**: event emitted by <code>[Srf](#Srf)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | err | <code>Object</code> | error encountered when attempting to connect |
 | hostport | <code>String</code> | the SIP address[:port] drachtio server is listening on for incoming SIP messages |
 
+a <code>connect</code> event is emitted by an Srf instance when a connect method completes
+with either success or failure
+
 <a name="Srf+cdr_attempt"></a>
 
 ### "cdr:attempt" (source, time, msg)
-a <code>cdr:attempt</code> event is emitted by an Srf instance when a call attempt has been
-received (inbound) or initiated (outbound)
-
-**Kind**: event emitted by <code>[Srf](#Srf)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -463,12 +463,12 @@ received (inbound) or initiated (outbound)
 | time | <code>String</code> | the time (UTC) recorded by the SIP stack corresponding to the attempt |
 | msg | <code>Object</code> | the actual message that was sent or received |
 
+a <code>cdr:attempt</code> event is emitted by an Srf instance when a call attempt has been
+received (inbound) or initiated (outbound)
+
 <a name="Srf+cdr_start"></a>
 
 ### "cdr:start" (source, time, role, msg)
-a <code>cdr:start</code> event is emitted by an Srf instance when a call attempt has been connected successfully
-
-**Kind**: event emitted by <code>[Srf](#Srf)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -477,12 +477,11 @@ a <code>cdr:start</code> event is emitted by an Srf instance when a call attempt
 | role | <code>String</code> | 'uac'|'uas'|'uac-proxy'|'uas-proxy' indicating whether the application is acting as a user agent client, user agent server, proxy (sending message), or proxy (receiving message) for this cdr |
 | msg | <code>Object</code> | the actual message that was sent or received |
 
+a <code>cdr:start</code> event is emitted by an Srf instance when a call attempt has been connected successfully
+
 <a name="Srf+cdr_stop"></a>
 
 ### "cdr:stop" (source, time, reason, msg)
-a <code>cdr:stop</code> event is emitted by an Srf instance when a connected call has ended
-
-**Kind**: event emitted by <code>[Srf](#Srf)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -490,4 +489,6 @@ a <code>cdr:stop</code> event is emitted by an Srf instance when a connected cal
 | time | <code>String</code> | the time (UTC) recorded by the SIP stack corresponding to the attempt |
 | reason | <code>String</code> | the reason the call was ended |
 | msg | <code>Object</code> | the actual message that was sent or received |
+
+a <code>cdr:stop</code> event is emitted by an Srf instance when a connected call has ended
 

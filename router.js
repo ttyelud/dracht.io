@@ -43,6 +43,10 @@ router.get('/docs/:folder', function(req, res) {
   }
 })
 
+router.get('/docs/tutorials', function(req, res) {
+
+})
+
 router.get('/docs/tutorial/:tutorial', function(req, res) {
 
 })

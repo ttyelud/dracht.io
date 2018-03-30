@@ -14,6 +14,7 @@ var rename = require('gulp-rename')
 var concat = require('gulp-concat')
 var doxdox = require("gulp-doxdox");
 
+
 var paths = {
   'src':['index.js', 'router.js'],
   'styles':['./public/styles/*.scss','./public/styles/src/*.scss'],
@@ -68,8 +69,8 @@ gulp.task('nodemon', function (cb) {
 })
 
 gulp.task('docs', function () {
-  return gulp.src(['drachtio-srf/lib/*.js', 'drachtio-srf/lib/*.jsdoc'])
-    .pipe(gulpJsdoc2md())
+  return gulp.src(['drachtio-srf/lib/*.js'])
+    .pipe(gulpJsdoc2md({ plugin: 'dmd-clear' }))
     .on('error', function (err) {
       gutil.log(gutil.colors.red('jsdoc2md failed'), err.message)
     })
@@ -77,16 +78,13 @@ gulp.task('docs', function () {
       path.extname = '.md'
     }))
     .pipe(gulp.dest('docs/api'))
-
 })
 
-gulp.task('dox', function() {
-  return gulp.src(['drachtio-srf/lib/*.js', 'drachtio-srf/lib/*.jsdoc'])
-      .pipe(doxdox({
-          msg: "Hello Gulp!"
-      }))
-      .pipe(gulp.dest("./docs/api"));
-})
+var shell = require('gulp-shell');
+
+gulp.task('js-doc', shell.task(['./node_modules/.bin/jsdoc drachtio-srf/lib -c conf.json -d docs/jsdoc']));
+
+
 
 
 gulp.task('default', ['serve'])

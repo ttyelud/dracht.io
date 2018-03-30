@@ -29,8 +29,10 @@
   },
   "devDependencies": {
     "browser-sync": "^2.23.6",
+    "dmd-clear": "^0.1.2",
     "doxdox": "^2.0.3",
     "doxdox-plugin-markdown": "^1.1.4",
+    "fs-then-native": "^2.0.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-csso": "^3.0.1",
@@ -39,12 +41,15 @@
     "gulp-jsdoc3": "^2.0.0",
     "gulp-jshint": "^2.1.0",
     "gulp-less": "^4.0.0",
+    "gulp-markdox": "^0.1.2",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-shell": "^0.6.5",
     "gulp-util": "^3.0.8",
+    "jsdoc-to-markdown": "^4.0.1",
     "jshint": "^2.9.5",
     "jshint-stylish": "^2.2.1",
+    "minami": "^1.2.3",
     "nodemon": "^1.17.2"
   }
 }

@@ -1,13 +1,20 @@
 extends layouts/default
 
-mixin nav-list(p, statement)
+mixin nav-list(p, statement, name)
   if statement
     li(class=(active == p.file ? 'active' : null))
-      a(href=p.file)= p.name
-      ul.children
-        if p.children.length > 0
-          each c in p.children
-            li.active: a(href="#")= c.name
+      a(href=p.file)= name || p.name
+      if active == p.file
+        ul.children
+          if p.children.length > 0
+            each c, i in p.children
+              li(class=(active == p.file ? (i == 0 ? 'active': null) : null)): a(href='#' + c.name)= c.name
+
+block css
+  style(type="text/css").
+    header {
+      position: absolute;
+    }
 
 block content
   .docs.container.padded
@@ -18,21 +25,30 @@ block content
             each p in tree
               +nav-list(p, p.name != 'Api')
             each p in tree
-              +nav-list(p, p.name == 'Api')
+              +nav-list(p, p.name == 'Api', 'API Reference')
             
             
       .column.doc
-        p= active
         if active == 'getting-started'
           each p in tree
-            if p.children.length > 0
-              each c in p.children
-                div!= c.content
+            if p.file == active
+              span.start
+                img(src='/images/circle.svg')
+                | #{p.name}
+              if p.children.length > 0
+                each c in p.children
+                  div!= c.content
+                  .break
         if active == 'api'
           each p in tree
-            if p.children.length > 0
-              each c in p.children
-                div!= c.content
+            if p.file == active
+              span.start
+                img(src='/images/circle.svg')
+                | API Reference
+              if p.children.length > 0
+                each c in p.children
+                  div.api!= c.content
+                  .break
         else
           h2 Error
 
@@ -42,7 +58,8 @@ block scripts
       var scroll_top = $(this).scrollTop(); 
       var height_element_parent =  $("#docs-menu").parent().outerHeight(); 
       var height_element = $("#docs-menu").height(); 
-      var position_fixed_max = height_element_parent - height_element - 70; 
-      var position_fixed = scroll_top < 104 ? 104 - scroll_top : position_fixed_max > scroll_top ? 0 : position_fixed_max - scroll_top;
+      var position_fixed_max = height_element_parent - height_element - 80; 
+      var position_fixed = scroll_top < 80 ? 80 - scroll_top : position_fixed_max > scroll_top ? 0 : position_fixed_max - scroll_top;
       $("#docs-menu").css("top",position_fixed);
     });
+    hljs.initHighlightingOnLoad();
