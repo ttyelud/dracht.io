@@ -51,5 +51,10 @@ router.get('/docs/tutorial/:tutorial', function(req, res) {
 
 })
 
+router.get('/about', function(req, res) {
+  let t = 'About - dracht.io'
+  let d = 'Learn more about dracht.io, the node.js SIP application server framework.'
+  res.render('about', {title : t, description : d})
+})
 
 module.exports = router;

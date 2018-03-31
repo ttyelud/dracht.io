@@ -3371,6 +3371,19 @@ code {
   background: #fef6f9;
   color: #D91C5C; }
 
+.start {
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #D91C5C;
+  font-weight: 300;
+  font-size: 20px;
+  margin-bottom: .5em;
+  display: inline-block; }
+  .start img {
+    width: 28px;
+    float: none;
+    margin: 0 .8em -6px 0; }
+
 .card .card-body {
   padding: 2.25em; }
 
@@ -3615,6 +3628,13 @@ a#version {
 .col-copyright {
   position: relative; }
 
+.interior-header {
+  padding: 12em 0 5em;
+  border-bottom: 1px solid #e5e5e5; }
+  .interior-header .caption {
+    margin-top: .35em;
+    max-width: 765px; }
+
 .docs {
   border-bottom: 1px solid #e1e1e1; }
 
@@ -3625,13 +3645,18 @@ a#version {
   padding: 3em 0 0 2em; }
 
 .sidebar {
-  padding: 80px 0 0 1.5em;
+  padding: 80px 0 0;
   max-width: 280px;
   min-width: 280px;
   background: #f9f9f9;
-  border-right: 1px solid #e1e1e1; }
+  border-right: 1px solid #e1e1e1;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  position: relative; }
   .sidebar #docs-menu {
-    position: fixed; }
+    position: fixed;
+    padding-left: 1.5em; }
   .sidebar ul {
     list-style: none;
     margin: 0; }
@@ -3646,7 +3671,7 @@ a#version {
         margin: 0; }
         .sidebar ul li ul li {
           font-size: 15px;
-          margin: 0 0 0 1em;
+          margin: 0 0 0 1.4em;
           font-weight: 300;
           border-left: 2px solid #eee;
           padding: .4em 1em; }
@@ -3655,6 +3680,8 @@ a#version {
             border-color: #D91C5C; }
             .sidebar ul li ul li.active a {
               color: #D91C5C; }
+              .sidebar ul li ul li.active a.active {
+                text-decoration: none; }
       .sidebar ul li.active {
         font-weight: 600; }
         .sidebar ul li.active a {
@@ -3662,19 +3689,9 @@ a#version {
 
 .doc {
   font-size: 14px;
-  padding: 10em 6em 6em 6em;
-  min-height: 80vh;
+  padding: 10em 6.5em 6em 6.5em;
+  min-height: 100vh;
   max-width: 1000px; }
-  .doc .start {
-    letter-spacing: 1.1px;
-    text-transform: uppercase;
-    color: #D91C5C;
-    font-weight: 300;
-    font-size: 20px; }
-    .doc .start img {
-      width: 28px;
-      float: none;
-      margin: 0 .8em -6px 0; }
   .doc h1, .doc h2 {
     font-size: 36px;
     padding: .3em 0 .3em;
@@ -3721,6 +3738,54 @@ table {
   table th {
     border-bottom-width: 0.1rem;
     padding: 1.2em; }
+
+#github {
+  background: #f9f9f9;
+  border-right: 1px solid #e5e5e5;
+  position: fixed;
+  bottom: 0;
+  font-size: 14px;
+  text-align: left;
+  flex: 1;
+  z-index: 1;
+  width: 280px; }
+  #github img {
+    width: 40px;
+    margin: 0 1em -10px 0;
+    opacity: .6; }
+  #github .box {
+    background: #f1f1f1;
+    padding: 1em 2em;
+    margin: 15px;
+    border-radius: 6px;
+    border: 1px solid #e9e9e9; }
+    #github .box:hover {
+      background: #f9f9f9; }
+    #github .box .top {
+      color: #999; }
+  #github .left {
+    float: left; }
+
+i.rr {
+  border: solid #858585;
+  border-width: 0 1px 1px 0;
+  display: inline-block;
+  padding: 2.5px;
+  margin-right: .8em; }
+  i.rr.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    margin-bottom: 2px; }
+  i.rr.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg); }
+  i.rr.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg); }
+  i.rr.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    margin-bottom: 4px; }
 
 .blog .column {
   padding: 0 1.25rem; }
@@ -3810,3 +3875,72 @@ table {
     margin-bottom: 2em; }
   .read-next .read-next-card-footer {
     text-align: center; }
+
+.rect {
+  height: 345px;
+  max-height: 345px; }
+  .rect .left {
+    float: left; }
+  .rect h3 {
+    display: block; }
+
+#first {
+  font-size: 24px;
+  background: #D91C5C;
+  color: #FF83AE; }
+  #first .inside {
+    padding: 90px 0 0 40px; }
+  #first h3 {
+    color: white;
+    font-size: 36px;
+    margin: 0;
+    padding: 0; }
+  #first img {
+    width: 88px; }
+  #first .text {
+    margin: 2em 0 0 5em; }
+
+#second .inside, #third .inside {
+  padding: 3em .5em 0; }
+
+#third {
+  text-align: right; }
+  #third hr {
+    display: inline-block; }
+  #third h3 {
+    float: right; }
+
+#fourth {
+  padding-top: 115px;
+  text-align: center;
+  background: #F9F9F9;
+  color: #949494; }
+  #fourth h1, #fourth h2, #fourth h3 {
+    font-size: 36px;
+    color: #5D5D5D;
+    max-width: none;
+    margin-bottom: 10px; }
+  #fourth p {
+    width: 100px;
+    width: 200px;
+    display: inline-block; }
+
+#about-bottom {
+  text-align: center; }
+  #about-bottom p {
+    margin-top: 1.5em; }
+  #about-bottom img {
+    height: 50px;
+    width: auto;
+    margin-bottom: 1em;
+    float: none; }
+  #about-bottom h3 {
+    float: none;
+    display: block; }
+  #about-bottom .icon {
+    height: 90px; }
+
+.what-are-you-waiting-for {
+  padding-top: 12em; }
+  .what-are-you-waiting-for h1 {
+    font-size: 42px; }

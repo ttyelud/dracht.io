@@ -25,7 +25,8 @@
     "npm": "^5.8.0",
     "pug": "^2.0.1",
     "spectre.css": "^0.5.1",
-    "to-title-case": "^1.0.0"
+    "to-title-case": "^1.0.0",
+    "waypoints": "^4.0.1"
   },
   "devDependencies": {
     "browser-sync": "^2.23.6",

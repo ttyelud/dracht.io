@@ -1,18 +1,76 @@
-extends layouts/default
+extends layouts/interior
 
 block header
-  #interior-top
+  .start 
+    img(src='/images/circle.svg') 
+    | About drachtio
+  h1.caption Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.
   
-        
   
 block content
   .content: .container.grid-lg
     .columns
-
-  .content: .container.grid-lg
+      .column.col-6.col-md-12.rect#first: .inside
+        .left
+          img(src="/images/icon_dark.png")
+        .text
+          |dracht • io (Welsch), v
+          h3 To SIP, lustily. 
+      .column.col-6.col-md-12.rect#second: .inside
+        div: h3 The carrier-class SIP middleware developers love. 
+        hr
+        p 
+          | drachtio-srf bundles a lower-level sip middleware library drachtio 
+          | and requires a network connection to a drachtio server process. 
+          | The drachtio server provides the sip transaction processing engine
+          | and is controlled by nodejs applications using the drachtio-srf module.
     .columns
+      .column.col-6.col-md-12.rect#third: .inside
+        div: h3 The carrier-class SIP middleware developers love. 
+        hr
+        p 
+          | drachtio-srf bundles a lower-level sip middleware library drachtio 
+          | and requires a network connection to a drachtio server process. 
+          | The drachtio server provides the sip transaction processing engine
+          | and is controlled by nodejs applications using the drachtio-srf module.
+      .column.col-6.col-md-12.rect#fourth: .inside
+        h3 View our API
+        p Developers love our documentation.
 
+  .content#about-bottom: .container.grid-lg
+    .columns
+      .column.col-4.col-md-12
+        .icon: img(src="/images/icons/lightbulb.png")
+        h3 Lorem ipsum dolor.
+        p
+          | Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
+          | suscipit, nisi ex ea  consequatur? 
+      .column.col-4.col-md-12
+        .icon: img(src="/images/icons/paper-plane.png")
+        h3 Lorem ipsum dolor.
+        p
+          | Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
+          | suscipit, nisi ex ea  consequatur? 
+      .column.col-4.col-md-12
+        .icon: img(src="/images/icons/thumbs-up.png")
+        h3 Lorem ipsum dolor.
+        p
+          | Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
+          | suscipit, nisi ex ea  consequatur? 
+    .what-are-you-waiting-for
+      h1 What are you waiting for?
+      .btn.btn-special Get Started
 
 block scripts
   script.
-    hljs.initHighlightingOnLoad();
+    var elem = document.querySelector("header");
+    var headroom = new Headroom(elem, {
+    "offset": 150,
+    "tolerance": 5,
+    "classes": {
+      "initial": "animated",
+      "pinned": "slideDown",
+      "unpinned": "slideUp"
+    }
+    });
+    headroom.init();

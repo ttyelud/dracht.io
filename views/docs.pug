@@ -3,30 +3,46 @@ extends layouts/default
 mixin nav-list(p, statement, name)
   if statement
     li(class=(active == p.file ? 'active' : null))
-      a(href=p.file)= name || p.name
       if active == p.file
-        ul.children
-          if p.children.length > 0
-            each c, i in p.children
-              li(class=(active == p.file ? (i == 0 ? 'active': null) : null)): a(href='#' + c.name)= c.name
+        i.rr.down
+      else
+        i.rr.right
+      a(href=p.file)= name || p.name
+        
+      if active == p.file
+        nav(data-gumshoe-header='')
+          ul.chidlren(data-gumshoe='')
+            if p.children.length > 0
+              each c, i in p.children
+                li: a(href='#' + c.file)= c.name
+              
 
 block css
   style(type="text/css").
     header {
       position: absolute;
     }
+  script(src='/js/gumshoe.min.js')
+
+
 
 block content
   .docs.container.padded
     .columns
-      .column.col-3.sidebar: #docs-menu
-        ul.parents
-          if tree
-            each p in tree
-              +nav-list(p, p.name != 'Api')
-            each p in tree
-              +nav-list(p, p.name == 'Api', 'API Reference')
-            
+      .column.col-3.sidebar
+        #github 
+          .box
+            .left
+              img(src="/images/git_black.svg")
+            div.top Want the source?
+            span View on #[strong GitHub] 
+        nav#docs-menu
+          ul.parents.page-nav
+            if tree
+              each p in tree
+                +nav-list(p, p.name != 'Api')
+              each p in tree
+                +nav-list(p, p.name == 'Api', 'API Reference')            
             
       .column.doc
         if active == 'getting-started'
@@ -61,5 +77,19 @@ block scripts
       var position_fixed_max = height_element_parent - height_element - 80; 
       var position_fixed = scroll_top < 80 ? 80 - scroll_top : position_fixed_max > scroll_top ? 0 : position_fixed_max - scroll_top;
       $("#docs-menu").css("top",position_fixed);
+      console.log('docs', scroll_top)
     });
+  script.
+    $(window).scroll(function(){
+      var scroll_top_two = $(this).scrollTop(); 
+      var scroll_top = window.innerHeight + $(this).scrollTop(); 
+      var height_element_parent =  $("#github").parent().outerHeight(); 
+      var height_element = $("#github").height(); 
+      var position_fixed_max = height_element_parent - height_element - 0; 
+      var position_fixed = scroll_top < 0 ? 0 - scroll_top : position_fixed_max > scroll_top ? 0 : Math.abs(position_fixed_max - scroll_top) - height_element;
+      $("#github").css("bottom",position_fixed);
+      console.log(scroll_top)
+    });   
+  script.
+    gumshoe.init({offset: 100});
     hljs.initHighlightingOnLoad();

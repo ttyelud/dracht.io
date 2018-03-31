@@ -1,4 +1,4 @@
-# Introduction
+# Sending Requests
 
 *Note:* The sample code below assumes that a drachtio server process is running on the localhost and is listening for connections from applications on port 9022 (tcp).
 

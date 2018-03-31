@@ -47,3 +47,18 @@ code {
   background: lighten($primary-color, 50%);
   color: $primary-color;
 }
+
+.start {
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: $primary-color;
+  font-weight: 300;
+  font-size: 20px;
+  margin-bottom: .5em;
+  display: inline-block;
+  img {
+    width: 28px;
+    float: none;
+    margin: 0 .8em -6px 0;
+  }
+}

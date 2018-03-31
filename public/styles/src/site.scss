@@ -145,3 +145,14 @@ a#version {
 .col-copyright {
   position: relative;
 }
+
+// interiors
+
+.interior-header {
+  padding: 12em 0 5em;
+  .caption {
+    margin-top: .35em;
+    max-width: 765px;
+  }
+  border-bottom: 1px solid #e5e5e5;
+}
