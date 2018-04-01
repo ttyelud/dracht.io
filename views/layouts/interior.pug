@@ -22,4 +22,9 @@ html
         
     include ../partials/footer
     
+    script.
+      $('.hamburger').click(function() {
+        $('.mobile-menu').toggle()
+        $('.hamburger').toggleClass('is-active')
+      })
     block scripts

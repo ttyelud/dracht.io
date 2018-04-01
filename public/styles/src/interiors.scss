@@ -31,9 +31,16 @@
 }
 #third {
   text-align: right;
+
   hr { display: inline-block;}
   h3 {
     float: right;
+  }
+  @media (max-width: $size-md) {
+    text-align: left;
+    h3 {
+      float: none;
+    }
   }
 }
 #fourth {
@@ -68,7 +75,7 @@
   }
   h3 {
     float: none;
-    display: block;
+    display: inline-block;
   }
   .icon {
     height: 90px;
@@ -101,7 +108,7 @@
     .column {
       &:last-child {
         text-align: left;
-        margin-top: 18em;
+        margin-top: 20em;
       }
     }
   }
@@ -164,5 +171,25 @@
   }
   .btn {
     margin-top: 1.5em;
+  }
+  @media (max-width: $size-md) {
+    //text-align: left;
+    .second, .fourth, .sixth {
+      border-right-width: 3px;
+      border-left-width: 0;
+      border-right-style: solid;
+      .inside {
+        text-align: right;
+      }
+      hr {
+        display: inline-block;
+      }
+    }
+    .sixth {
+      padding-bottom: 0;
+    }
+    .arrow-top, .arrow-bottom {
+      display: none;
+    }
   }
 }

@@ -3985,6 +3985,11 @@ i.rr {
     display: inline-block; }
   #third h3 {
     float: right; }
+  @media (max-width: 840px) {
+    #third {
+      text-align: left; }
+      #third h3 {
+        float: none; } }
 
 #fourth {
   padding-top: 115px;
@@ -4012,7 +4017,7 @@ i.rr {
     float: none; }
   #about-bottom h3 {
     float: none;
-    display: block; }
+    display: inline-block; }
   #about-bottom .icon {
     height: 90px; }
 
@@ -4033,7 +4038,7 @@ i.rr {
     margin-bottom: .5em; }
   .timeline .columns .column:last-child {
     text-align: left;
-    margin-top: 18em; }
+    margin-top: 20em; }
   .timeline .inside {
     margin-top: 3em;
     padding: 4em;
@@ -4081,6 +4086,19 @@ i.rr {
     border-color: #D91C5C transparent transparent transparent; }
   .timeline .btn {
     margin-top: 1.5em; }
+  @media (max-width: 840px) {
+    .timeline .second, .timeline .fourth, .timeline .sixth {
+      border-right-width: 3px;
+      border-left-width: 0;
+      border-right-style: solid; }
+      .timeline .second .inside, .timeline .fourth .inside, .timeline .sixth .inside {
+        text-align: right; }
+      .timeline .second hr, .timeline .fourth hr, .timeline .sixth hr {
+        display: inline-block; }
+    .timeline .sixth {
+      padding-bottom: 0; }
+    .timeline .arrow-top, .timeline .arrow-bottom {
+      display: none; } }
 
 /*!
  * Hamburgers
