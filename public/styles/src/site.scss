@@ -47,6 +47,19 @@
   hr {
     height: 3px;
   }
+  @media (max-width: $size-md) {
+    text-align: center;
+    width: auto;
+    padding: 2em 1em;
+    height: inherit;
+    hr {
+      display: none;
+    }
+    //background-image: none !important;
+  }
+  @media (max-width: $size-sm) {
+    background-image: none !important;
+  }
 }
 
 a#version {
@@ -155,4 +168,36 @@ a#version {
     max-width: 765px;
   }
   border-bottom: 1px solid #e5e5e5;
+}
+
+
+// Contact page
+
+#contact {
+  padding: 5em 0 6em;
+  font-size: 1rem;
+
+  text-align: center;
+  h1 {
+    font-size: 48px;
+    display: inline-block;
+  }
+  form .form-group {
+    text-align: left;
+  }
+  input, textarea, select {
+    font-size: .8rem;
+    padding: 1em;
+    border-width: 3px;
+    &:focus {
+      border-width: 2px;
+    }
+  }
+  input {
+    height: 3.8em;
+    border-width: 3px;
+    &:focus {
+      border-width: 2px;
+    }
+  }
 }

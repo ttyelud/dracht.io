@@ -1,29 +1,26 @@
 footer: .container.grid-xl
   .columns
-    .column.col-copyright.col-4.col-md-12
+    .column.col-copyright.col-5.col-lg-4.col-md-12
       img.logo-icon(src="/images/icon_transparent.png")
       .copyright © 2018
-    .column.col-md-12
+    .column.col-md-12.footer-links
       h3 dracht.io
       ul
         li: a(href="/about") About dracht.io
-        li: a(href="#") Contact Us
-    .column.col-md-12
+        li: a(href="/features") Why dracht.io?
+        li: a(href="/contact") Contact Us
+    .column.col-md-12.footer-links
       h3 Developers
       ul
-        li: a(href="#") Getting Started
-        li: a(href="#") Create an Application
-        li: a(href="#") Servers
-        li: a(href="#") Api Reference
-    .column.col-md-12
+        li: a(href="/docs") Getting Started
+        li: a(href="/docs/api") Api Reference
+    .column.col-md-12.footer-links
       h3 Tutorials
       ul
-        li: a(href="#") Tutorial Name Here
-        li: a(href="#") Another Tutorial Here
-        li: a(href="#") And Another
-        li: a(href="#") And Here
-        li: a(href="#") Examples
-    .column.col-md-12
+        each t in locals.tutorials
+          li: a(href='/docs/tutorial/' + t.file )= t.name
+  
+    //.column.col-md-12
       h3 Blog
       ul
         li: a(href="#") Why Drachtio?

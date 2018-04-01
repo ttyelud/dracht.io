@@ -2,10 +2,20 @@ header.navbar(data-headroom)
   .container
     .logo
       a(href="/"): img(src='/images/logo.svg' alt='dracht.io, the node.js SIP applciation framework.')
-    .links.hide-sm
+    .links.hide-md
       a(href="/docs/api") API
       a(href="/docs/getting-started") Getting Started
       a(href="/docs/tutorials") Tutorials
       a(href="/blog") Blog
-    .version
+    .version.hide-md
       a#version(href="#") v4.2.10
+    .mobile-button.show-md
+      button.hamburger.hamburger--collapse(type='button')
+        span.hamburger-box
+          span.hamburger-inner
+.mobile-menu
+  .links
+    a(href="/docs/api") API
+    a(href="/docs/getting-started") Getting Started
+    a(href="/docs/tutorials") Tutorials
+    a(href="/blog") Blog

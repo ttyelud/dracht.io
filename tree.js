@@ -9,47 +9,55 @@ function titleCase(str) {
 }
 
 function tree(fn) {
-  let stats = fs.lstatSync(fn),
-    info = {
-      filepath: path.relative('./views', fn),
-      file: filename(path.basename(fn)),
-      name: titleCase(path.basename(fn))
-    };
+  let stats = fs.lstatSync(fn)
+  if (path.extname(fn) == '.md' || stats.isDirectory()) {
+      var info = {
+        filepath: path.relative('./views', fn),
+        file: filename(path.basename(fn)),
+        name: titleCase(path.basename(fn))
+      };
 
-  if (stats.isDirectory()) {
-    info.type = "directory";
-    info.children = fs.readdirSync(fn).map(function(child) {
-        return tree(fn + '/' + child);
-    });
-  } else {
-    info.type = "file";
-    if (path.extname(fn) == '.md') {
-      info.content = marked(fs.readFileSync(fn, {encoding: 'utf-8'}));
+    if (stats.isDirectory()) {
+      info.type = "directory";
+      info.children = fs.readdirSync(fn).map(function(child) {
+          return tree(fn + '/' + child);
+      });
+    } else {
+      info.type = "file";
+      if (path.extname(fn) == '.md') {
+        info.content = marked(fs.readFileSync(fn, {encoding: 'utf-8'}));
+      }
     }
-  }
 
-  return info;
+    return info;
+  } else {
+    return null;
+  }
 }
 
 module.exports = function (fn) {
-  let stats = fs.lstatSync(fn),
-    info = {
-      filepath: path.relative('./views', fn),
-      file: filename(path.basename(fn)),
-      name: titleCase(path.basename(fn))
-    };
-  console.log(fn)
-  if (stats.isDirectory()) {
-    info.type = "directory";
-    info.children = fs.readdirSync(fn).map(function(child) {
-        return tree(fn + '/' + child);
-    });
-  } else {
-    info.type = "file";
-    if (path.extname(fn) == '.md') {
-      info.content = marked(fs.readFileSync(fn, {encoding: 'utf-8'}));
-    }
-  }
+  let stats = fs.lstatSync(fn)
+  if (path.extname(fn) == '.md' || stats.isDirectory()) {
+      var info = {
+        filepath: path.relative('./views', fn),
+        file: filename(path.basename(fn)),
+        name: titleCase(path.basename(fn))
+      };
 
-  return info;
+    if (stats.isDirectory()) {
+      info.type = "directory";
+      info.children = fs.readdirSync(fn).map(function(child) {
+          return tree(fn + '/' + child);
+      });
+    } else {
+      info.type = "file";
+      if (path.extname(fn) == '.md') {
+        info.content = marked(fs.readFileSync(fn, {encoding: 'utf-8'}));
+      }
+    }
+
+    return info;
+  } else {
+    return null;
+  }
 }

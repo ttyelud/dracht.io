@@ -7,14 +7,17 @@ mixin nav-list(p, statement, name)
         i.rr.down
       else
         i.rr.right
-      a(href=p.file)= name || p.name
+      a(href='/docs/' + p.file)= name || p.name
         
       if active == p.file
         nav(data-gumshoe-header='')
           ul.chidlren(data-gumshoe='')
             if p.children.length > 0
               each c, i in p.children
-                li: a(href='#' + c.file)= c.name
+                if active == 'tutorials'
+                  li(class=(file == c.file ? 'active' : null)): a(href='/docs/tutorial/' + c.file)= c.name
+                else
+                  li: a(href='#' + c.file)= c.name
               
 
 block css
@@ -28,8 +31,8 @@ block css
 
 block content
   .docs.container.padded
-    .columns
-      .column.col-3.sidebar
+    .columns.col-oneline
+      .column.col-3.sidebar.hide-md
         #github 
           .box
             .left
@@ -44,7 +47,7 @@ block content
               each p in tree
                 +nav-list(p, p.name == 'Api', 'API Reference')            
             
-      .column.doc
+      .column.col-9.col-md-12.doc
         if active == 'getting-started'
           each p in tree
             if p.file == active
@@ -66,7 +69,17 @@ block content
                   div.api!= c.content
                   .break
         else
-          h2 Error
+          each p in tree
+            if p.file == active
+              if p.children.length > 0
+                each c in p.children
+                  if c.file == file
+                    span.start
+                      img(src='/images/circle.svg')
+                      | Tutorial
+                    div!= c.content
+                    .break
+                
 
 block scripts
   script.
@@ -91,5 +104,5 @@ block scripts
       console.log(scroll_top)
     });   
   script.
-    gumshoe.init({offset: 100});
+    gumshoe.init({offset: 130});
     hljs.initHighlightingOnLoad();

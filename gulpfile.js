@@ -5,14 +5,12 @@ var sass = require('gulp-sass')
 var minifyCSS = require('gulp-csso')
 var nodemon = require('nodemon')
 var browserSync = require('browser-sync')
-var jsdoc = require('gulp-jsdoc3')
 var shell = require('gulp-shell');
 var fs = require('fs')
 var gutil = require('gulp-util')
 var gulpJsdoc2md = require('gulp-jsdoc-to-markdown')
 var rename = require('gulp-rename')
 var concat = require('gulp-concat')
-var doxdox = require("gulp-doxdox");
 
 
 var paths = {
@@ -79,12 +77,6 @@ gulp.task('docs', function () {
     }))
     .pipe(gulp.dest('docs/api'))
 })
-
-var shell = require('gulp-shell');
-
-gulp.task('js-doc', shell.task(['./node_modules/.bin/jsdoc drachtio-srf/lib -c conf.json -d docs/jsdoc']));
-
-
 
 
 gulp.task('default', ['serve'])

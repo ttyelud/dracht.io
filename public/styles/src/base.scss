@@ -62,3 +62,14 @@ code {
     margin: 0 .8em -6px 0;
   }
 }
+
+input, textarea, select, button {
+  font-size: .8rem;
+  padding: 1em;
+}
+input {
+  height: 3em;
+}
+label {
+  margin: 1em 0 .25em;
+}
