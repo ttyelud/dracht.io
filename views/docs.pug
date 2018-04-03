@@ -47,7 +47,7 @@ block content
               each p in tree
                 +nav-list(p, p.name == 'Api', 'API Reference')            
             
-      .column.col-9.col-md-12.doc
+      .column.doc
         if active == 'getting-started'
           each p in tree
             if p.file == active
