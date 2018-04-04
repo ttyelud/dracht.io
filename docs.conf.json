@@ -1,12 +1,8 @@
-[
-  {
-    "getting-started": [
-      "introduction"
-    ]
-  },
-  {
-    "api": [
-      "srf"
-    ]
-  }
-]
+{
+  "getting-started": [
+    "introduction"
+  ],
+  "api": [
+    "srf"
+  ]
+}

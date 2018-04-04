@@ -3,9 +3,12 @@ const router = express.Router()
 const fs = require('fs')
 const path = require('path')
 const tree = require('./tree')
+const arrayMove = require('array-move');
 
 const dirs = p => fs.readdirSync(p).filter(f => fs.statSync(path.join(p, f)).isDirectory())
 const files = p => fs.readdirSync(p).filter(f => fs.statSync(path.join(p, f)))
+
+const config = JSON.parse(fs.readFileSync('docs.conf.json'));
 
 const Mailgun = require('mailgun-js')
 const apiKey = 'key'
@@ -18,6 +21,26 @@ const from = 'email'
 *  title and description of    *
 *  each page.                  *
 *******************************/
+
+function order(t, c) {
+  console.log('sgsg')
+  for (var k = 0; k < t.length; k++) {
+    for (var i = 0; i < t[k].children.length; i++) {
+      if (t[k].file in c) {
+        console.log(c[t[k].file])
+        for (var j = 0; j < c[t[k].file].length; j++) {
+          if (t[k].children[i].file == c[t[k].file][j]) {
+            console.log(t[k].children[i].file, 'whoa')
+            arrayMove(t[k].children, i + 2, j + 1)
+          }
+        }
+      }
+    }
+  }
+
+  return t;
+}
+
 
 
 // Home
@@ -77,14 +100,14 @@ router.post('/contact', function(req, res) {
 // Documentation
 
 router.get('/docs', function(req, res) {
+  let f = order(tree('./docs').children, config)
   let t = 'Documentation - dracht.io'
   let d = 'Documentation for dracht.io, the node.js SIP application server framework.'
   res.render('docs', {
     title : t, description : d,
-    tree: tree('./docs').children,
+    tree: f,
     active: 'getting-started'
   })
-  console.log(tree('./docs').children)
 })
 
 router.get('/docs/tutorials', function(req, res) {

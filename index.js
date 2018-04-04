@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const ghost = require('ghost')
 const path = require('path')
 const tree = require('./tree')
+const fs = require('fs')
 const utils = require('./node_modules/ghost/core/server/services/url/utils')
 
 const app = express()
@@ -25,6 +26,9 @@ app.use(express.static('public'))
 
 app.locals.tutorials = tree('./docs/tutorials').children.slice(0,3);
 
+let conf = JSON.parse(fs.readFileSync('docs.conf.json'));
+console.log(conf['getting-started'])
+
 http.listen(app.get('port'), function() {
   console.log('listening on *:' + app.get('port'))
 })
@@ -32,8 +36,4 @@ http.listen(app.get('port'), function() {
 ghost().then(function (ghostServer) {
     app.use('/blog', ghostServer.rootApp);
     ghostServer.start(app);
-    app.use(function(req, res, next){
-    res.locals.items = "Value";
-    next();
-});
 });
