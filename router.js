@@ -3,7 +3,8 @@ const router = express.Router()
 const fs = require('fs')
 const path = require('path')
 const tree = require('./tree')
-const arrayMove = require('array-move');
+const helpers = require('./helpers')
+//const arrayMove = require('array-move');
 
 const dirs = p => fs.readdirSync(p).filter(f => fs.statSync(path.join(p, f)).isDirectory())
 const files = p => fs.readdirSync(p).filter(f => fs.statSync(path.join(p, f)))
@@ -15,32 +16,17 @@ const apiKey = 'key'
 const domain = 'domain'
 const from = 'email'
 
+let f;
+helpers.order(tree('./docs').children, config, function(arr) {
+  f = arr;
+});
+
 /*******************************
 *  You can edit the variables  *
 *  `t` an `d` to change the    *
 *  title and description of    *
 *  each page.                  *
 *******************************/
-
-function order(t, c) {
-  console.log('sgsg')
-  for (var k = 0; k < t.length; k++) {
-    for (var i = 0; i < t[k].children.length; i++) {
-      if (t[k].file in c) {
-        console.log(c[t[k].file])
-        for (var j = 0; j < c[t[k].file].length; j++) {
-          if (t[k].children[i].file == c[t[k].file][j]) {
-            console.log(t[k].children[i].file, 'whoa')
-            arrayMove(t[k].children, i + 2, j + 1)
-          }
-        }
-      }
-    }
-  }
-
-  return t;
-}
-
 
 
 // Home
@@ -100,7 +86,6 @@ router.post('/contact', function(req, res) {
 // Documentation
 
 router.get('/docs', function(req, res) {
-  let f = order(tree('./docs').children, config)
   let t = 'Documentation - dracht.io'
   let d = 'Documentation for dracht.io, the node.js SIP application server framework.'
   res.render('docs', {
@@ -119,14 +104,14 @@ router.get('/docs/tutorials', function(req, res) {
     console.log(name)
     res.render('docs', {
       title : t, description : d,
-      tree: tree('./docs').children,
+      tree: f,
       active: 'tutorials',
       file: name
     })
   } else {
     res.render('docs', {
       title : t, description : d,
-      tree: tree('./docs').children,
+      tree: f,
     })
   }
 })
@@ -134,18 +119,17 @@ router.get('/docs/tutorials', function(req, res) {
 router.get('/docs/tutorial/:tutorial', function(req, res) {
   let t = 'Tutorials - dracht.io'
   let d = 'Learn how to use dracht.io'
-  console.log(files('./docs/tutorials'))
   if (files('./docs/tutorials').includes(req.params.tutorial + '.md')) {
     res.render('docs', {
       title : t, description : d,
-      tree: tree('./docs').children,
+      tree: f,
       active: 'tutorials',
       file: req.params.tutorial
     })
   } else {
     res.render('docs', {
       title : t, description : d,
-      tree: tree('./docs').children,
+      tree: f,
     })
   }
 })
@@ -159,13 +143,13 @@ router.get('/docs/:folder', function(req, res) {
   if (dirs('./docs').includes(req.params.folder)) {
     res.render('docs', {
       title : t, description : d,
-      tree: tree('./docs').children,
+      tree: f,
       active: req.params.folder
     })
   } else {
     res.render('docs', {
       title : t, description : d,
-      tree: tree('./docs').children,
+      tree: f,
       active: 'api'
     })
   }
