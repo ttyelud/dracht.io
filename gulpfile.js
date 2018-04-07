@@ -11,6 +11,7 @@ var gutil = require('gulp-util')
 var gulpJsdoc2md = require('gulp-jsdoc-to-markdown')
 var rename = require('gulp-rename')
 var concat = require('gulp-concat')
+var git = require('gulp-git')
 
 
 var paths = {
@@ -67,6 +68,15 @@ gulp.task('nodemon', function (cb) {
 })
 
 gulp.task('docs', function () {
+  git.clone('https://github.com/davehorton/drachtio-srf', function(err) {
+    if (err) {
+      process.chdir('./drachtio-srf');
+      git.pull('origin', 'master', function (err) {
+        if (err) throw err;
+      });
+    }
+  });
+  process.chdir('./');
   return gulp.src(['drachtio-srf/lib/*.js'])
     .pipe(gulpJsdoc2md({ plugin: 'dmd-clear' }))
     .on('error', function (err) {

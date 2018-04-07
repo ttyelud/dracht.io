@@ -17,6 +17,7 @@
     "express": "^4.16.3",
     "file-name": "^0.1.0",
     "ghost": "^1.22.0",
+    "gulp-git": "^2.5.2",
     "handlebars": "^4.0.11",
     "http": "0.0.0",
     "jsdoc": "^3.5.5",

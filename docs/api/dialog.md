@@ -1,3 +1,5 @@
+<a name="Dialog"></a>
+
 ## Dialog
 **Extends:** <code>EventEmitter</code>  
 Class representing a SIP Dialog.
@@ -293,3 +295,4 @@ SIP Dialog identifiers
 | sdp | <code>String</code> | session description protocol |
 
 SIP Endpoint identifiers
+
