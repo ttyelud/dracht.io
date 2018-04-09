@@ -3,3 +3,4 @@ drachtio/
 drachtio-srf/
 .DS_Store
 .env
+content/data/*
