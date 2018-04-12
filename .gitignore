@@ -2,5 +2,8 @@ node_modules/
 drachtio/
 drachtio-srf/
 .DS_Store
+.eslintrc.json
+.eslintignore
 .env
+now.json
 content/data/*
