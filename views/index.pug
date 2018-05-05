@@ -2,7 +2,7 @@ extends layouts/default
 
 block header
   #intro: .container.grid-lg
-    h1 The node.js SIP application #[br] server framework.
+    h1 The node.js framework for SIP server applications.
     .card.code-box
       .card-header
         .circle-one
@@ -18,20 +18,19 @@ block content
   .content#top: .container.grid-lg
     .columns
       .column.col-6.col-md-12
-        h3 The complete solution to VoIP. 
+        h3 Everything is in the box. 
         hr
         p 
-          | dracht.io lets you integrate Voice-over-IP functionality into your 
-          | web applications by using middleware patterns that you are already 
-          | familiar with.
+          | drachtio is an open-source ecosystem consisting of a high-performance SIP server 
+          | and a node.js module that controls SIP sessions on the server.
         p 
-          | The distributed client-server architecture allows multiple web 
-          | applications to connect to and share the services of one or more 
-          | always-running SIP servers.
+          | The distributed architecture means that application logic can be 
+          | scaled, deployed, and managed completely independently from 
+          | SIP call processing engines.
       .column.col-6.col-md-12
         img(src="/images/VoIP.png")
         
-  .content#bottom: .container.grid-lg
+  .content#middle: .container.grid-lg
     .columns
       .column.col-6.col-md-12
         a.btn.btn-box.dark(href="/docs")
@@ -41,15 +40,33 @@ block content
           | View the source.
           hr
       .column.col-6.col-md-12#content-right
-        div: h3 The carrier-class SIP middleware developers love. 
+        div: h3 Let's keep this simple.
         hr
         p 
-          | drachtio-srf bundles a lower-level sip middleware library drachtio 
-          | and requires a network connection to a drachtio server process. 
-          | The drachtio server provides the sip transaction processing engine
-          | and is controlled by nodejs applications using the drachtio-srf module.
+          | If you're familiar with node.js frameworks #[br/] for web applications--like 
+          a(href='https://expressjs.com/') Express
+          | , or others--then drachtio will fit easily to hand. It uses
+          | a familiar and easy-to-learn middleware pattern to let you create and manage SIP calls.
+        p
+          | Check out the  
+          a(href='docs/getting-started') Getting Started 
+          | docs, #[br/] and then 
+          a(href='https://github.com/davehorton/drachtio-server/tree/develop') build a drachtio server from source 
+          | #[br/] or  
+          a(href='https://cloud.docker.com/swarm/drachtio/repository/docker/drachtio/drachtio-server/general') grab a docker image 
+          | and start building apps. 
+
+  .content#bottom: .container.grid-lg
+    .columns
+      .column.col-6.col-md-12
+        h3 Time to crank up the awesome. 
+        hr
         p 
-          | dracht.io provides a layered set of APIs that are easy to use and extend.
+          | drachtio was born in carrier networks, where five 9's reliability is a way of life.
+        p
+          | Applications built using drachtio are generating revenue and processing in excess of 100 million minutes per
+          | month in world-wide deployments that range from intelligent call routing, to
+          | emergency services, voip services, SIPREC call recording, IVR, and others.
 
 block scripts
   script.

@@ -7,10 +7,10 @@ const helpers = require('./helpers');
 //const arrayMove = require('array-move');
 
 const dirs = (p) => {
-  fs.readdirSync(p).filter((f) => fs.statSync(path.join(p, f)).isDirectory);
+  return fs.readdirSync(p).filter((f) => fs.statSync(path.join(p, f)).isDirectory);
 };
 const files = (p) => {
-  fs.readdirSync(p).filter((f) => fs.statSync(path.join(p, f)));
+  return fs.readdirSync(p).filter((f) => fs.statSync(path.join(p, f)));
 };
 
 const config = JSON.parse(fs.readFileSync('docs.conf.json'));

@@ -3483,7 +3483,6 @@ header {
   .content h3 {
     font-size: 24px;
     color: #696969;
-    max-width: 320px;
     font-weight: 700;
     margin-top: .5em;
     display: inline-block; }

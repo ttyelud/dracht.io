@@ -1,6 +1,13 @@
 # dracht.io
 You can run the dracht.io site using `npm start`. For development you can run `gulp` which uses nodemon and browser-sync.  
 
+## Install
+```bash
+$ npm install
+$ knex-migrator init --mgpath node_modules/ghost
+$ gulp serve
+```
+
 ## Docs
 The documentation for the dracht.io website is generated from the folders and markdown files in the `docs` directory. Each folder is a category, i.e., `tutorials`, and every file in that folder will be rendered under that category. So simply adding a new folder will add a new section to the docs, and so on.
 
