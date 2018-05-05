@@ -30,10 +30,11 @@ http.listen(app.get('port'), () => {
   console.log('listening on *:' + app.get('port'));
 });
 
-ghost().then((ghostServer) => {
-  app.use('/blog', ghostServer.rootApp);
-  return ghostServer.start(app);
-})
+ghost()
+  .then((ghostServer) => {
+    app.use('/blog', ghostServer.rootApp);
+    return ghostServer.start(app);
+  })
   .catch((err) => {
     console.error(`Error starting ghost: ${err}`);
   });

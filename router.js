@@ -1,23 +1,27 @@
-const express = require('express')
-const router = express.Router()
-const fs = require('fs')
-const path = require('path')
-const tree = require('./tree')
-const helpers = require('./helpers')
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
+const path = require('path');
+const tree = require('./tree');
+const helpers = require('./helpers');
 //const arrayMove = require('array-move');
 
-const dirs = p => fs.readdirSync(p).filter(f => fs.statSync(path.join(p, f)).isDirectory())
-const files = p => fs.readdirSync(p).filter(f => fs.statSync(path.join(p, f)))
+const dirs = (p) => {
+  fs.readdirSync(p).filter((f) => fs.statSync(path.join(p, f)).isDirectory);
+};
+const files = (p) => {
+  fs.readdirSync(p).filter((f) => fs.statSync(path.join(p, f)));
+};
 
 const config = JSON.parse(fs.readFileSync('docs.conf.json'));
 
-const Mailgun = require('mailgun-js')
-const apiKey = 'key'
-const domain = 'domain'
-const from = 'email'
+const Mailgun = require('mailgun-js');
+const apiKey = 'key';
+const domain = 'domain';
+const from = 'email';
 
 let f;
-helpers.order(tree('./docs').children, config, function(arr) {
+helpers.order(tree('./docs').children, config, (arr) => {
   f = arr;
 });
 
@@ -32,127 +36,125 @@ helpers.order(tree('./docs').children, config, function(arr) {
 // Home
 
 router.get('/', function(req, res) {
-  let t = 'Welcome to dracht.io'
-  let d = 'The node.js SIP application server framework.'
-  res.render('index', {title : t, description : d})
-})
+  const t = 'Welcome to dracht.io';
+  const d = 'The node.js SIP application server framework.';
+  res.render('index', {title : t, description : d});
+});
 
 // Interior Pages
 
 router.get('/about', function(req, res) {
-  let t = 'About - dracht.io'
-  let d = 'Learn more about dracht.io, the node.js SIP application server framework.'
-  res.render('about', {title : t, description : d})
-})
+  const t = 'About - dracht.io';
+  const d = 'Learn more about dracht.io, the node.js SIP application server framework.';
+  res.render('about', {title : t, description : d});
+});
 
 router.get('/features', function(req, res) {
-  let t = 'Features - dracht.io'
-  let d = 'Learn more about what dracht.io has to offer.'
-  res.render('features', {title : t, description : d})
-})
+  const t = 'Features - dracht.io';
+  const d = 'Learn more about what dracht.io has to offer.';
+  res.render('features', {title : t, description : d});
+});
 
 // Contact
 
 router.get('/contact', function(req, res) {
-  let t = 'Contact - dracht.io'
-  let d = 'Have a question? Contact us.'
-  res.render('contact', {title : t, description : d, submitted: false})
-})
+  const t = 'Contact - dracht.io';
+  const d = 'Have a question? Contact us.';
+  res.render('contact', {title : t, description : d, submitted: false});
+});
 
 router.post('/contact', function(req, res) {
-  let t = 'Contact - dracht.io'
-  let d = 'Have a question? Contact us.'
-  console.log(req.body)
-  var mailgun = new Mailgun({apiKey: apiKey, domain: domain});
+  const t = 'Contact - dracht.io';
+  const d = 'Have a question? Contact us.';
+  console.log(req.body);
+  const mailgun = new Mailgun({apiKey: apiKey, domain: domain});
 
-  var data = {
+  const data = {
     from: from,
     to: req.body.email,
     subject: req.body.subject,
     html: req.body.message
-  }
+  };
 
-  mailgun.messages().send(data, function (err, body) {
+  mailgun.messages().send(data, (err, body) => {
     if (err) {
       res.render('error', { error : err});
-      console.log("got an error: ", err);
+      console.log(`got an error: ${err}`);
     }
     else {
-      res.render('contact', {title : t, description : d, submitted: true})
+      res.render('contact', {title : t, description : d, submitted: true});
     }
   });
-})
+});
 
 // Documentation
 
-router.get('/docs', function(req, res) {
-  let t = 'Documentation - dracht.io'
-  let d = 'Documentation for dracht.io, the node.js SIP application server framework.'
+router.get('/docs', (req, res) => {
+  const t = 'Documentation - dracht.io';
+  const d = 'Documentation for dracht.io, the node.js SIP application server framework.';
   res.render('docs', {
     title : t, description : d,
     tree: f,
     active: 'getting-started'
-  })
-})
+  });
+});
 
-router.get('/docs/tutorials', function(req, res) {
-  let t = 'Tutorials - dracht.io'
-  let d = 'Learn how to use dracht.io'
+router.get('/docs/tutorials', (req, res) => {
+  const t = 'Tutorials - dracht.io';
+  const d = 'Learn how to use dracht.io';
   //console.log(tree('./docs/tutorials').children)
   if (tree('./docs/tutorials').children.length > 0) {
-    let name = tree('./docs/tutorials').children[0].file;
-    console.log(name)
+    const name = tree('./docs/tutorials').children[0].file;
+    console.log(name);
     res.render('docs', {
       title : t, description : d,
       tree: f,
       active: 'tutorials',
       file: name
-    })
+    });
   } else {
     res.render('docs', {
       title : t, description : d,
       tree: f,
-    })
+    });
   }
-})
+});
 
 router.get('/docs/tutorial/:tutorial', function(req, res) {
-  let t = 'Tutorials - dracht.io'
-  let d = 'Learn how to use dracht.io'
+  const t = 'Tutorials - dracht.io';
+  const d = 'Learn how to use dracht.io';
   if (files('./docs/tutorials').includes(req.params.tutorial + '.md')) {
     res.render('docs', {
       title : t, description : d,
       tree: f,
       active: 'tutorials',
       file: req.params.tutorial
-    })
+    });
   } else {
     res.render('docs', {
       title : t, description : d,
       tree: f,
-    })
+    });
   }
-})
+});
 
-
-
-router.get('/docs/:folder', function(req, res) {
-  let t = 'Documentation - dracht.io'
-  let d = 'Documentation for dracht.io, the node.js SIP application server framework.'
+router.get('/docs/:folder', (req, res) => {
+  const t = 'Documentation - dracht.io';
+  const d = 'Documentation for dracht.io, the node.js SIP application server framework.';
 
   if (dirs('./docs').includes(req.params.folder)) {
     res.render('docs', {
       title : t, description : d,
       tree: f,
       active: req.params.folder
-    })
+    });
   } else {
     res.render('docs', {
       title : t, description : d,
       tree: f,
       active: 'api'
-    })
+    });
   }
-})
+});
 
 module.exports = router;

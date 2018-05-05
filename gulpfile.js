@@ -1,77 +1,71 @@
-var gulp = require('gulp')
-var jshint = require('gulp-jshint')
-var jshintReporter = require('jshint-stylish')
-var sass = require('gulp-sass')
-var minifyCSS = require('gulp-csso')
-var nodemon = require('nodemon')
-var browserSync = require('browser-sync')
-var shell = require('gulp-shell');
-var fs = require('fs')
-var gutil = require('gulp-util')
-var gulpJsdoc2md = require('gulp-jsdoc-to-markdown')
-var rename = require('gulp-rename')
-var concat = require('gulp-concat')
-var git = require('gulp-git')
+const gulp = require('gulp');
+const jshint = require('gulp-jshint');
+const jshintReporter = require('jshint-stylish');
+const sass = require('gulp-sass');
+const nodemon = require('nodemon');
+const browserSync = require('browser-sync');
+const gutil = require('gulp-util');
+const gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
+const rename = require('gulp-rename');
+const git = require('gulp-git');
 
-
-var paths = {
+const paths = {
   'src':['index.js', 'router.js'],
-  'styles':['./public/styles/*.scss','./public/styles/src/*.scss'],
-  'views':['./views/*.pug','./views/**/*.pug']
+  'styles':['./public/styles/*.scss', './public/styles/src/*.scss'],
+  'views':['./views/*.pug', './views/**/*.pug']
 };
 
-gulp.task('serve', ['nodemon','sass'], function() {
-    browserSync.init(null, {
-      proxy: "http://localhost:8080",
-      open: false,
-      port: 7000
-    })
+gulp.task('serve', ['nodemon', 'sass'], () => {
+  browserSync.init(null, {
+    proxy: 'http://localhost:8080',
+    open: false,
+    port: 7000
+  });
 
-    gulp.watch(paths.styles, ['sass'])
-    gulp.watch(paths.views).on('change', browserSync.reload)
-    gulp.watch(paths.src, ['js-watch'])
-})
+  gulp.watch(paths.styles, ['sass']);
+  gulp.watch(paths.views).on('change', browserSync.reload);
+  gulp.watch(paths.src, ['js-watch']);
+});
 
-gulp.task('lint', function(){
+gulp.task('lint', () => {
   gulp.src(paths.src)
     .pipe(jshint())
-    .pipe(jshint.reporter(jshintReporter))
+    .pipe(jshint.reporter(jshintReporter));
+});
 
-})
-
-gulp.task('js-watch', ['lint'], function (done) {
-    browserSync.reload()
-    done()
-})
+gulp.task('js-watch', ['lint'], (done) => {
+  browserSync.reload();
+  done();
+});
 
 // Compile sass into CSS & auto-inject into browsers
-gulp.task('sass', function() {
-    return gulp.src("public/styles/*.scss")
-        .pipe(sass())
-        .pipe(gulp.dest("public/styles"))
-        .pipe(browserSync.stream())
-})
+gulp.task('sass', () => {
+  return gulp.src('public/styles/*.scss')
+    .pipe(sass())
+    .pipe(gulp.dest('public/styles'))
+    .pipe(browserSync.stream());
+});
 
-gulp.task('nodemon', function (cb) {
-	var started = false
+gulp.task('nodemon', (cb) => {
+  let started = false;
 
-	return nodemon({
-		script: 'index.js'
-	}).on('start', function () {
-		// to avoid nodemon being started multiple times
-		// thanks @matthisk
-		if (!started) {
-			cb()
-			started = true
-		}
-	})
-})
+  return nodemon({
+    script: 'index.js'
+  }).on('start', () => {
+    // to avoid nodemon being started multiple times
+    // thanks @matthisk
+    if (!started) {
+      cb();
+      started = true;
+    }
+  });
+});
 
-gulp.task('docs', function () {
-  git.clone('https://github.com/davehorton/drachtio-srf', function(err) {
+gulp.task('docs', () => {
+  git.clone('https://github.com/davehorton/drachtio-srf', (err) => {
     if (err) {
       process.chdir('./drachtio-srf');
-      git.pull('origin', 'master', function (err) {
+      git.pull('origin', 'master', (err) => {
         if (err) throw err;
       });
     }
@@ -79,14 +73,14 @@ gulp.task('docs', function () {
   process.chdir('./');
   return gulp.src(['drachtio-srf/lib/*.js'])
     .pipe(gulpJsdoc2md({ plugin: 'dmd-clear' }))
-    .on('error', function (err) {
-      gutil.log(gutil.colors.red('jsdoc2md failed'), err.message)
+    .on('error', (err) => {
+      gutil.log(gutil.colors.red('jsdoc2md failed'), err.message);
     })
-    .pipe(rename(function (path) {
-      path.extname = '.md'
+    .pipe(rename((path) => {
+      path.extname = '.md';
     }))
-    .pipe(gulp.dest('docs/api'))
-})
+    .pipe(gulp.dest('docs/api'));
+});
 
 
-gulp.task('default', ['serve'])
+gulp.task('default', ['serve']);
