@@ -1,23 +1,22 @@
 extends layouts/default
 
-mixin nav-list(p, statement, name)
-  if statement
-    li(class=(active == p.file ? 'active' : null))
-      if active == p.file
-        i.rr.down
-      else
-        i.rr.right
-      a(href='/docs/' + p.file)= name || p.name
-        
-      if active == p.file
-        nav(data-gumshoe-header='')
-          ul.chidlren(data-gumshoe='')
-            if p.children.length > 0
-              each c, i in p.children
-                if active == 'tutorials'
-                  li(class=(file == c.file ? 'active' : null)): a(href='/docs/tutorial/' + c.file)= c.name
-                else
-                  li: a(href='#' + c.file)= c.name
+mixin nav-list(p, name)
+  li(class=(active == p.file ? 'active' : null))
+    if active == p.file
+      i.rr.down
+    else
+      i.rr.right
+    a(href='/docs/' + p.file)= name || p.name
+      
+    if active == p.file
+      nav(data-gumshoe-header='')
+        ul.children(data-gumshoe='')
+          if p.children.length > 0
+            each c, i in p.children
+              if active == 'tutorials'
+                li(class=(file == c.file ? 'active' : null)): a(href='/docs/tutorial/' + c.file)= c.name
+              else
+                li: a(href='#' + c.file)= c.name
               
 
 block css
@@ -43,42 +42,18 @@ block content
           ul.parents.page-nav
             if tree
               each p in tree
-                +nav-list(p, p.name != 'Api')
-              each p in tree
-                +nav-list(p, p.name == 'Api', 'API Reference')            
-            
+                +nav-list(p)
+    
       .column.doc
-        if active == 'getting-started'
-          each p in tree
-            if p.file == active
-              span.start
-                img(src='/images/circle.svg')
-                | #{p.name}
-              if p.children.length > 0
-                each c in p.children
-                  div!= c.content
-                  .break
-        if active == 'api'
-          each p in tree
-            if p.file == active
-              span.start
-                img(src='/images/circle.svg')
-                | API Reference
-              if p.children.length > 0
-                each c in p.children
-                  div.api!= c.content
-                  .break
-        else
-          each p in tree
-            if p.file == active
-              if p.children.length > 0
-                each c in p.children
-                  if c.file == file
-                    span.start
-                      img(src='/images/circle.svg')
-                      | Tutorial
-                    div!= c.content
-                    .break
+        - const name = active == 'developer-guide' ? 'Developer Guide' : (active == 'api' ? 'API Reference' : Tutorials)
+        each p in tree
+          if p.file == active
+            span.start
+              img(src='/images/circle.svg')
+              | #{name}
+            each c in p.children
+              div!= c.content
+              .break
                 
 
 block scripts

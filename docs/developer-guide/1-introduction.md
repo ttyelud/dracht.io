@@ -100,3 +100,11 @@ By the way, the custom header was, of course, not really necessary and was only 
 ```js
 res.send(486);
 ```
+And, by the way, we are not limited to adding custom SIP headers to our messages -- we can add standard SIP headers in the same way:
+```js
+res.send(486, {
+  headers, {
+    'Subject' : 'my first app'
+  }
+});
+```

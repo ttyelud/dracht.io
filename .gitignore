@@ -7,3 +7,4 @@ drachtio-srf/
 .env
 now.json
 content/data/*
+docs/**/*.html

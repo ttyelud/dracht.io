@@ -19,6 +19,8 @@ rather they are returned from the [Srf#createUAC](Srf#createUAC), [Srf#createUAC
 
         * [.remote](#Dialog+remote)
 
+        * [.subscriptions](#Dialog+subscriptions)
+
         * [.destroy([callback])](#Dialog+destroy)
 
         * [.modify(sdp, [callback])](#Dialog+modify)
@@ -81,6 +83,11 @@ local side of the Dialog
 
 ### *dialog*.remote
 local side of the Dialog
+
+<a name="Dialog+subscriptions"></a>
+
+### *dialog*.subscriptions
+subscriptions created by this dialog
 
 <a name="Dialog+destroy"></a>
 

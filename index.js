@@ -4,8 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const ghost = require('ghost');
-const tree = require('./tree');
-const fs = require('fs');
 
 const app = express();
 const http = require('http').Server(app);
@@ -21,10 +19,8 @@ app.use('/', routes);
 app.use(morgan('tiny'));
 app.use(express.static('public'));
 
-app.locals.tutorials = tree('./docs/tutorials').children.slice(0, 3);
-
-const conf = JSON.parse(fs.readFileSync('docs.conf.json'));
-console.log(conf['getting-started']);
+//app.locals.tutorials = tree('./docs/tutorials').children.slice(0, 3);
+app.locals.tutorials = [];
 
 http.listen(app.get('port'), () => {
   console.log('listening on *:' + app.get('port'));

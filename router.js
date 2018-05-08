@@ -1,37 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-const tree = require('./tree');
-const helpers = require('./helpers');
-//const arrayMove = require('array-move');
-
-const dirs = (p) => {
-  return fs.readdirSync(p).filter((f) => fs.statSync(path.join(p, f)).isDirectory);
-};
-const files = (p) => {
-  return fs.readdirSync(p).filter((f) => fs.statSync(path.join(p, f)));
-};
-
-const config = JSON.parse(fs.readFileSync('docs.conf.json'));
+const {mdTree} = require('./utils');
+const _ = require('lodash');
 
 const Mailgun = require('mailgun-js');
 const apiKey = 'key';
 const domain = 'domain';
 const from = 'email';
 
-let f;
-helpers.order(tree('./docs').children, config, (arr) => {
-  f = arr;
-});
-
-/*******************************
-*  You can edit the variables  *
-*  `t` an `d` to change the    *
-*  title and description of    *
-*  each page.                  *
-*******************************/
-
+const docsTree = mdTree('./docs', './views');
 
 // Home
 
@@ -90,68 +67,33 @@ router.post('/contact', function(req, res) {
 // Documentation
 
 router.get('/docs', (req, res) => {
-  const t = 'Documentation - dracht.io';
-  const d = 'Documentation for dracht.io, the node.js SIP application server framework.';
   res.render('docs', {
-    title : t, description : d,
-    tree: f,
-    active: 'getting-started'
+    title : 'Documentation - dracht.io',
+    description : 'Documentation for dracht.io, the node.js SIP application server framework.',
+    tree: docsTree.children,
+    active: 'developer-guide'
   });
 });
 
-router.get('/docs/tutorials', (req, res) => {
-  const t = 'Tutorials - dracht.io';
-  const d = 'Learn how to use dracht.io';
-  //console.log(tree('./docs/tutorials').children)
-  if (tree('./docs/tutorials').children.length > 0) {
-    const name = tree('./docs/tutorials').children[0].file;
-    console.log(name);
-    res.render('docs', {
-      title : t, description : d,
-      tree: f,
-      active: 'tutorials',
-      file: name
-    });
-  } else {
-    res.render('docs', {
-      title : t, description : d,
-      tree: f,
-    });
-  }
-});
-
-router.get('/docs/tutorial/:tutorial', function(req, res) {
-  const t = 'Tutorials - dracht.io';
-  const d = 'Learn how to use dracht.io';
-  if (files('./docs/tutorials').includes(req.params.tutorial + '.md')) {
-    res.render('docs', {
-      title : t, description : d,
-      tree: f,
-      active: 'tutorials',
-      file: req.params.tutorial
-    });
-  } else {
-    res.render('docs', {
-      title : t, description : d,
-      tree: f,
-    });
-  }
-});
 
 router.get('/docs/:folder', (req, res) => {
   const t = 'Documentation - dracht.io';
   const d = 'Documentation for dracht.io, the node.js SIP application server framework.';
 
-  if (dirs('./docs').includes(req.params.folder)) {
+  const tree = _.find(docsTree.children, (c) => c.file === req.params.folder);
+  if (tree) {
+    console.log('found folder');
     res.render('docs', {
-      title : t, description : d,
-      tree: f,
+      title : t,
+      description : d,
+      tree: docsTree.children,
       active: req.params.folder
     });
   } else {
     res.render('docs', {
-      title : t, description : d,
-      tree: f,
+      title : t,
+      description : d,
+      tree: docsTree.children,
       active: 'api'
     });
   }
