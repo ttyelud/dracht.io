@@ -1,8 +1,12 @@
 {
   "database": {
-    "client": "sqlite3",
+    "client": "mysql",
     "connection": {
-      "filename": "content/data/ghost-dev.db"
+      "host":"localhost",
+      "user":"ghost",
+      "password":"password",
+      "database":"ghost",
+      "charset":"utf8"
     },
     "debug": false
   },
