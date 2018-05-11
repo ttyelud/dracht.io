@@ -11,7 +11,7 @@ block header
       .card-body
         include:markdown-it markdown/home-box.md
     a.btn.btn-special(href="/docs") Get Started
-    .arrow-down
+    a.arrow-down(href="#top")
         
   
 block content
@@ -67,6 +67,8 @@ block content
           | Applications built using drachtio are generating revenue and processing in excess of 100 million minutes per
           | month in world-wide deployments that range from intelligent call routing, to
           | emergency services, voip services, SIPREC call recording, IVR, and others.
+      .column.col-6.col-md-12.center
+        .five-nines 99.999%
 
 block scripts
   script.
@@ -83,3 +85,12 @@ block scripts
     headroom.init();
   script.
     hljs.initHighlightingOnLoad();
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
