@@ -24,7 +24,7 @@ $ touch app.js
 $ npm install --save drachtio-srf
 ```
 
-Next, make your app.js to look like this:
+Next, edit app.js to look like this:
 ```js
 const Srf = require('drachtio-srf');
 const srf = new Srf();
