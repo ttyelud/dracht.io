@@ -4,11 +4,11 @@ drachtio-srf is a middleware framework.  As we saw above, we handle SIP INVITEs 
 
 All of the SIP methods are routed similarly, e.g.
 ```js
-srf.register((req, res) => {...handle REGISTERs})
+srf.register((req, res) => {...handle REGISTERs});
 
-srf.options((req, res) => {...handle OPTIONS})
+srf.options((req, res) => {...handle OPTIONS});
 
-srf.subscribe((req, res) => {...handle SUBSCRIBE}) //...etc
+srf.subscribe((req, res) => {...handle SUBSCRIBE}); //...etc
 ```
 
 drachtio middleware can also be installed via the `.use` method.  The middleware can be globally applied to all requests, or can be scoped by method.  Below is an example where we use global middleware to log all requests, and a second middleware that parses authentication credentials from incoming REGISTER requests.

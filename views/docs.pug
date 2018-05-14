@@ -45,7 +45,11 @@ block content
                 +nav-list(p)
     
       .column.doc
-        - const name = active == 'developer-guide' ? 'Developer Guide' : (active == 'api' ? 'API Reference' : Tutorials)
+        - let name
+        - if (active === 'developer-guide') name = 'Developer Guide'
+        - else if (active === 'api') name = 'API Reference'
+        - else if (active === 'tutorials') name = 'Tutorials'
+        - else if (active === 'drachtio-server') name = 'Drachtio Server'
         each p in tree
           if p.file == active
             span.start

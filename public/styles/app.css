@@ -3786,7 +3786,7 @@ a#version {
     font-size: 36px;
     padding: .3em 0 .3em;
     border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 1.5em; }
+    margin-bottom: 0.5em; }
   .doc h3 {
     font-weight: 300;
     padding: 1em 0 .5em;
@@ -3796,8 +3796,8 @@ a#version {
     display: none; }
   .doc .hljs {
     box-shadow: 0 0 9px rgba(0, 0, 0, 0.1);
-    margin: 4em 0;
-    padding: 3.5em !important;
+    margin: 0 0 2em 0;
+    padding: 2em !important;
     background: white !important; }
   .doc .break {
     height: 3em; }

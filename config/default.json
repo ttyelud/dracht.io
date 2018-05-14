@@ -1,6 +1,6 @@
 {
   "md": {
-    "docs": ["developer-guide", "api", "tutorials"],
+    "docs": ["developer-guide", "api", "drachtio-server", "tutorials"],
     "api": ["srf", "dialog", "sip_error"]
   }
 }

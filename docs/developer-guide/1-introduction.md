@@ -2,12 +2,13 @@
 
 ## Getting your kit up and running
 
-[drachtio-srf](https://www.npmjs.com/package/drachtio-srf) (the 'srf' stands for *S*ignaling *R*esource *F*ramework) is the npm module that you will add to your package.json to expose drachtio features to your application.
+[drachtio-srf](https://www.npmjs.com/package/drachtio-srf) (the 'srf' stands for *S*ignaling *R*esource *F*ramework) is the npm module that you will add to your package.json to build SIP server applications using drachtio.
 
 drachtio-srf works in concert with a [drachtio server](https://github.com/davehorton/drachtio-server/tree/develop) process to control and manage SIP calls and events.  So you will need a running instance of a drachtio server somewhere to connect to in order to start developing.  
 
 You can find instructions for [building a drachtio server from scratch here](https://github.com/davehorton/drachtio-server/tree/develop), or if you prefer ansible you can find [an ansible role here](https://github.com/davehorton/ansible-role-drachtio), but the easiest way to get started is probably to run a [docker image](ttps://cloud.docker.com/swarm/drachtio/repository/docker/drachtio/drachtio-server/general) on your laptop, if you are familiar with and like Docker containers.
 
+Review the [drachtio server docs](/docs/drachtio-server) for detailed information on configuring the server.
 
 *Notes:* The sample code below assumes that a drachtio server process is running on the localhost and is listening for connections from applications on port 9022 (tcp).
 
