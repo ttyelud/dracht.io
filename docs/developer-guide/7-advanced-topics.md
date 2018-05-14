@@ -7,14 +7,17 @@ The examples so far have illustrated **inbound connections**; that is, a drachti
 const Srf = require('drachtio-srf');
 const srf = new Srf();
 
+// example of creating inbound connections
 srf.connect({
-  address: '192.168.1.100',
+  host: '192.168.1.100',
   port: 9022, 
   secret: 'cymru'
 });
 
 srf.on('connect', (hp) => console.log(`connected to drachtio listening on ${hp}`));
 srf.on('error', (err) => console.log(`error connecting: ${err}`));
+
+srf.invite((req, res) => {..});
 ```
 An inbound connection is intended to be a **long lasting** connection: the application connects when the application starts, and that connection is then used to transmit all SIP events and commands as long as the application is running.  
 
@@ -34,6 +37,21 @@ The sequence of events when outbound connections have been enabled are as follow
 5. The drachtio server retrieves the ip address and port from the response to the web callback and establishes a tcp connection to the drachtio application listening on that address:port.
 6. The INVITE information is sent to the drachtio application over this new connection, and the standard drachtio middleware is invoked; e.g. `srf.invite((req, res))`.
 
+```js
+const Srf = require('drachtio-srf');
+const srf = new Srf();
+
+// example of listening for outbound connections
+srf.listen({
+  port: 3001, 
+  secret: 'cymru'
+});
+
+srf.invite((req, res) => {..});
+```
+
+From the standpoint of the drachtio application you would write, the code is almost exactly the same other than the call to [Srf#listen](/docs/api#Srf+listen) instead of [Srf#connect](/docs/api#Srf+connect) and one other matter related to eventually releasing the connection, which we will describe shortly.
+
 ### Mixing inbound and outbound connections
 
 Is it possible to mix inbound and outbound connections?  
@@ -51,9 +69,9 @@ Outbound connections are not.
 
 An outbound connection is established when a specific SIP request arrives, and it is intended to last only until the application has determined that all logic related to that request has been performed. From a practical standpoint, since each new arriving request spawns a new tcp connection, it is important that connections are destroyed when the application logic is complete, so that we don't exhaust file descriptor or other resources on the server.
 
-Because the determination of when all application logic has complete is, by definition, something that only the application can signal, we require the application to destroy the connection via an explicit call to [Srf#endSession](/docs/api#Srf+endSession).  Typically, an application will call this method when all SIP dialogs or transactions associated with or emanating from the initial SIP request have been destroyed.  
+Because the determination of "when all application logic has complete" is, by definition, something that only the application can know, we require the application to destroy the connection via an explicit call to [Srf#endSession](/docs/api#Srf+endSession) when it is no longer needed.  Typically, an application will call this method when all SIP dialogs or transactions associated with or emanating from the initial SIP request have been destroyed.  
 
-In a simple example of a UAS app connecting an incoming call, when the BYE that terminates the call is sent or received it would be appropriate to call [Srf#endSession](/docs/api#Srf+endSession).
+In a simple example of a UAS app connecting an incoming call, for instance, when the BYE that terminates the call is sent or received it would be appropriate to call [Srf#endSession](/docs/api#Srf+endSession).
 
 > This method call is a 'no-op' (does nothing) when called on an inbound connection, so it is safe to call in code that may be dealing with an outbound or inbound connection.
 
@@ -61,9 +79,9 @@ In a simple example of a UAS app connecting an incoming call, when the BYE that 
 
 There are two primary scenarios in which to use outbound connections:
 
-1. When a single drachtio server is going to handle calls controlled by multiple different types of applications.  In this scenario, it can be useful to have a web callback examine the incoming calls and distribute them appropriately to the different drachtio applications based on per-call information (e.g. based on DID, we might associate calls to specific customers and then invoke customer-specific drachtio applications)
-2. When drachtio applications are going to run in a containerized cluster environment, such as Kubernetes.  In this environment, it can be useful to create a Kubernetes Service for the drachtio cluster, and then use outbound connections to route incoming calls to the public address of the Kubernetes Service.  In general, it can make it easier to independently scale drachtio servers and groups of drachtio applications using outbound connections.
+1. When a single drachtio server is going to handle calls controlled by multiple different types of applications.  In this scenario, it can be useful to have a web callback examine the incoming calls and distribute them appropriately to the different drachtio applications based on per-call information.  For example, if we wanted to stand up a drachtio server that multiple customers could utilize (i.e. multi-tenant situation) then outbound connections would allow us to have many different customer applications controlling calls on that server, each applying their own logic.
+2. When drachtio applications are going to run in a containerized cluster environment such as Kubernetes, outbound connections can be useful.  In this environment, it can be useful to create a Kubernetes Service for the drachtio cluster, and then use outbound connections to route incoming calls to the public address of the Kubernetes Service which is backed by a cluster of drachtio applications running in Kubernetes pods.  
+
+In general, outbound connections can make it easier to independently scale drachtio servers and groups of drachtio applications, since you do not need to explicitly "tie" drachtio applications to specific servers.
 
 For more information on configuring drachtio server for outbound connections refer to the [drachtio server configuration documentation](/docs/drachtio-server#request-handlers-section).
-
-### How to write an application that can be configured for either inbound or outbound

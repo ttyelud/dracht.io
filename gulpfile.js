@@ -66,7 +66,10 @@ gulp.task('docs', () => {
     if (err) {
       process.chdir('./drachtio-srf');
       git.pull('origin', 'master', (err) => {
-        if (err) throw err;
+        if (err) {
+          console.error(`git pull error: ${err}`);
+          throw err;
+        }
       });
     }
   });

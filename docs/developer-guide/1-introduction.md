@@ -75,7 +75,7 @@ X-Custom-Header: because why not?
 
 OK, so rejecting an incoming call is not particularly exciting, but the main thing we just accomplished was to verify that we have a working drachtio server, and also we illustrated how to connect an application to a drachtio server.
 
-The type of connection made in our example above is called an **inbound** connection; that is, a TCP connection made from the nodejs application acting as a client to the drachtio server process acting as the server.  There is also the possibility of having the drachtio server make an **outbound** connection to a listening application, but that is a more advanced topic we will cover later, along with the reasons on why you might want to do that.
+The type of connection made in our example above is called an **inbound** connection; that is, a TCP connection made from the nodejs application acting as a client to the drachtio server process acting as the server.  There is also the possibility of having the drachtio server make an **outbound** connection to a listening application, but that is a [more advanced topic we will cover later](/docs/developer-guide/#outbound-connections), along with the reasons on why you might want to do that.
 
 By default, the drachtio server process listens for inbound connections on tcp port 9022, but this can be configured to a different port in its configuration file.  Authentication is currently performed using a simple plaintext secret, which is also configured in the drachtio server configuration file.
 

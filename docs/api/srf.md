@@ -10,27 +10,37 @@ instance is sufficient.
 
     * [new Srf()](#new_Srf_new)
 
-    * [.createUAS(req, res, opts, [callback])](#Srf+createUAS)
+    * _instance_
+        * [.createUAS(req, res, opts, [callback])](#Srf+createUAS)
 
-    * [.createUAC(uri, opts, [progressCallbacks], [callback])](#Srf+createUAC)
+        * [.createUAC(uri, opts, [progressCallbacks], [callback])](#Srf+createUAC)
 
-    * [.createB2BUA(req, res, uri, opts, [progressCallbacks], [callback])](#Srf+createB2BUA)
+        * [.createB2BUA(req, res, uri, opts, [progressCallbacks], [callback])](#Srf+createB2BUA)
 
-    * [.proxyRequest(req, [destination], [opts], [callback])](#Srf+proxyRequest)
+        * [.proxyRequest(req, [destination], [opts], [callback])](#Srf+proxyRequest)
 
-    * [.request(uri, opts, [headers], [body], [callback])](#Srf+request)
+        * [.request(uri, opts, [headers], [body], [callback])](#Srf+request)
 
-    * [.connect(opts)](#Srf+connect)
+        * [.connect(opts)](#Srf+connect)
 
-    * [.listen(opts)](#Srf+listen)
+        * [.listen(opts)](#Srf+listen)
 
-    * ["connect" (err, hostport)](#Srf+event_connect)
+        * [.endSession(msg)](#Srf+endSession)
 
-    * ["cdr:attempt" (source, time, msg)](#Srf+cdr_attempt)
+        * ["connect" (err, hostport)](#Srf+event_connect)
 
-    * ["cdr:start" (source, time, role, msg)](#Srf+cdr_start)
+        * ["cdr:attempt" (source, time, msg)](#Srf+cdr_attempt)
 
-    * ["cdr:stop" (source, time, reason, msg)](#Srf+cdr_stop)
+        * ["cdr:start" (source, time, role, msg)](#Srf+cdr_start)
+
+        * ["cdr:stop" (source, time, reason, msg)](#Srf+cdr_stop)
+
+    * _static_
+        * [.Dialog](#Srf.Dialog)
+
+        * [.SipError](#Srf.SipError)
+
+        * [.parseUri](#Srf.parseUri)
 
 
 <a name="new_Srf_new"></a>
@@ -200,13 +210,14 @@ setTimeout(() => {
 | opts | <code>Object</code> |  | configuration options |
 | [opts.headers] | <code>Object</code> |  | SIP headers to include on the SIP INVITE request |
 | [opts.localSdpA] | <code>string</code> &#124; <code>function</code> |  | the local session description protocol to offer in the response to the SIP INVITE request on the A leg; either a string or a function may be provided. If a function is provided, it will be invoked with two parameters (sdp, res) correspnding to the SDP received from the B party, and the sip response object received on the response from B. The function must return either the SDP (as a string) or a Promise that resolves to the SDP. If no value is provided (neither string nor function), then the SDP returned by the B party in the provisional/final response on the UAC leg will be sent back to the A party in the answer. |
-| opts.localSdpB | <code>string</code> |  | the local session description protocol to offer in the SIP INVITE request on the B leg |
+| [opts.localSdpB] | <code>string</code> |  | the local session description protocol to offer in the SIP INVITE request on the B leg |
 | [opts.proxyRequestHeaders] | <code>Array</code> |  | an array of header names which, if they appear in the INVITE request on the A leg, should be included unchanged on the generated B leg INVITE |
 | [opts.proxyResponseHeaders] | <code>Array</code> |  | an array of header names which, if they appear in the response to the outgoing INVITE, should be included unchanged on the generated response to the A leg |
 | [opts.passFailure] | <code>Boolean</code> | <code>true</code> | specifies whether to pass a failure returned from B leg back to the A leg |
 | [progressCallbacks] | <code>Object</code> |  | callbacks providing call progress notification |
 | [progressCallbacks.cbRequest] | <code>function</code> |  | callback that provides request sent over the wire, with signature (req) |
 | [progressCallbacks.cbProvisional] | <code>function</code> |  | callback that provides a provisional response with signature (provisionalRes) |
+| [progressCallbacks.cbFinalizedUac] | <code>function</code> |  | callback that provides the UAC dialog as soon as the 200 OK is received from the B party.  Since the UAC dialog is also returned when the B2B has been completely constructed, this is mainly useful if there is some need to be notified as soon as the B party answers. The callback signature is (uac). with signature (provisionalRes) |
 | [callback] | <code>function</code> |  | if provided, callback with signature <code>(err, {uas, uac})</code> |
 
 create back-to-back dialogs; i.e. act as a back-to-back user agent (B2BUA), creating a
@@ -399,7 +410,7 @@ srf.request('sip.example.com', {
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | opts | <code>Object</code> |  | connection options |
-| [opts.host] | <code>string</code> | <code>&quot;&#x27;localhost&#x27;&quot;</code> | address drachtio server is listening on for client connections |
+| [opts.host] | <code>string</code> | <code>&quot;127.0.0.1&quot;</code> | address drachtio server is listening on for client connections |
 | [opts.port] | <code>Number</code> | <code>9022</code> | address drachtio server is listening on for client connections |
 | opts.secret | <code>String</code> |  | shared secret used to authenticate connections |
 
@@ -424,11 +435,12 @@ srf.invite((req, res) => {..});
 
 ### *srf*.listen(opts)
 
-| Param | Type | Description |
-| --- | --- | --- |
-| opts | <code>Object</code> | listen options |
-| opts.port | <code>number</code> | address drachtio server is listening on for client connections |
-| opts.secret | <code>string</code> | shared secret used to authenticate connections |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| opts | <code>Object</code> |  | listen options |
+| [opts.host] | <code>number</code> | <code>0.0.0.0</code> | address to bind listening socket to |
+| opts.port | <code>number</code> |  | tcp port to listen on |
+| opts.secret | <code>string</code> |  | shared secret used to authenticate connections |
 
 listen for outbound connections from a drachtio server
 
@@ -437,9 +449,39 @@ listen for outbound connections from a drachtio server
 const Srf = require('drachtio-srf');
 const srf = new Srf();
 
-srf.listen({port: 9023, secret: 'cymru'});
+srf.listen({port: 3001, secret: 'cymru'});
 
 srf.invite((req, res) => {..});
+```
+<a name="Srf+endSession"></a>
+
+### *srf*.endSession(msg)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| msg | <code>req</code> &#124; <code>res</code> | SIP request or response object |
+
+terminate the tcp socket connection associated with the request or response object,
+  if the underlying socket was established as part of an outbound connection.  If
+  the underlying socket was established as part of an inbound connection, this method
+  call is a no-op (does nothing).
+
+**Example**  
+```js
+const Srf = require('drachtio-srf');
+const srf = new Srf();
+
+srf.listen({port: 3001, secret: 'cymru'});
+
+srf.invite((req, res) => {
+  srf.createUas(req, res, {localSdp: mySdp})
+    .then((uas) => {
+      uas.on('destroy', () => {
+        console.log('caller hung up');
+        srf.endSession(req);
+      });
+    });
+});
 ```
 <a name="Srf+event_connect"></a>
 
@@ -448,7 +490,7 @@ srf.invite((req, res) => {..});
 | Param | Type | Description |
 | --- | --- | --- |
 | err | <code>Object</code> | error encountered when attempting to connect |
-| hostport | <code>String</code> | the SIP address[:port] drachtio server is listening on for incoming SIP messages |
+| hostport | <code>String</code> | an Array of SIP endpoints that the connected drachtio server is listening on for incoming SIP messages.  The format of each endpoint is protcocol/adress:port. |
 
 a <code>connect</code> event is emitted by an Srf instance when a connect method completes
 with either success or failure
@@ -492,3 +534,43 @@ a <code>cdr:start</code> event is emitted by an Srf instance when a call attempt
 
 a <code>cdr:stop</code> event is emitted by an Srf instance when a connected call has ended
 
+<a name="Srf.Dialog"></a>
+
+### *Srf*.Dialog
+a SIP Dialog
+
+<a name="Srf.SipError"></a>
+
+### *Srf*.SipError
+inherits from Error and represents a non-success final SIP response to a request;
+status and reason properties provide the numeric sip status code and the reason for the failure.
+
+<a name="Srf.parseUri"></a>
+
+### *Srf*.parseUri
+parses a SIP uri string
+
+**Returns**: <code>function</code> - a function that takes a SIP uri and returns an object  
+**Example**  
+```js
+const Srf = require('drachtio-srf');
+const srf = new Srf();
+const parseUri = Srf.parseUri;
+
+// connect, etc..
+
+srf.invite((req, res) => {
+ const uri = parseUri(req.get('From'));
+ console.log(`parsed From header: ${JSON.stringify(uri)}`);
+ // {
+ //   "scheme": "sip",
+ //   "family": "ipv4",
+ //   "user": "+15083084807",
+ //   "host": "192.168.1.100",
+ //   "port": 5080,
+ //   "params": {
+ //      "tag": "3yid87"
+ //    }
+ // }
+});
+```
