@@ -1,0 +1,78 @@
+extends layouts/interior
+
+block header
+  .start 
+    img(src='/images/circle.svg') 
+    | Reference applications
+    
+block content
+  .content.timeline: .container.grid-lg
+    h1 A collection of sample and starter applications
+    p Giddyup!.
+    .arrow-top
+    .columns.col-gapless
+      .column.col-6.col-md-12
+        .first: .inside
+          .icon
+            i.far.fa-paper-plane
+          div: h3 A SIP SIMPLE server. 
+          hr
+          a(href='https://github.com/davehorton/drachtio-simple-server') drachtio-simple-server
+          p 
+            | implements presence and instant messaging (as per RFC 6665, RFC 3856, RFC 3903, RFC 3428). 
+        .third: .inside
+          .icon
+            i.far.fa-paper-plane
+          div: h3 A call generator for load testing. 
+          hr
+          a(href='https://github.com/davehorton/drachtio-conf-tester') drachtio-conf-tester
+          p 
+            | generates calls at configurable rates and limits, initially developed to
+            | test conference bridges.
+        .fifth: .inside
+          .icon
+            i.far.fa-paper-plane
+          div: h3 A SIPREC recording server. 
+          hr
+          a(href='https://github.com/davehorton/drachtio-srs-freeswitch') drachtio-srs-freeswitch
+          p 
+            | implements a&nbsp;
+            a(href='https://tools.ietf.org/html/rfc7866') SIPREC
+            | &nbsp;recording server, using drachtio and Freeswitch.
+      .column.col-6.col-md-12
+        .second: .inside
+          .icon
+            i.far.fa-lightbulb
+          div: h3 A back-to-back UA that proxies media. 
+          hr
+          a(href='https://github.com/davehorton/drachtio-b2b-media-proxy') drachtio-b2b-media-proxy
+          p 
+            | A simple B2BUA that uses 
+            a(href='https://github.com/sipwise/rtpengine') rtpengine
+            | &nbsp;to proxy media.
+        .fourth: .inside
+          .icon
+            i.far.fa-lightbulb
+          div: h3 A load-balancing sip proxy for Freeswitch 
+          hr
+          a(href='https://github.com/davehorton/drachtio-fs-load-balancing-proxy') drachtio-fs-load-balancing-proxy
+          p 
+            | implements a SIP proxy that distributes incoming calls across
+            | a bank of &nbsp;
+            a(href='https://freeswitch.org') Freeswitch
+            | &nbsp;servers.
+    .arrow-bottom    
+
+block scripts
+  script.
+    var elem = document.querySelector("header");
+    var headroom = new Headroom(elem, {
+    "offset": 150,
+    "tolerance": 5,
+    "classes": {
+      "initial": "animated",
+      "pinned": "slideDown",
+      "unpinned": "slideUp"
+    }
+    });
+    headroom.init();

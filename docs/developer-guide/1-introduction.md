@@ -6,11 +6,11 @@
 
 drachtio-srf works in concert with a [drachtio server](https://github.com/davehorton/drachtio-server/tree/develop) process to control and manage SIP calls and events.  So you will need a running instance of a drachtio server somewhere to connect to in order to start developing.  
 
-You can find instructions for [building a drachtio server from scratch here](https://github.com/davehorton/drachtio-server/tree/develop), or if you prefer ansible you can find [an ansible role here](https://github.com/davehorton/ansible-role-drachtio), but the easiest way to get started is probably to run a [docker image](ttps://cloud.docker.com/swarm/drachtio/repository/docker/drachtio/drachtio-server/general) on your laptop, if you are familiar with and like Docker containers.
+You can find instructions for [building a drachtio server from scratch here](https://github.com/davehorton/drachtio-server/tree/develop), or if you prefer ansible you can find [an ansible role here](https://github.com/davehorton/ansible-role-drachtio), but the easiest way to get started is probably to run a [docker image](https://cloud.docker.com/swarm/drachtio/repository/docker/drachtio/drachtio-server/general).
 
 Review the [drachtio server docs](/docs/drachtio-server) for detailed information on configuring the server.
 
-*Notes:* The sample code below assumes that a drachtio server process is running on the localhost and is listening for connections from applications on port 9022 (tcp).
+*Notes:* The sample code below assumes that a drachtio server process is running on the localhost and is listening for connections from applications on port 9021 (tcp).
 
 ## Let's do something simple
 
@@ -21,18 +21,19 @@ First, create a new application and add drachtio-srf as a dependency:
 $ mkdir reject-nice && cd $_
 $ npm init
 ...follow prompts, enter 'app.js' for entry point
+
 $ touch app.js
 $ npm install --save drachtio-srf
 ```
 
-Next, edit app.js to look like this:
+Next, make your app.js to look like this:
 ```js
 const Srf = require('drachtio-srf');
 const srf = new Srf();
 
 srf.connect({
   host: '127.0.0.1',
-  port: 9022,
+  port: 9021,
   secret: 'cymru'
 });
 
@@ -77,7 +78,7 @@ OK, so rejecting an incoming call is not particularly exciting, but the main thi
 
 The type of connection made in our example above is called an **inbound** connection; that is, a TCP connection made from the nodejs application acting as a client to the drachtio server process acting as the server.  There is also the possibility of having the drachtio server make an **outbound** connection to a listening application, but that is a [more advanced topic we will cover later](/docs/developer-guide/#outbound-connections), along with the reasons on why you might want to do that.
 
-By default, the drachtio server process listens for inbound connections on tcp port 9022, but this can be configured to a different port in its configuration file.  Authentication is currently performed using a simple plaintext secret, which is also configured in the drachtio server configuration file.
+By default, the drachtio server process listens for inbound connections on tcp port 9021, but this can be configured to a different port in its configuration file.  Authentication is currently performed using a simple plaintext secret, which is also configured in the drachtio server configuration file.
 
 In the example above, we listened for the 'connect' event on the `srf` object.  However, it is a **best practice** to also listen for the `error` event, e.g.:
 ```js
@@ -91,6 +92,8 @@ srf
 
 ```
 The reason for this is that if (and only if) your app has an error handler on the srf instance, the framework will automatically try to reconnect any time the connection is lost, which is generally what you want in production scenarios.
+
+> Pro tip: always have an [error](/docs/api#Srf+event_error) handler on your Srf instance when using inbound connections, so your application will automatically reconnect to the server if the tcp connection is dropped.
 
 ### Where did those other SIP headers come from?
 Notice that although our application only provided one SIP header (a custom 'X-' header), the response actually sent by the drachtio server was a normal, fully-formed SIP response.  

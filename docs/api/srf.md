@@ -29,6 +29,8 @@ instance is sufficient.
 
         * ["connect" (err, hostport)](#Srf+event_connect)
 
+        * ["error" (err)](#Srf+event_error)
+
         * ["cdr:attempt" (source, time, msg)](#Srf+cdr_attempt)
 
         * ["cdr:start" (source, time, role, msg)](#Srf+cdr_start)
@@ -489,11 +491,21 @@ srf.invite((req, res) => {
 
 | Param | Type | Description |
 | --- | --- | --- |
-| err | <code>Object</code> | error encountered when attempting to connect |
-| hostport | <code>String</code> | an Array of SIP endpoints that the connected drachtio server is listening on for incoming SIP messages.  The format of each endpoint is protcocol/adress:port. |
+| err | <code>Error</code> | error encountered when attempting to authorize after connecting |
+| hostport | <code>Array</code> | an Array of SIP endpoints that the connected drachtio server is listening on for incoming SIP messages.  The format of each endpoint is protcocol/adress:port. |
 
 a <code>connect</code> event is emitted by an Srf instance when a connect method completes
 with either success or failure
+
+<a name="Srf+event_error"></a>
+
+### "error" (err)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| err | <code>Error</code> | specific error information |
+
+an <code>error</code> event is emitted by an Srf instance when an inbound connection is lost
 
 <a name="Srf+cdr_attempt"></a>
 
