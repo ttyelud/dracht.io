@@ -1,65 +1,30 @@
-extends layouts/interior
+extends layouts/interior-alt
 
 block header
   .start 
     img(src='/images/circle.svg') 
-    | About drachtio
-  h1.caption Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.
+    | Bringing services to SIP networks
+  p 
+    | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+    | tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
+    | veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
   
   
 block content
-  .content: .container.grid-lg
+  #contributors.content: .container.grid-md
+    h1 Contributors
+    hr
     .columns
-      .column.col-6.col-md-12.rect#first: .inside
+      .column
         .left
-          img(src="/images/icon_dark.png")
+          .pic(style="background-image: url('/images/contributors/dave.png');")
         .text
-          |dracht • io (Welsh), v
-          h3 To SIP, lustily. 
-      .column.col-6.col-md-12.rect#second: .inside
-        div: h3 The carrier-class SIP middleware developers love. 
-        hr
-        p 
-          | drachtio-srf bundles a lower-level sip middleware library drachtio 
-          | and requires a network connection to a drachtio server process. 
-          | The drachtio server provides the sip transaction processing engine
-          | and is controlled by nodejs applications using the drachtio-srf module.
-    .columns
-      .column.col-6.col-md-12.rect#third: .inside
-        div: h3 The carrier-class SIP middleware developers love. 
-        hr
-        p 
-          | drachtio-srf bundles a lower-level sip middleware library drachtio 
-          | and requires a network connection to a drachtio server process. 
-          | The drachtio server provides the sip transaction processing engine
-          | and is controlled by nodejs applications using the drachtio-srf module.
-      a.column.col-6.col-md-12.rect#fourth(href="/docs/api"): .inside
-        h3 View our API
-        p Developers love our documentation.
-
-  .content#about-bottom: .container.grid-lg
-    .columns
-      .column.col-4.col-md-12
-        .icon: img(src="/images/icons/lightbulb.png")
-        h3 Lorem ipsum dolor.
-        p
-          | Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
-          | suscipit, nisi ex ea  consequatur? 
-      .column.col-4.col-md-12
-        .icon: img(src="/images/icons/paper-plane.png")
-        h3 Lorem ipsum dolor.
-        p
-          | Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
-          | suscipit, nisi ex ea  consequatur? 
-      .column.col-4.col-md-12
-        .icon: img(src="/images/icons/thumbs-up.png")
-        h3 Lorem ipsum dolor.
-        p
-          | Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
-          | suscipit, nisi ex ea  consequatur? 
-    .what-are-you-waiting-for
-      h1 What are you waiting for?
-      a.btn.btn-special(href="/docs") Get Started
+          h3 Dave Horton
+            span <a href="https://github.com/davehorton">@davehorton</a>
+          p 
+            | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+            | tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
+            | veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
 
 block scripts
   script.

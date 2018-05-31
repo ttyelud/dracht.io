@@ -1,3 +1,14 @@
+// Selectors
+
+::selection {
+  background: $primary-color; /* WebKit/Blink Browsers */
+  color: white;
+}
+::-moz-selection {
+  background: $primary-color; /* Gecko Browsers */
+  color: white;
+}
+
 // Buttons
 .btn {
   border: none;

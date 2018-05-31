@@ -171,6 +171,28 @@ a#version {
   border-bottom: 1px solid #e5e5e5;
 }
 
+.interior-header-alt {
+  padding: 14em 0 1em;
+  text-align: center;
+  h1 {
+    max-width: 600px;
+    margin: .5em auto;
+    font-weight: normal;
+  }
+  hr {
+    height: 1px;
+    border: 0;
+    background: #eee;
+    max-width: 400px;
+    margin: 3em auto;
+  }
+  p {
+    max-width: 600px;
+    font-size: 16px;
+    margin: .5em auto 7em;
+  }
+}
+
 
 // Contact page
 
