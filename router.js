@@ -35,7 +35,7 @@ router.get('/features', function(req, res) {
 router.get('/middleware', function(req, res) {
   const t = 'drachtio middleware';
   const d = 'drachtio middleware';
-  res.render('features', {title : t, description : d});
+  res.render('middleware', {title : t, description : d});
 });
 
 router.get('/apps', function(req, res) {

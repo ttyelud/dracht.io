@@ -193,3 +193,111 @@
     }
   }
 }
+
+#apps {
+  &.content {
+    padding-top: 0em;
+  }
+  .column {
+    margin-top: 4em;
+  }
+  h1 {
+    font-weight: normal;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2em;
+  }
+  .btn.view {
+    letter-spacing: normal;
+    font-weight: normal;
+    text-transform: none;
+    background: transparent;
+    padding: .8em 2em;
+    margin: 1em 0;
+    box-shadow: 0 0 0 2px #D91C5C;
+    height: auto;
+    font-size: 14px;
+    i {
+      margin-left: 1em;
+    }
+    color: #D91C5C;
+    &:hover {
+      background: $primary-color;
+      color: white;
+    }
+  }
+  .app {
+    border: 1px solid #eee;
+    //box-shadow: 2px 0 14px rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    text-align: center;
+    .app-header, .app-body { padding: 2.5em; }
+
+    .app-header {
+      border-bottom: 1px solid #eee;
+      padding: 1.5em 2.5em;
+    }
+    .app-body {
+      padding: 2em 3em;
+
+    }
+
+    h3 {
+      display: block;
+      font-weight: normal;
+    }
+    i.gh {
+      background-image: url(/images/git_black.svg);
+      background-size: contain;
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+      display: inline-block;
+      margin-right: 1em;
+    }
+    a {
+      margin-top: -22px;
+      display: inline-block;
+      color: #aaa;
+    }
+    hr { height: 2px; width: 70%; margin: 20px auto;}
+  }
+}
+
+#contributors {
+  padding-top: 7em;
+  background: #f9f9f9;
+  hr {
+    height: 1px;
+    border: 0;
+    background: #e4e4e4;
+    max-width: 400px;
+    margin: 2em auto 5em;
+  }
+  h1 {
+    text-align: center;
+  }
+  h3 {
+    span { font-weight: normal; margin-left: .5em;}
+    a { color: #bbb }
+  }
+  .left {
+    @media (min-width: $size-md) {
+    float: left;
+    }
+    width: 200px;
+    .pic {
+      width: 140px;
+      height: 140px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 75px;
+      box-shadow: inset 0 0 0 4px $primary-color;
+      box-sizing: border-box;
+      border: 4px solid rgb(251, 194, 214);
+    }
+  }
+  .text {
+
+  }
+}

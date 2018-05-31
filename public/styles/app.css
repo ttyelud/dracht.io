@@ -3329,6 +3329,16 @@ a.text-error:focus, a.text-error:hover {
   word-break: break-word;
   word-wrap: break-word; }
 
+::selection {
+  background: #D91C5C;
+  /* WebKit/Blink Browsers */
+  color: white; }
+
+::-moz-selection {
+  background: #D91C5C;
+  /* Gecko Browsers */
+  color: white; }
+
 .btn {
   border: none;
   box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.04);
@@ -3343,7 +3353,12 @@ a.text-error:focus, a.text-error:hover {
     text-decoration: none;
     color: white; }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   color: #565656; }
 
@@ -3471,6 +3486,12 @@ header {
   float: left; }
   .navbar .logo img {
     height: 1.9em; }
+
+#intro .caption {
+  font-size: 30px;
+  font-weight: 200;
+  opacity: 0.7;
+  margin: -5px 0 20vh; }
 
 .content {
   padding: 10em 0 8em;
@@ -3694,6 +3715,24 @@ a#version {
   .interior-header .caption {
     margin-top: .35em;
     max-width: 765px; }
+
+.interior-header-alt {
+  padding: 14em 0 1em;
+  text-align: center; }
+  .interior-header-alt h1 {
+    max-width: 600px;
+    margin: .5em auto;
+    font-weight: normal; }
+  .interior-header-alt hr {
+    height: 1px;
+    border: 0;
+    background: #eee;
+    max-width: 400px;
+    margin: 3em auto; }
+  .interior-header-alt p {
+    max-width: 600px;
+    font-size: 16px;
+    margin: .5em auto 7em; }
 
 #contact {
   padding: 5em 0 6em;
@@ -4117,6 +4156,97 @@ i.rr {
       padding-bottom: 0; }
     .timeline .arrow-top, .timeline .arrow-bottom {
       display: none; } }
+
+#apps.content {
+  padding-top: 0em; }
+
+#apps .column {
+  margin-top: 4em; }
+
+#apps h1 {
+  font-weight: normal;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 2em; }
+
+#apps .btn.view {
+  letter-spacing: normal;
+  font-weight: normal;
+  text-transform: none;
+  background: transparent;
+  padding: .8em 2em;
+  margin: 1em 0;
+  box-shadow: 0 0 0 2px #D91C5C;
+  height: auto;
+  font-size: 14px;
+  color: #D91C5C; }
+  #apps .btn.view i {
+    margin-left: 1em; }
+  #apps .btn.view:hover {
+    background: #D91C5C;
+    color: white; }
+
+#apps .app {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  text-align: center; }
+  #apps .app .app-header, #apps .app .app-body {
+    padding: 2.5em; }
+  #apps .app .app-header {
+    border-bottom: 1px solid #eee;
+    padding: 1.5em 2.5em; }
+  #apps .app .app-body {
+    padding: 2em 3em; }
+  #apps .app h3 {
+    display: block;
+    font-weight: normal; }
+  #apps .app i.gh {
+    background-image: url(/images/git_black.svg);
+    background-size: contain;
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    display: inline-block;
+    margin-right: 1em; }
+  #apps .app a {
+    margin-top: -22px;
+    display: inline-block;
+    color: #aaa; }
+  #apps .app hr {
+    height: 2px;
+    width: 70%;
+    margin: 20px auto; }
+
+#contributors {
+  padding-top: 7em;
+  background: #f9f9f9; }
+  #contributors hr {
+    height: 1px;
+    border: 0;
+    background: #e4e4e4;
+    max-width: 400px;
+    margin: 2em auto 5em; }
+  #contributors h1 {
+    text-align: center; }
+  #contributors h3 span {
+    font-weight: normal;
+    margin-left: .5em; }
+  #contributors h3 a {
+    color: #bbb; }
+  #contributors .left {
+    width: 200px; }
+    @media (min-width: 840px) {
+      #contributors .left {
+        float: left; } }
+    #contributors .left .pic {
+      width: 140px;
+      height: 140px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 75px;
+      box-shadow: inset 0 0 0 4px #D91C5C;
+      box-sizing: border-box;
+      border: 4px solid #fbc2d6; }
 
 /*!
  * Hamburgers
