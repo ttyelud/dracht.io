@@ -1,21 +1,21 @@
 extends layouts/interior-alt
 
-mixin app(name, repo, url, description)
+mixin app(name, style, url, description)
   .app
     .app-header
       h3= name
-      i.gh
-      a(href=url)= repo
+      a(href=url, style="display:block")
+        i.npm(style=style)
     .app-body
       p=description
-      a.btn.view(href=url) View App
+      a.btn.view(href=url) View Module
         i.fas.fa-external-link-alt
 
 block header
   .start 
     img(src='/images/circle.svg') 
     | Application Middleware
-  h1.caption A collection of component modules to use drachtio.
+  h1.caption A  collection of useful modules for common tasks.
   hr
     
 block content
@@ -24,79 +24,28 @@ block content
       .columns
         .column.col-6.col-md-12
           +app(
-            'A SIP SIMPLE server.',
-            'drachtio-simple-server',
-            'https://github.com/davehorton/drachtio-simple-server',
-            'implements presence and instant messaging (as per RFC 6665, RFC 3856, RFC 3903, RFC 3428).'
+            'drachtio-mw-auth-parser',
+            'background-image: url(https://badge.fury.io/js/drachtio-mw-auth-parser.svg)',
+            'https://www.npmjs.com/package/drachtio-mw-auth-parser',
+            'Parses SIP Authorization header, supporting both Digest and Basic Authorization.'
           )
         .column.col-6.col-md-12
           +app(
-            'A call generator for load testing.',
-            'drachtio-conf-tester',
-            'https://github.com/davehorton/drachtio-conf-tester',
-            'generates calls at configurable rates and limits, initially developed to test conference bridges.'
+            'drachtio-mw-digest-auth',
+            'background-image: url(https://badge.fury.io/js/drachtio-mw-digest-auth.svg)',
+            'https://www.npmjs.com/package/drachtio-mw-digest-auth',
+            'Challenges and authenticates incoming SIP requests.'
           )
         .column.col-6.col-md-12
           +app(
-            'A SIPREC recording server.',
-            'drachtio-srs-freeswitch',
-            'https://github.com/davehorton/drachtio-srs-freeswitch',
-            'implements a SIPREC recording server, using drachtio and Freeswitch.'
+            'drachtio-mw-registration-parser',
+            'background-image: url(https://badge.fury.io/js/drachtio-mw-registration-parser.svg)',
+            'https://www.npmjs.com/package/drachtio-mw-registration-parser',
+            'Parses SIP REGISTER messages into useful components such as Address-of-Record, expires, etc.'
           )
-        .column.col-6.col-md-12
-          +app(
-            'A B2BUA that proxies media.',
-            'drachtio-b2b-media-proxy',
-            'https://github.com/davehorton/drachtio-b2b-media-proxy',
-            'A simple B2BUA that uses rtpengine to proxy media.'
-          )
-        .column.col-6.col-md-12
-          +app(
-            'A Freeswitch load-balancing sip proxy.',
-            'drachtio-fs-load-balancing-proxy',
-            'https://github.com/davehorton/drachtio-fs-load-balancing-proxy',
-            'implements a SIP proxy that distributes incoming calls across a bank of Freeswitch servers.'
-          )
-
-  //.content.timeline: .container.grid-lg
-    h1 A collection of sample and starter applications
-    p Giddyup!.
-    .arrow-top
-    .columns.col-gapless
-  
-        .fifth: .inside
-          .icon
-            i.far.fa-paper-plane
-          div: h3 A SIPREC recording server. 
-          hr
-          a(href='https://github.com/davehorton/drachtio-srs-freeswitch') drachtio-srs-freeswitch
-          p 
-            | implements a&nbsp;
-            a(href='https://tools.ietf.org/html/rfc7866') SIPREC
-            | &nbsp;recording server, using drachtio and Freeswitch.
-      .column.col-6.col-md-12
-        .second: .inside
-          .icon
-            i.far.fa-lightbulb
-          div: h3 A back-to-back UA that proxies media. 
-          hr
-          a(href='https://github.com/davehorton/drachtio-b2b-media-proxy') drachtio-b2b-media-proxy
-          p 
-            | A simple B2BUA that uses 
-            a(href='https://github.com/sipwise/rtpengine') rtpengine
-            | &nbsp;to proxy media.
-        .fourth: .inside
-          .icon
-            i.far.fa-lightbulb
-          div: h3 A load-balancing sip proxy for Freeswitch 
-          hr
-          a(href='https://github.com/davehorton/drachtio-fs-load-balancing-proxy') drachtio-fs-load-balancing-proxy
-          p 
-            | implements a SIP proxy that distributes incoming calls across
-            | a bank of &nbsp;
-            a(href='https://freeswitch.org') Freeswitch
-            | &nbsp;servers.
-    .arrow-bottom    
+    .row
+      .add-middleware Have drachtio middleware you'd like to list here?<br/>Awesome! Ping me at &nbsp;
+        a(href="mailto:daveh@beachdognet.com?subject=new drachtio middleware") daveh@beachdognet.com  
 
 block scripts
   script.

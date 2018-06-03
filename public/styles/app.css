@@ -3491,7 +3491,7 @@ header {
   font-size: 30px;
   font-weight: 200;
   opacity: 0.7;
-  margin: -5px 0 20vh; }
+  margin: -5px 0 10vh; }
 
 .content {
   padding: 10em 0 8em;
@@ -3669,11 +3669,11 @@ a#version {
     padding: 1.5em; }
 
 #intro {
-  padding: 15em 0 8em;
+  padding: 12em 0 8em;
   text-align: center; }
 
 #intro-alt {
-  padding: 15em 0 8em;
+  padding: 12em 0 8em;
   text-align: left; }
   #intro-alt .code-box {
     margin-top: 0; }
@@ -3710,14 +3710,14 @@ a#version {
   position: relative; }
 
 .interior-header {
-  padding: 12em 0 5em;
+  padding: 10em 0 5em;
   border-bottom: 1px solid #e5e5e5; }
   .interior-header .caption {
     margin-top: .35em;
     max-width: 765px; }
 
 .interior-header-alt {
-  padding: 14em 0 1em;
+  padding: 10em 0 1em;
   text-align: center; }
   .interior-header-alt h1 {
     max-width: 600px;
@@ -4208,6 +4208,12 @@ i.rr {
     opacity: 0.6;
     display: inline-block;
     margin-right: 1em; }
+  #apps .app i.npm {
+    display: inline-block;
+    width: 126px;
+    height: 20px;
+    margin-right: 1em;
+    margin-top: 1.5em; }
   #apps .app a {
     margin-top: -22px;
     display: inline-block;
@@ -4217,8 +4223,15 @@ i.rr {
     width: 70%;
     margin: 20px auto; }
 
+#apps .add-middleware {
+  margin-top: 2em;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 200;
+  opacity: 0.7; }
+
 #contributors {
-  padding-top: 7em;
+  padding-top: 5em;
   background: #f9f9f9; }
   #contributors hr {
     height: 1px;

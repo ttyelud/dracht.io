@@ -3,12 +3,19 @@ extends layouts/interior-alt
 block header
   .start 
     img(src='/images/circle.svg') 
-    | Bringing services to SIP networks
-  p 
-    | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-    | tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-    | veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
-  
+    | Making SIP server applications as easy to build as web apps
+  p(style="text-align: center; margin-bottom: 1em")
+    | Building SIP server applications is harder than it should be.
+  p(style="text-align: left; margin-bottom: 3em;max-width:700")
+    | It doesn't leverage web developer skillsets, often means deploying multiple 
+    | products, and usually requires mastering
+    | esoteric configuration file syntax and directives.
+    | And once you've got all that deployed?  Well, congratulations -- you've just bought yourself a full-time job managing it.<br/></br/>
+    | drachtio is the open source SIP application server ecosystem that aims to end all that.<br/>
+    | It consists of a high-performance SIP server (written in C++), and a Node.js framework that enables 
+    | applications to control the server and implement application logic.  <br/></br/>One server to run all of your applications, with a familiar and
+    | easy-to-learn middleware API that allows you to create any type of SIP server application.  
+
   
 block content
   #contributors.content: .container.grid-md
@@ -22,9 +29,10 @@ block content
           h3 Dave Horton
             span <a href="https://github.com/davehorton">@davehorton</a>
           p 
-            | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-            | tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-            | veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+            | Prior to creating drachtio, Dave founded a startup that sold SIP application servers 
+            | to some of the world's largest telecoms and CSPs.
+            | When not building SIP applications or managing SIP networks for clients, he indulges a passion for 
+            | rugby and trekking.  Dave hails from Boston, though drachtio was born in beautiful Pembrokeshire Wales. 
 
 block scripts
   script.
