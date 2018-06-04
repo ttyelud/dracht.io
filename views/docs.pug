@@ -13,10 +13,7 @@ mixin nav-list(p, name)
         ul.children(data-gumshoe='')
           if p.children.length > 0
             each c, i in p.children
-              if active == 'tutorials'
-                li(class=(file == c.file ? 'active' : null)): a(href='/docs/tutorial/' + c.file)= c.name
-              else
-                li: a(href='#' + c.file)= c.name
+              li: a(href='#' + c.file)= c.name
               
 
 block css
@@ -48,7 +45,6 @@ block content
         - let name
         - if (active === 'developer-guide') name = 'Developer Guide'
         - else if (active === 'api') name = 'API Reference'
-        - else if (active === 'tutorials') name = 'Tutorials'
         - else if (active === 'drachtio-server') name = 'Drachtio Server'
         each p in tree
           if p.file == active

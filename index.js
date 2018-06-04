@@ -22,9 +22,6 @@ app.use(morgan('tiny'));
 app.use(express.static('public'));
 app.use(favicon('public/images/icons/icon_transparent.png'));
 
-//app.locals.tutorials = tree('./docs/tutorials').children.slice(0, 3);
-app.locals.tutorials = [];
-
 http.listen(app.get('port'), () => {
   console.log('listening on *:' + app.get('port'));
 });
