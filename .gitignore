@@ -10,3 +10,4 @@ content/data/*
 docs/**/*.html
 config.development.json
 config.production.json
+local.json

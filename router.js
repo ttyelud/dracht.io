@@ -2,11 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {mdTree} = require('./utils');
 const _ = require('lodash');
-
+const config = require('config');
 const Mailgun = require('mailgun-js');
-const apiKey = 'key';
-const domain = 'domain';
-const from = 'email';
 
 const docsTree = mdTree('./docs', './views');
 
@@ -53,14 +50,14 @@ router.get('/contact', function(req, res) {
 });
 
 router.post('/contact', function(req, res) {
+  const mailgun = Mailgun(config.get('mailgun'));
   const t = 'Contact - dracht.io';
   const d = 'Have a question? Contact us.';
   console.log(req.body);
-  const mailgun = new Mailgun({apiKey: apiKey, domain: domain});
 
   const data = {
-    from: from,
-    to: req.body.email,
+    from: req.body.email,
+    to: config.get('mailgun.to'),
     subject: req.body.subject,
     html: req.body.message
   };
