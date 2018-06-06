@@ -1,9 +1,11 @@
 //require('dotenv').load();
 
 const express = require('express');
+const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const ghost = require('ghost');
+const path = require('path');
 
 const app = express();
 const http = require('http').Server(app);
@@ -18,9 +20,7 @@ app.set('view engine', 'pug');
 app.use('/', routes);
 app.use(morgan('tiny'));
 app.use(express.static('public'));
-
-//app.locals.tutorials = tree('./docs/tutorials').children.slice(0, 3);
-app.locals.tutorials = [];
+app.use(favicon('public/images/icons/icon_transparent.png'));
 
 http.listen(app.get('port'), () => {
   console.log('listening on *:' + app.get('port'));

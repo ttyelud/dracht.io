@@ -2,8 +2,8 @@ extends layouts/default
 
 block header
   #intro: .container.grid-lg
-    h1 The node.js framework for SIP server applications.
-    .caption Bringing services to SIP networks.
+    h1 The Node.js framework for SIP server applications.
+    .caption Making SIP server applications as easy to build as web apps.
     .card.code-box
       .card-header
         .circle-one
@@ -19,15 +19,14 @@ block content
   .content#top: .container.grid-lg
     .columns
       .column.col-6.col-md-12
-        h3 Everything is in the box. 
+        h3 For developers. 
         hr
         p 
-          | drachtio is an open-source ecosystem consisting of a high-performance SIP server 
-          | and a node.js module that controls SIP sessions on the server.
-        p 
-          | The distributed architecture means that application logic can be 
-          | scaled, deployed, and managed completely independently from 
-          | SIP call processing engines.
+          | If you've used any of the popular Node.js web application frameworks, 
+          | then learning drachtio will be a breeze.  Once you've installed
+          | a drachtio server (with a one-time, "set and forget" configuration),
+          | you'll write your application logic completely in Node.js, using a 
+          | familiar middleware pattern.
       .column.col-6.col-md-12
         img(src="/images/VoIP.png")
         
@@ -41,20 +40,16 @@ block content
           | View the source.
           hr
       .column.col-6.col-md-12#content-right
-        div: h3 Let's keep this simple.
+        div: h3 For service providers.
         hr
         p 
-          | If you're familiar with node.js frameworks #[br/] for web applications, then
-          | drachtio will fit easily to hand.#[br/] It uses
-          | a familiar and easy-to-learn middleware pattern to let you create and manage SIP sessions.
-        p
-          | Check out the  
-          a(href='docs/developer-guide') Getting Started 
-          | docs, #[br/] and then 
-          a(href='https://github.com/davehorton/drachtio-server/tree/develop') build a drachtio server from source 
-          | #[br/] or  
-          a(href='https://cloud.docker.com/swarm/drachtio/repository/docker/drachtio/drachtio-server/general') grab a docker image 
-          | and start building apps. 
+          | The distributed architecture means that application logic can be 
+          | managed, deployed, and scaled completely independently from 
+          | SIP call processing servers.  <br/>From an operations management standpoint, separating
+          | application logic and SIP server processes simplifies and aligns your team's responsibilities.<br/><br/>
+          | The cloud-friendly architecture allows you to deploy applications into grid computing clusters, like Kubernetes,
+          | while SIP servers can be separately managed in their own autoscale clusters.  Integration with tools like Homer and fail2ban
+          | make it easy to integrate into your ops ecosystem.
 
   .content#bottom: .container.grid-lg
     .columns
@@ -64,9 +59,14 @@ block content
         p 
           | drachtio was born in carrier networks, where five 9's reliability is a way of life.
         p
-          | Applications built using drachtio are currently processing tens of millions of minutes per
-          | month in world-wide deployments that range from intelligent call routing, to
-          | emergency services, voip services, SIPREC call recording, IVR, and others.
+          | Check out the  
+          a(href='docs/developer-guide') Getting Started 
+          | docs, #[br/] and then 
+          a(href='https://github.com/davehorton/drachtio-server/tree/develop') build a drachtio server from source 
+          | #[br/] or  
+          a(href='https://cloud.docker.com/swarm/drachtio/repository/docker/drachtio/drachtio-server/general') grab a docker image 
+          | and start building apps. 
+
       .column.col-6.col-md-12.center
         .five-nines 99.999%
 

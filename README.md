@@ -9,7 +9,7 @@ $ gulp serve
 ```
 
 ## Docs
-The documentation for the dracht.io website is generated from the folders and markdown files in the `docs` directory. Each folder is a category, i.e., `tutorials`, and every file in that folder will be rendered under that category. So simply adding a new folder will add a new section to the docs, and so on.
+The documentation for the drachtio website is generated from the folders and markdown files in the `docs` directory. Each folder is a category, and every file in that folder will be rendered under that category. So simply adding a new folder will add a new section to the docs, and so on.
 
 ### Config
 The docs by default sort folders and files alphabetically. This can be changed by modifying `docs.conf.json`. Here's an example config file:
