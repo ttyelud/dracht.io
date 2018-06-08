@@ -15,6 +15,13 @@ router.get('/', function(req, res) {
   res.render('index', {title : t, description : d});
 });
 
+router.get('/api-test', function(req, res) {
+  const t = 'Welcome to dracht.io';
+  const d = 'The node.js SIP application server framework.';
+  res.render('api', {title : t, description : d});
+});
+
+
 // Interior Pages
 
 router.get('/about', function(req, res) {
@@ -107,5 +114,6 @@ router.get('/docs/:folder', (req, res) => {
     });
   }
 });
+
 
 module.exports = router;

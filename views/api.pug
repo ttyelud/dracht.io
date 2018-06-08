@@ -1,0 +1,113 @@
+extends layouts/int
+
+block sidebar
+  nav#docs-menu
+    ul.parents.page-nav
+      li.active
+        i.rr.down
+        a(href="#srf") Srf
+        nav(): ul.children(data-gumshoe="")
+          li.active: a(href="#methods") Methods
+          li: a(hrad="#events") Events
+block content
+  span.start
+    img(src='/images/circle.svg')
+    | API Reference
+  .api-class#srf
+    h2 Srf()
+      .type Class
+    p.description
+    .sub
+      .methods#methods
+        h3 Methods
+        .method
+          h4 srf.createUAS(req, res, opts, [callback])
+          p
+            | create a SIP dialog, acting as a UAS (user agent server); i.e. respond to an incoming SIP INVITE with a 200 OK (or to a SUBSCRIBE request with a 202 Accepted).
+
+          table
+            thead
+              tr
+                th Param
+                th Type
+                th Description
+            tbody
+              tr
+                td req
+                td
+                  code Object
+                td the incoming sip request object
+              tr
+                td res
+                td
+                  code Object
+                td the sip response object
+              tr
+                td opts
+                td
+                  code Object
+                td configuration options
+              tr
+                td opts.localSdp
+                td
+                  code string
+                td the local session description protocol to include in the SIP response
+              tr
+                td [opts.headers]
+                td
+                  code Object
+                td SIP headers to include on the SIP response to the INVITE
+              tr
+                td [callback]
+                td
+                  code function
+                td
+                  | if provided, callback with signature 
+                  code (err, dialog)
+          h5 Returns:
+          hr
+          h4 Examples
+          .card.code-box
+            .card-header Return a simple SIP proxy
+            .card-body
+              :markdown-it
+                ```js
+                  const Srf = require('drachtio-srf');
+                  const srf = new Srf() ;
+                  const config = require('config');
+
+                  srf.connect(config.get('drachtio.server')) ;
+
+                  srf.invite((req, res) => {
+                    srf.proxyRequest(req, ['sip.example1.com', 'sip.example2.com'], {
+                      recordRoute: true,
+                      followRedirects: true
+                    });
+                  });
+                ```
+
+      .events#events
+        h3 Events
+        
+block scripts
+  script.
+    /*var links = [];
+    $('.api-class').each(function (i) {
+        links.push({name: this.id, links: []});
+        $('.method').each(function () {
+            links[i].links.push(this.id);
+        });
+    });
+    $(function() {
+        for (var i = 0; i < links.length; i++) {
+          $(".page-nav").append("<li>" + cap(links[i].name) + "</li>");
+          for (var j = 0; j < links[i].links.length; j++) {
+              
+          }
+        }  
+    });
+    function cap(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }*/
+  script.
+    hljs.initHighlightingOnLoad();
