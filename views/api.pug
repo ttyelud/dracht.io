@@ -1,5 +1,26 @@
 extends layouts/int
 
+mixin table(x)
+  table(class=x)
+    thead
+      tr
+        th Param
+        th Type
+        th Description
+    tbody
+      tr
+        td req
+        td
+          code Object
+        td the incoming sip request object
+
+      tr
+        td opts.localSdp
+        td
+          code string
+        td the local session description protocol to include in the SIP response
+
+
 block sidebar
   nav#docs-menu
     ul.parents.page-nav
@@ -25,45 +46,76 @@ block content
           p
             | create a SIP dialog, acting as a UAS (user agent server); i.e. respond to an incoming SIP INVITE with a 200 OK (or to a SUBSCRIBE request with a 202 Accepted).
 
-          table
+          +table('')
+          table(class="option-1")
             thead
               tr
-                th Param
+                th Parameters
                 th Type
                 th Description
             tbody
               tr
-                td req
+                td.params 
+                  .name req
+                  //div optional
+                td.description
+                  .arg-type Object
                 td
-                  code Object
-                td the incoming sip request object
+                  | The incoming sip request object.
               tr
-                td res
+                td.params 
+                  .name opts.localSdp
+                  div optional
                 td
-                  code Object
-                td the sip response object
+                  .arg-type string
+                td
+                  | the local session description protocol to include in the SIP response
+
+          table(class="option-2")
+            thead
               tr
-                td opts
-                td
-                  code Object
-                td configuration options
+                th Parameters
+                th Type
+                th Description
+            tbody
               tr
-                td opts.localSdp
+                td.params 
+                  .name req
+                  //div optional
+                td.description
+                  .arg-type Object
                 td
-                  code string
-                td the local session description protocol to include in the SIP response
+                  | The incoming sip request object.
               tr
-                td [opts.headers]
+                td.params 
+                  .name opts.localSdp
+                  div optional
                 td
-                  code Object
-                td SIP headers to include on the SIP response to the INVITE
+                  .arg-type string
+                td
+                  | the local session description protocol to include in the SIP response
+
+          table(class="option-3")
+            thead
               tr
-                td [callback]
+                th Parameters
+                th Description
+            tbody
+              tr
+                td.params 
+                  .name req
+                  //div optional
+                td.description
+                  .arg-type Object
+                  | The incoming sip request object.
+              tr
+                td.params 
+                  .name opts.localSdp
                 td
-                  code function
-                td
-                  | if provided, callback with signature 
-                  code (err, dialog)
+                  .arg-type string
+                  | the local session description protocol to include in the SIP response
+
+
           h5 Returns:
           hr
           h4 Examples

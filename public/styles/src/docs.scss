@@ -262,3 +262,122 @@ i.rr {
   // border-bottom: 1px solid #eee;
   margin-bottom: 2em;
 }
+
+table.option-1 {
+  margin: 3em 0;
+  thead {
+    background: #f9f9f9;
+  }
+  td{
+    border-right: 1px solid #eee;
+  }
+  border-width: 2px;
+  .params {
+    min-width: 150px;
+    //text-align: right;
+    .name {
+      margin-bottom: 3px;
+      font-weight: normal;
+      color: $primary-color;
+      font-size: 20px;
+    }
+    div {
+      color: #aaa;
+    }
+  }
+    .arg-type {
+      font-weight: bold;
+      color: #999;
+      background: #f9f9f9;
+      padding: 3px;
+      display: inline-block;
+      border: 1px solid #eee;
+      border-radius: 4px;
+    }
+}
+
+table.option-2 {
+  margin: 3em 0;
+
+  thead {
+  }
+  td, th  {
+    border-right: 1px solid #eee;
+    &:last-child {
+      border-right: none
+    }
+  }
+  border-width: 0;
+  .params {
+    min-width: 150px;
+    //text-align: right;
+    .name {
+      margin-bottom: 3px;
+      font-weight: normal;
+      color: $primary-color;
+      font-size: 20px;
+    }
+    div {
+      color: #aaa;
+    }
+  }
+    .arg-type {
+      font-weight: bold;
+      //margin-bottom: 10px;
+      color: #999;
+      background: #f9f9f9;
+      padding: 3px;
+      display: inline-block;
+      border: 1px solid #eee;
+      border-radius: 4px;
+    }
+}
+table.option-3 {
+  margin: 3em 0;
+  border: 1px solid #eee;
+  tr {
+
+  }
+  thead {
+    th {
+      &:first-child {
+        text-align: right;
+      }
+    }
+  }
+  td, th {
+    padding: 1.5em;
+    border-right: 1px solid #eee;
+    &:last-child {
+      border-right: none;
+
+    }
+  }
+  tr {
+    &:last-child {
+      td {
+          border-bottom: none;
+      }
+    }
+  }
+  .params {
+    min-width: 120px;
+    text-align: right;
+    .name {
+      font-weight: bold;
+      color: $primary-color;
+      font-size: 16px;
+    }
+    div {
+      color: #aaa;
+    }
+  }
+    .arg-type {
+      font-weight: bold;
+      color: #999;
+      margin-bottom: 8px;
+      display: inline-block;
+      border-radius: 4px;
+      display: block;
+    }
+}
