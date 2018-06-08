@@ -3954,6 +3954,85 @@ i.rr {
 .methods {
   margin-bottom: 2em; }
 
+table.option-1 {
+  margin: 3em 0;
+  border-width: 2px; }
+  table.option-1 thead {
+    background: #f9f9f9; }
+  table.option-1 td {
+    border-right: 1px solid #eee; }
+  table.option-1 .params {
+    min-width: 150px; }
+    table.option-1 .params .name {
+      margin-bottom: 3px;
+      font-weight: normal;
+      color: #D91C5C;
+      font-size: 20px; }
+    table.option-1 .params div {
+      color: #aaa; }
+  table.option-1 .arg-type {
+    font-weight: bold;
+    color: #999;
+    background: #f9f9f9;
+    padding: 3px;
+    display: inline-block;
+    border: 1px solid #eee;
+    border-radius: 4px; }
+
+table.option-2 {
+  margin: 3em 0;
+  border-width: 0; }
+  table.option-2 td, table.option-2 th {
+    border-right: 1px solid #eee; }
+    table.option-2 td:last-child, table.option-2 th:last-child {
+      border-right: none; }
+  table.option-2 .params {
+    min-width: 150px; }
+    table.option-2 .params .name {
+      margin-bottom: 3px;
+      font-weight: normal;
+      color: #D91C5C;
+      font-size: 20px; }
+    table.option-2 .params div {
+      color: #aaa; }
+  table.option-2 .arg-type {
+    font-weight: bold;
+    color: #999;
+    background: #f9f9f9;
+    padding: 3px;
+    display: inline-block;
+    border: 1px solid #eee;
+    border-radius: 4px; }
+
+table.option-3 {
+  margin: 3em 0;
+  border: 1px solid #eee; }
+  table.option-3 thead th:first-child {
+    text-align: right; }
+  table.option-3 td, table.option-3 th {
+    padding: 1.5em;
+    border-right: 1px solid #eee; }
+    table.option-3 td:last-child, table.option-3 th:last-child {
+      border-right: none; }
+  table.option-3 tr:last-child td {
+    border-bottom: none; }
+  table.option-3 .params {
+    min-width: 120px;
+    text-align: right; }
+    table.option-3 .params .name {
+      font-weight: bold;
+      color: #D91C5C;
+      font-size: 16px; }
+    table.option-3 .params div {
+      color: #aaa; }
+  table.option-3 .arg-type {
+    font-weight: bold;
+    color: #999;
+    margin-bottom: 8px;
+    display: inline-block;
+    border-radius: 4px;
+    display: block; }
+
 .blog .column {
   padding: 0 1.25rem; }
 
