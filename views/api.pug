@@ -1,5 +1,16 @@
 extends layouts/int
 
+mixin table_row(p, t, d, o)
+  tr
+    td.params 
+      .name= p
+      if o == true
+        div optional
+    td.description
+      .arg-type= t
+    td= d
+  
+
 mixin table(x)
   table(class=x)
     thead
@@ -29,7 +40,9 @@ block sidebar
         a(href="#srf") Srf
         nav(): ul.children(data-gumshoe="")
           li.active: a(href="#methods") Methods
-          li: a(hrad="#events") Events
+          li: a(href="#events") Events
+          li: a(href="#properties") Properties
+          
 block content
   span.start
     img(src='/images/circle.svg')
@@ -42,11 +55,10 @@ block content
       .methods#methods
         h3 Methods
         .method
-          h4 srf.createUAS(req, res, opts, [callback])
-          p
+          h4 .createUAS(req, res, opts, [callback])
+          p.capt
             | create a SIP dialog, acting as a UAS (user agent server); i.e. respond to an incoming SIP INVITE with a 200 OK (or to a SUBSCRIBE request with a 202 Accepted).
 
-          +table('')
           table(class="option-1")
             thead
               tr
@@ -54,66 +66,12 @@ block content
                 th Type
                 th Description
             tbody
-              tr
-                td.params 
-                  .name req
-                  //div optional
-                td.description
-                  .arg-type Object
-                td
-                  | The incoming sip request object.
-              tr
-                td.params 
-                  .name opts.localSdp
-                  div optional
-                td
-                  .arg-type string
-                td
-                  | the local session description protocol to include in the SIP response
-
-          table(class="option-2")
-            thead
-              tr
-                th Parameters
-                th Type
-                th Description
-            tbody
-              tr
-                td.params 
-                  .name req
-                  //div optional
-                td.description
-                  .arg-type Object
-                td
-                  | The incoming sip request object.
-              tr
-                td.params 
-                  .name opts.localSdp
-                  div optional
-                td
-                  .arg-type string
-                td
-                  | the local session description protocol to include in the SIP response
-
-          table(class="option-3")
-            thead
-              tr
-                th Parameters
-                th Description
-            tbody
-              tr
-                td.params 
-                  .name req
-                  //div optional
-                td.description
-                  .arg-type Object
-                  | The incoming sip request object.
-              tr
-                td.params 
-                  .name opts.localSdp
-                td
-                  .arg-type string
-                  | the local session description protocol to include in the SIP response
+              +table_row('req', 'Object', 'The incoming sip request object.', false)
+              +table_row('res', 'Object', 'The sip response object.', false)
+              +table_row('opts', 'Object', 'Configuration options.', false)
+              +table_row('opts.localSdp', 'string', 'The local session description protocol to include in the SIP response.', true)
+              +table_row('[opts.headers]', 'Object', 'SIP headers to include on the SIP response to the INVITE.', true)
+              +table_row('[callback]', 'function', 'If provided, callback with signature (err, dialog).', true)
 
 
           h5 Returns:
@@ -121,7 +79,9 @@ block content
           h4 Examples
           .card.code-box
             .card-header Return a simple SIP proxy
-            .card-body
+              button.clip-btn(data-clipboard-target="#create-uas-body")
+                i.far.fa-clipboard
+            .card-body#create-uas-body
               :markdown-it
                 ```js
                   const Srf = require('drachtio-srf');
@@ -140,7 +100,60 @@ block content
 
       .events#events
         h3 Events
-        
+        .event
+          h4 "connect" (err, hostport)
+          p.capt
+            | a #[code connect] event is emitted by an Srf instance when a connect method completes with either success or failure
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('err', 'Errpr', 'Error encountered when attempting to authorize after connecting.', false)
+              +table_row('hostport', 'Array', 'An Array of SIP endpoints that the connected drachtio server is listening on for incoming SIP messages. The format of each endpoint is protcocol/adress:port.', false)
+      
+      .properties#properties
+        h3 Properties
+        .property
+          h4 #[span.class-name Srf].parseUri
+          p.capt Parses a SIP uri string.
+          hr
+          h5 Returns:
+          p 
+            | #[code function] - a function that takes a SIP uri and returns an object
+          hr
+          h4 Examples
+          .card.code-box
+            .card-header Connect, etc.
+              button.clip-btn(data-clipboard-target="#parse-uri-body")
+                i.far.fa-clipboard
+            .card-body#parse-uri-body
+              :markdown-it
+                ```js
+                  const Srf = require('drachtio-srf');
+                  const srf = new Srf();
+                  const parseUri = Srf.parseUri;
+
+                  // connect, etc..
+
+                  srf.invite((req, res) => {
+                   const uri = parseUri(req.get('From'));
+                   console.log(`parsed From header: ${JSON.stringify(uri)}`);
+                   // {
+                   //   "scheme": "sip",
+                   //   "family": "ipv4",
+                   //   "user": "+15083084807",
+                   //   "host": "192.168.1.100",
+                   //   "port": 5080,
+                   //   "params": {
+                   //      "tag": "3yid87"
+                   //    }
+                   // }
+                  });
+                ```
+          
 block scripts
   script.
     /*var links = [];
@@ -163,3 +176,4 @@ block scripts
     }*/
   script.
     hljs.initHighlightingOnLoad();
+    var clipboard = new ClipboardJS('.clip-btn');
