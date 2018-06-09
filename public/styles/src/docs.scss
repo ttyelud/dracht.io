@@ -236,10 +236,14 @@ i.rr {
     margin-top: -40px;
   }
 }
-.method {
+.method, .event, .property {
   border-left: 1px solid #eee;
   padding: 0 0 0 3em;
   margin: 2em 0 0;
+  .capt {
+    font-size: 15px;
+    margin: 1.2em 0 1em;
+  }
   hr {
     height: 1px;
     border: 0;
@@ -255,6 +259,28 @@ i.rr {
   .hljs {
     box-shadow: none !important;
     padding: 0 !important;
+  }
+  span.class-name {
+    color: #aaa;
+    font-weight: normal;
+  }
+  .clip-btn {
+    padding: 10px;
+    position: absolute;
+    right: 10;
+    top: 12px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover {
+      background: white;
+    }
+  }
+  .card-header {
+    position: relative;
   }
 }
 

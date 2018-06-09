@@ -3933,23 +3933,44 @@ i.rr {
   margin-left: 1.8em;
   margin-top: -40px; }
 
-.method {
+.method, .event, .property {
   border-left: 1px solid #eee;
   padding: 0 0 0 3em;
   margin: 2em 0 0; }
-  .method hr {
+  .method .capt, .event .capt, .property .capt {
+    font-size: 15px;
+    margin: 1.2em 0 1em; }
+  .method hr, .event hr, .property hr {
     height: 1px;
     border: 0;
     background: #eee;
     margin: 2em 0 3em; }
-  .method .card-header {
+  .method .card-header, .event .card-header, .property .card-header {
     color: #999;
     font-size: 14px;
     background: #f9f9f9;
     overflow: hidden; }
-  .method .hljs {
+  .method .hljs, .event .hljs, .property .hljs {
     box-shadow: none !important;
     padding: 0 !important; }
+  .method span.class-name, .event span.class-name, .property span.class-name {
+    color: #aaa;
+    font-weight: normal; }
+  .method .clip-btn, .event .clip-btn, .property .clip-btn {
+    padding: 10px;
+    position: absolute;
+    right: 10;
+    top: 12px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    font-size: 12px;
+    cursor: pointer; }
+    .method .clip-btn:hover, .event .clip-btn:hover, .property .clip-btn:hover {
+      background: white; }
+  .method .card-header, .event .card-header, .property .card-header {
+    position: relative; }
 
 .methods {
   margin-bottom: 2em; }
