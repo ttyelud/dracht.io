@@ -20,7 +20,6 @@ app.set('view engine', 'pug');
 app.use('/', routes);
 app.use(morgan('tiny'));
 app.use(express.static('public'));
-app.use(favicon('public/images/icons/icon_transparent.png'));
 
 http.listen(app.get('port'), () => {
   console.log('listening on *:' + app.get('port'));
