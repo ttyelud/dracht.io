@@ -39,7 +39,8 @@ block sidebar
         i.rr.down
         a(href="#srf") Srf
         nav(): ul.children(data-gumshoe="")
-          li.active: a(href="#methods") Methods
+          li.active: a(href="#constructor") Constructor
+          li: a(href="#methods") Methods
           li: a(href="#events") Events
           li: a(href="#properties") Properties
           
@@ -48,16 +49,16 @@ block content
     img(src='/images/circle.svg')
     | API Reference
   .api-class#srf
-    h2 Srf()
+    h2 Srf
       .type Class
     p.description
     .sub
-      .methods#methods
-        h3 Methods
+      .methods#constructor
+        h3 Constructor
         .method
-          h4 .createUAS(req, res, opts, [callback])
+          h4 Srf([tags])
           p.capt
-            | create a SIP dialog, acting as a UAS (user agent server); i.e. respond to an incoming SIP INVITE with a 200 OK (or to a SUBSCRIBE request with a 202 Accepted).
+            | Create an Srf instance.
 
           table(class="option-1")
             thead
@@ -66,36 +67,133 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Object', 'The incoming sip request object.', false)
-              +table_row('res', 'Object', 'The sip response object.', false)
-              +table_row('opts', 'Object', 'Configuration options.', false)
-              +table_row('opts.localSdp', 'string', 'The local session description protocol to include in the SIP response.', true)
-              +table_row('[opts.headers]', 'Object', 'SIP headers to include on the SIP response to the INVITE.', true)
-              +table_row('[callback]', 'function', 'If provided, callback with signature (err, dialog).', true)
-
+              +table_row('tags', 'Array|String', 'An array of tags or a single tag to assign to this application.  Tags can be used with inbound connections to a drachtio server as part of the routing decision to determine which application should be used to handle an incoming request.', true)
 
           h5 Returns:
+          p.capt an Srf instance.
           hr
           h4 Examples
           .card.code-box
-            .card-header Return a simple SIP proxy
-              button.clip-btn(data-clipboard-target="#create-uas-body")
-                i.far.fa-clipboard
-            .card-body#create-uas-body
+            .card-header Create an Srf instance and connect to a drachtio server
+              button.clip-btn(data-clipboard-target="#srf-constructor1")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#srf-constructor1
               :markdown-it
                 ```js
                   const Srf = require('drachtio-srf');
                   const srf = new Srf() ;
                   const config = require('config');
 
-                  srf.connect(config.get('drachtio.server')) ;
+                  srf.connect({
+                    host: '192.168.32.5',
+                    port: 9022,
+                    secret: 'cymru'
+                  }) ;
+                ```
+          .card.code-box
+            .card-header Create an Srf instance and listen for outbound connections
+              button.clip-btn(data-clipboard-target="#srf-constructor2")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#srf-constructor2
+              :markdown-it
+                ```js
+                  const Srf = require('drachtio-srf');
+                  const srf = new Srf() ;
+                  const config = require('config');
 
-                  srf.invite((req, res) => {
-                    srf.proxyRequest(req, ['sip.example1.com', 'sip.example2.com'], {
-                      recordRoute: true,
-                      followRedirects: true
+                  srf.listen({
+                    port: 3000,
+                    secret: 'cymru'
+                  }) ;
+                ```
+          .card.code-box
+            .card-header Create an Srf instance specifying a tag for routing requests
+              button.clip-btn(data-clipboard-target="#srf-constructor1")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#srf-constructor1
+              :markdown-it
+                ```js
+                  const Srf = require('drachtio-srf');
+                  const srf = new Srf('conference-app') ;
+                  const config = require('config');
+
+                  srf.connect({
+                    host: '192.168.32.5',
+                    port: 9022,
+                    secret: 'cymru'
+                  }) ;
+                ```
+      .methods#methods
+       h3 Methods
+      .method
+        h4 createUAS(req, res, opts, [callback])
+        p.capt
+          | create a SIP dialog, acting as a UAS (user agent server); 
+          | i.e. respond to an incoming SIP INVITE with a 200 OK (or to a SUBSCRIBE request with a 202 Accepted).
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('req', 'Request', 'The incoming sip request object.', false)
+            +table_row('res', 'Response', 'The sip response object.', false)
+            +table_row('opts', 'Object', 'Configuration options.', false)
+            +table_row('opts.localSdp', 'string', 'The local session description protocol to include in the SIP response.', true)
+            +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP response to the INVITE.', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, dialog).', true)
+
+
+        h5 Returns:
+        p.capt a Promise if no callback is provided, otherwise a reference to the Srf instance.
+        hr
+        h4 Examples
+        .card.code-box
+          .card-header Returning a Promise
+            button.clip-btn(data-clipboard-target="#create-uas-example-1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-uas-example-1
+            :markdown-it
+              ```js
+                srf.invite((req, res) => {
+                  const mySdp; // populated somehow with SDP we want to answer in 200 OK
+                  srf.createUas(req, res, {localSdp: mySdp})
+                    .then((uas) => {
+                      console.log(`dialog established, remote uri is ${uas.remote.uri}`);
+                      uas.on('destroy', () => {
+                        console.log('caller hung up');
+                      });
+                    })
+                    .catch((err) => {
+                      console.log(`Error establishing dialog: ${err}`);
+                    });
+                });
+                ```
+        .card.code-box
+          .card-header Using a callback and populating custom headers
+            button.clip-btn(data-clipboard-target="#create-uas-example-2")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-uas-example-2
+            :markdown-it
+              ```js
+                srf.invite((req, res) => {
+                  const mySdp; // populated somehow with SDP we want to answer in 200 OK
+                  srf.createUas(req, res, {
+                    localSdp: mySdp,
+                    headers: {
+                      'User-Agent': 'drachtio/iechyd-da',
+                      'X-Linked-UUID': '1e2587c'
+                    }
+                  }, (err, uas) => {
+                    if (err) return console.log(`Error creating dialog: ${err}`);
+                    console.log(`dialog established, local tag is ${uas.sip.localTag}`);
+                    uas.on('destroy', () => {
+                      console.log('caller hung up');
                     });
                   });
+                });
                 ```
 
       .events#events
@@ -128,7 +226,7 @@ block content
           .card.code-box
             .card-header Connect, etc.
               button.clip-btn(data-clipboard-target="#parse-uri-body")
-                i.far.fa-clipboard
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
             .card-body#parse-uri-body
               :markdown-it
                 ```js
@@ -175,5 +273,36 @@ block scripts
         return string.charAt(0).toUpperCase() + string.slice(1);
     }*/
   script.
+    var btns = document.querySelectorAll('.clip-btn');
+    for(var i=0;i<btns.length;i++){
+        btns[i].addEventListener('mouseleave',clearTooltip);
+        btns[i].addEventListener('blur',clearTooltip);
+    }
+    function clearTooltip(e){
+        e.currentTarget.setAttribute('class','clip-btn');
+        e.currentTarget.removeAttribute('aria-label');
+    }
+    function showTooltip(elem,msg){
+        elem.setAttribute('class','clip-btn tooltipped tooltipped-no-delay tooltipped-s');
+        elem.setAttribute('aria-label', msg);
+    }
+    function fallbackMessage(action) {
+        var actionMsg='';
+        var actionKey=(action==='cut'?'X':'C');
+        if(/iPhone|iPad/i.test(navigator.userAgent)){
+            actionMsg='No support :(';
+        }
+        else if(/Mac/i.test(navigator.userAgent)){
+            actionMsg='Press ⌘-'+actionKey+' to '+action;
+        }
+        else{
+            actionMsg='Press Ctrl-'+actionKey+' to '+action;
+        }
+        return actionMsg;
+    }
     hljs.initHighlightingOnLoad();
     var clipboard = new ClipboardJS('.clip-btn');
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+    	showTooltip(e.trigger,'Copied!');
+    });

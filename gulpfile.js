@@ -41,7 +41,7 @@ gulp.task('js-watch', ['lint'], (done) => {
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', () => {
   return gulp.src('public/styles/*.scss')
-    .pipe(sass())
+    .pipe(sass({includePaths: 'node_modules'}))
     .pipe(gulp.dest('public/styles'))
     .pipe(browserSync.stream());
 });
