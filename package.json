@@ -1,7 +1,7 @@
 {
   "name": "drachtio",
   "version": "1.0.0",
-  "description": "Client and server for dracht.io",
+  "description": "Client and server for drachtio.org site",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
