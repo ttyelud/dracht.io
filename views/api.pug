@@ -33,16 +33,12 @@ mixin table(x)
 
 block sidebar
   nav#docs-menu
-    ul.parents.page-nav
+    ul#api-side.parents.page-nav
       li.active
         i.rr.down
         a(href="#srf") Srf
-        //
-          nav(): ul.children(data-gumshoe="")
-            li.active: a(href="#constructor") Constructor
-            li: a(href="#methods") Methods
-            li: a(href="#events") Events
-            li: a(href="#properties") Properties
+        nav(): ul.children(data-gumshoe="")
+
       li
         i.rr.down
         a(href="#dialog") Dialog
@@ -156,7 +152,7 @@ block content
                     secret: 'cymru'
                   }) ;
                 ```
-      .methods#methods
+      .methods#Srf-methods
        h3 Methods
       .method#srf-connect(data-name="connect")
         h4 connect(opts)
@@ -710,7 +706,7 @@ block content
                   });
                 });
               ```
-      .events#events
+      .events#Srf-events
         h3 Events
         .event#srf-event-cdr-attempt(data-name="cdr:attempt")
           h4 "cdr:attempt" (source, time, msg)
@@ -791,7 +787,7 @@ block content
             tbody
               +table_row('err', 'Error', 'specific error information.', false)
       
-      .properties#properties
+      .properties#Srf-properties
         h3 Properties
         .property#srf-prop-parse-uri(data-name="parseUri")
           h4 #[span.class-name Srf].parseUri
@@ -846,7 +842,7 @@ block content
       | calling #[a(href="#srf-create-uas") Srf#createUAS], #[a(href="#srf-create-uac") Srf#createUAC], 
       | or #[a(href="#srf-create-b2bua") Srf#createB2BUA].  
     .sub
-      .methods#methods
+      .methods#Dialog-methods
        h3 Methods
       .method#dialog-destroy(data-name="destroy")
         h4 destroy(opts, [callback])
@@ -910,7 +906,7 @@ block content
         p.capt a Promise that resolves with the request that has been sent if no callback is provided, otherwise a reference to the Dialog instance.
         hr
 
-      .events#events
+      .events#Dialog-events
         h3 Events
         .event#dialog-event-destroy(data-name="destroy")
           h4 "destroy" (msg, reason)
@@ -1059,7 +1055,7 @@ block content
               +table_row('req', 'Request', 'a SIP request', false)
               +table_row('res', 'Response', 'a SIP response', false)
 
-      .properties#properties
+      .properties#Dialog-properties
         h3 Properties
         .property#dialog-property-dialog-type(data-name="dialogType")
           h4 dialogType
@@ -1129,7 +1125,7 @@ block content
       | You do not directly create SipMessage objects, rather you are handed 
       | Request or Response objects by the framework.
     .sub
-      .methods#methods
+      .methods#SipMessage-methods
        h3 Methods
       .method#message-get(data-name="get")
         h4 get(hdr)
@@ -1185,7 +1181,7 @@ block content
         p.capt boolean indicating presence of header in the message.
         hr
 
-      .properties#properties
+      .properties#SipMessage-properties
         h3 Properties
         .property#message-prop-body(data-name="body")
           h4 body
@@ -1236,7 +1232,7 @@ block content
       | #[br] Note that all of the methods and properties defined on the #[a(href="#sip-message") SipMessage] class are available
       | in addition to those listed below.
     .sub
-      .methods#methods
+      .methods#Request-methods
        h3 Methods
       .method#sip-request-cancel(data-name="cancel")
         h4 cancel([callback])
@@ -1276,7 +1272,7 @@ block content
         p.capt A Promise that resolves with the proxy results if no callback is provided, otherwise a reference to the Request.
         hr
 
-      .properties#properties
+      .properties#Request-properties
         h3 Properties
         .property#sip-request-prop-is-new-invite(data-name="isNewInvite")
           h4 isNewInvite
@@ -1291,7 +1287,7 @@ block content
       | #[br] Note that all of the methods and properties defined on the #[a(href="#sip-message") SipMessage] class are available
       | in addition to those listed below.
     .sub
-      .methods#methods
+      .methods#Response-methods
        h3 Methods
       .method#sip-response-send(data-name="send")
         h4 send(status, [reason], [opts], [callback], [fnAck])
@@ -1317,7 +1313,7 @@ block content
         p.capt undefined.
         hr
 
-      .properties#properties
+      .properties#Response-properties
         h3 Properties
         .property#sip-response-prop-final-response-sent(data-name="finalResponseSent")
           h4 finalResponseSent
@@ -1366,7 +1362,7 @@ block scripts
     //console.log('links: ' + JSON.stringify(links));
 
     //build html for menu
-    var html = $('<ul class="parents page-nav"></ul>');
+    var html = $('<ul id="api-side" class="parents page-nav"></ul>');
     links.forEach(function(link) {
       var ul = $('<ul class="children" data-gumshoe="">');
       if (link.ctor) {
@@ -1374,29 +1370,44 @@ block scripts
       }
 
       if (link.methods.length) {
-        ul.append('<li class="menu-subheading">Methods</li>');
+          var li = $('<li class="menu-subheading"><a href="#' + link.name + '-methods">Methods</a></li>');
+          var nv = $('<nav   data-gumshoe-header="" />');
+          var ch = $('<ul class="child" data-gumshoe=""></ul>');
+          ul.append(li);
+          li.append(nv);
+          nv.append(ch);
         link.methods.forEach(function(m) {
-          ul.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
+          ch.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
         });
       }
       if (link.properties.length) {
-        ul.append('<li class="menu-subheading">Properties</li>');
+        var li = $('<li class="menu-subheading"><a href="#' + link.name + '-properties">Properties</a></li>');
+        var nv = $('<nav   data-gumshoe-header="" />');
+        var ch = $('<ul class="child" data-gumshoe=""></ul>');
+        ul.append(li);
+        li.append(nv);
+        nv.append(ch);
         link.properties.forEach(function(m) {
-          ul.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
+          ch.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
         });
       }
       if (link.events.length) {
-        ul.append('<li class="menu-subheading">Events</li>');
+          var li = $('<li class="menu-subheading"><a href="#' + link.name + '-events">Events</a></li>');
+          var nv = $('<nav   data-gumshoe-header="" />');
+          var ch = $('<ul class="child" data-gumshoe=""></ul>');
+          ul.append(li);
+          li.append(nv);
+          nv.append(ch);
         link.events.forEach(function(m) {
-          ul.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
+          ch.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
         });
       }
 
-      var nav = $('<nav/>');
+      var nav = $('<nav />');
       nav.append(ul);
 
-      var li = $('<li></li>')
-        .append('<i class="rr up"></i>')
+      var li = $('<li class="menu-heading"></li>')
+        .append('<i class="rr right"></i>')
         .append('<a href="#' + link.id + '">' + link.name + '</a>')
         .append(nav);
 
@@ -1405,6 +1416,34 @@ block scripts
     $('#docs-menu')
       .empty()
       .append(html);
+
+  script.
+    var active = '';
+    
+    gumshoe.init({offset: 400, callback: function() {
+        activeList();
+    }});
+    
+    function activeList () {
+        $('#api-side > li').each(function(i) {
+            if ($(this).find('li.active').length < 1) {
+                $(this).find('li').css({"display": "none"});
+                $(this).find('i').removeClass().addClass('rr right');
+            } else {
+                $(this).find('li').css({"display": "block"});
+                $(this).find('i').removeClass().addClass('rr down');
+                var pr = $("li.active").parents('.child');
+                if (pr.length) {
+                    if (active !== '') active.removeClass('active');       
+                    active = pr
+                    pr.addClass('active')
+                } else {
+                    if (active !== '') active.removeClass('active');
+                    active = '';
+                }
+            }
+        });
+    }
 
   script.
     var btns = document.querySelectorAll('.clip-btn');

@@ -2,6 +2,8 @@ html
   head
     title= title
     meta(name='description' content=description)
+    
+    include ../partials/favicons
     link(rel='stylesheet' href='/styles/app.css')
     link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css')
     
@@ -46,7 +48,6 @@ html
         var position_fixed_max = height_element_parent - height_element - 80; 
         var position_fixed = scroll_top < 80 ? 80 - scroll_top : position_fixed_max > scroll_top ? 0 : position_fixed_max - scroll_top;
         $("#docs-menu").css("top",position_fixed);
-        console.log('docs', scroll_top)
       });
     script.
       gumshoe.init({offset: 130});

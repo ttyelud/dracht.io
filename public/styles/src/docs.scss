@@ -413,3 +413,17 @@ table.option-3 {
       display: block;
     }
 }
+
+.menu-subheading {
+    ul {
+         display: none;
+        li {
+            margin-left: -1.1em !important;
+            padding-left: 2em !important;
+            font-size: 14px !important;
+        }
+    }
+    ul.active {
+        display: block;
+    }
+}
