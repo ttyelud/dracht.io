@@ -10,7 +10,6 @@ mixin table_row(p, t, d, o)
       .arg-type= t
     td= d
   
-
 mixin table(x)
   table(class=x)
     thead
@@ -38,26 +37,63 @@ block sidebar
       li.active
         i.rr.down
         a(href="#srf") Srf
-        nav(): ul.children(data-gumshoe="")
-          li.active: a(href="#methods") Methods
-          li: a(href="#events") Events
-          li: a(href="#properties") Properties
-          
+        //
+          nav(): ul.children(data-gumshoe="")
+            li.active: a(href="#constructor") Constructor
+            li: a(href="#methods") Methods
+            li: a(href="#events") Events
+            li: a(href="#properties") Properties
+      li
+        i.rr.down
+        a(href="#dialog") Dialog
+        //
+          nav(): ul.children(data-gumshoe="")
+            li.active: a(href="#constructor") Constructor
+            li: a(href="#methods") Methods
+            li: a(href="#events") Events
+            li: a(href="#properties") Properties
+      li
+        i.rr.down
+        a(href="#sip-message") SipMessage
+        //
+          nav(): ul.children(data-gumshoe="")
+            li.active: a(href="#constructor") Constructor
+            li: a(href="#methods") Methods
+            li: a(href="#events") Events
+            li: a(href="#properties") Properties
+      li
+        i.rr.down
+        a(href="#sip-request") Request
+        //
+          nav(): ul.children(data-gumshoe="")
+            li.active: a(href="#constructor") Constructor
+            li: a(href="#methods") Methods
+            li: a(href="#events") Events
+            li: a(href="#properties") Properties
+      li
+        i.rr.down
+        a(href="#sip-response") Response
+        //
+          nav(): ul.children(data-gumshoe="")
+            li.active: a(href="#constructor") Constructor
+            li: a(href="#methods") Methods
+            li: a(href="#events") Events
+            li: a(href="#properties") Properties
 block content
   span.start
     img(src='/images/circle.svg')
     | API Reference
-  .api-class#srf
-    h2 Srf()
+  .api-class#srf(data-name="Srf")
+    h2 Srf
       .type Class
     p.description
     .sub
-      .methods#methods
-        h3 Methods
-        .method
-          h4 .createUAS(req, res, opts, [callback])
+      .methods#constructor
+        h3 Constructor
+        .method.constructor#srf-constructor
+          h4 Srf([tags])
           p.capt
-            | create a SIP dialog, acting as a UAS (user agent server); i.e. respond to an incoming SIP INVITE with a 200 OK (or to a SUBSCRIBE request with a 202 Accepted).
+            | Create an Srf instance.
 
           table(class="option-1")
             thead
@@ -66,41 +102,664 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Object', 'The incoming sip request object.', false)
-              +table_row('res', 'Object', 'The sip response object.', false)
-              +table_row('opts', 'Object', 'Configuration options.', false)
-              +table_row('opts.localSdp', 'string', 'The local session description protocol to include in the SIP response.', true)
-              +table_row('[opts.headers]', 'Object', 'SIP headers to include on the SIP response to the INVITE.', true)
-              +table_row('[callback]', 'function', 'If provided, callback with signature (err, dialog).', true)
+              +table_row('tags', 'Array|String', 'An array of tags or a single tag to assign to this application.  Tags can be used with inbound connections to a drachtio server as part of the routing decision to determine which application should be used to handle an incoming request.', true)
 
-
-          h5 Returns:
           hr
           h4 Examples
           .card.code-box
-            .card-header Return a simple SIP proxy
-              button.clip-btn(data-clipboard-target="#create-uas-body")
-                i.far.fa-clipboard
-            .card-body#create-uas-body
+            .card-header Create an Srf instance and connect to a drachtio server
+              button.clip-btn(data-clipboard-target="#srf-constructor1")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#srf-constructor1
               :markdown-it
                 ```js
                   const Srf = require('drachtio-srf');
                   const srf = new Srf() ;
                   const config = require('config');
 
-                  srf.connect(config.get('drachtio.server')) ;
+                  srf.connect({
+                    host: '192.168.32.5',
+                    port: 9022,
+                    secret: 'cymru'
+                  }) ;
+                ```
+          .card.code-box
+            .card-header Create an Srf instance and listen for outbound connections
+              button.clip-btn(data-clipboard-target="#srf-constructor2")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#srf-constructor2
+              :markdown-it
+                ```js
+                  const Srf = require('drachtio-srf');
+                  const srf = new Srf() ;
+                  const config = require('config');
 
-                  srf.invite((req, res) => {
-                    srf.proxyRequest(req, ['sip.example1.com', 'sip.example2.com'], {
-                      recordRoute: true,
-                      followRedirects: true
+                  srf.listen({
+                    port: 3000,
+                    secret: 'cymru'
+                  }) ;
+                ```
+          .card.code-box
+            .card-header Create an Srf instance specifying a tag for routing requests
+              button.clip-btn(data-clipboard-target="#srf-constructor1")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#srf-constructor1
+              :markdown-it
+                ```js
+                  const Srf = require('drachtio-srf');
+                  const srf = new Srf('conference-app') ;
+                  const config = require('config');
+
+                  srf.connect({
+                    host: '192.168.32.5',
+                    port: 9022,
+                    secret: 'cymru'
+                  }) ;
+                ```
+      .methods#methods
+       h3 Methods
+      .method#srf-connect(data-name="connect")
+        h4 connect(opts)
+        p.capt
+          | make an inbound connection to a drachtio server.
+
+        h5 Returns:
+        p.capt Reference to the Srf instance.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('opts', 'Object', 'Configuration options', false)
+            +table_row('opts.host', 'string', 'IP address or DNS name of server to connect to', false)
+            +table_row('opts.port', 'number', 'port to connect to.  Default: 9022', true)
+            +table_row('opts.secret', 'string', 'shared secret', false)
+
+      .method#srf-create-uas(data-name="createUAS")
+        h4 createUAS(req, res, opts, [callback])
+        p.capt
+          | create a SIP dialog, acting as a UAS (user agent server); 
+          | i.e. respond to an incoming SIP INVITE with a 200 OK (or to a SUBSCRIBE request with a 202 Accepted).
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('req', 'SipRequest', 'The incoming sip request object.', false)
+            +table_row('res', 'SipResponse', 'The sip response object.', false)
+            +table_row('opts', 'Object', 'Configuration options.', false)
+            +table_row('opts.localSdp', 'string', 'The local session description protocol to include in the SIP response.', true)
+            +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP response to the INVITE.', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, dialog).', true)
+
+        h5 Returns:
+        p.capt a Promise if no callback is provided, otherwise a reference to the Srf instance.
+        hr
+        h4 Examples
+        .card.code-box
+          .card-header Returning a Promise
+            button.clip-btn(data-clipboard-target="#create-uas-example-1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-uas-example-1
+            :markdown-it
+              ```js
+                srf.invite((req, res) => {
+                  const mySdp; // populated somehow with SDP we want to answer in 200 OK
+                  srf.createUas(req, res, {localSdp: mySdp})
+                    .then((uas) => {
+                      console.log(`dialog established, remote uri is ${uas.remote.uri}`);
+                      uas.on('destroy', () => {
+                        console.log('caller hung up');
+                      });
+                    })
+                    .catch((err) => {
+                      console.log(`Error establishing dialog: ${err}`);
+                    });
+                });
+                ```
+        .card.code-box
+          .card-header Using a callback and populating custom headers
+            button.clip-btn(data-clipboard-target="#create-uas-example-2")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-uas-example-2
+            :markdown-it
+              ```js
+                srf.invite((req, res) => {
+                  const mySdp; // populated somehow with SDP we want to answer in 200 OK
+                  srf.createUas(req, res, {
+                    localSdp: mySdp,
+                    headers: {
+                      'User-Agent': 'drachtio/iechyd-da',
+                      'X-Linked-UUID': '1e2587c'
+                    }
+                  }, (err, uas) => {
+                    if (err) return console.log(`Error creating dialog: ${err}`);
+                    console.log(`dialog established, local tag is ${uas.sip.localTag}`);
+                    uas.on('destroy', () => {
+                      console.log('caller hung up');
                     });
                   });
+                });
                 ```
 
+      .method#srf-create-uac(data-name="createUAC")
+        h4 createUAC(uri, opts, [progressCallbacks], [callback])
+        p.capt
+          | create a SIP dialog, acting as a UAC (user agent client)
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('uri', 'string', 'request uri to send to.', false)
+            +table_row('opts', 'Object', 'Configuration options.', false)
+            +table_row('opts.method', 'string', 'method of request.   (Default: INVITE)', true)
+            +table_row('opts.localSdp', 'string', 'the local session description protocol to include in the SIP INVITE request', true)
+            +table_row('opts.proxy', 'string', 'send the request through an outbound proxy, specified as full sip uri or address[:port]', true)
+            +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP request.', true)
+            +table_row('progressCallbacks', 'Object', 'callbacks providing call progress notification.', true)
+            +table_row('progressCallbacks.cbRequest', 'function', 'callback that provides request sent over the wire, with signature (req)', true)
+            +table_row('progressCallbacks.cbProvisional', 'function', 'callback that provides a provisional response with signature (provisionalRes)', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, dialog).', true)
+
+        h5 Returns:
+        p.capt a Promise if no callback is provided, otherwise a reference to the Srf instance.
+        hr
+        h4 Examples
+        .card.code-box
+          .card-header Returning a Promise
+            button.clip-btn(data-clipboard-target="#create-uac-example-1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-uac-example-1
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf();
+
+                const mySdp; // populated somehow with SDP we want to offer
+                srf.createUac('sip:1234@10.10.100.1', {localSdp: mySdp})
+                 .then((uac) => {
+                   console.log(`dialog established, call-id is ${uac.sip.callId}`);
+                   uac.on('destroy', () => {
+                     console.log('called party hung up');
+                   });
+                 })
+                 .catch((err) => {
+                   console.log(`INVITE rejected with status: ${err.status}`);
+                 });
+                });
+              ```
+        .card.code-box
+          .card-header Using a callback
+            button.clip-btn(data-clipboard-target="#create-uac-example-2")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-uac-example-2
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf();
+              
+                const mySdp; // populated somehow with SDP we want to offer
+                srf.createUac('sip:1234@10.10.100.1', {localSdp: mySdp},
+                   (err, uac) => {
+                     if (err) {
+                       return console.log(`INVITE rejected with status: ${err.status}`);
+                     }
+                    uac.on('destroy', () => {
+                      console.log('called party hung up');
+                    });
+                  });
+              ```
+
+        .card.code-box
+          .card-header Canceling a request after sending it
+            button.clip-btn(data-clipboard-target="#create-uac-example-3")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-uac-example-3
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf();
+              
+                const mySdp; // populated somehow with SDP we want to offer
+                let inviteSent;
+                srf.createUac('sip:1234@10.10.100.1', {localSdp: mySdp},
+                  {
+                   cbRequest: (reqSent) => { inviteSent = req; }
+                  })
+                  .then((uac) => {
+                    // unexpected, in this case
+                    console.log('dialog established before we could cancel');
+                  })
+                  .catch((err) => {
+                    assert(err.status === 487); // expected sip response to a CANCEL
+                  });
+                });
+              
+                // cancel the request after 0.5s
+                setTimeout(() => {
+                  inviteSent.cancel();
+                }, 500);
+              ```
+
+      .method#srf-create-b2bua(data-name="createB2BUA")
+        h4 createB2BUA(req, res, uri, opts, [progressCallbacks], [callback])
+        p.capt
+          | create back-to-back dialogs; i.e. act as a back-to-back user agent (B2BUA), 
+          | creating a pair of dialogs {uas, uac} -- a UAS dialog facing the caller or A party, 
+          | and a UAC dialog facing the callee or B party such that media flows between them.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('uri', 'string', 'request uri to send to.', false)
+            +table_row('opts', 'Object', 'Configuration options.', false)
+            +table_row('opts.localSdpB', 'string', 'the local session description protocol to offer in the SIP INVITE request on the B leg.  Default: the sdp received on A leg.', true)
+            +table_row('opts.localSdpA', 'string|function', 'the local session description protocol to offer in the response to the SIP INVITE request on the A leg; either a string or a function may be provided. If a function is provided, it will be invoked with two parameters (sdp, res) correspnding to the SDP received from the B party, and the sip response object received on the response from B.  The function must return either the SDP (as a string) or a Promise that resolves to the SDP. Default: the SDP returned by the B party in the provisional/final response on the UAC leg.', true)
+            +table_row('opts.proxy', 'string', 'send the request through an outbound proxy, specified as full sip uri or address[:port]', true)
+            +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP INVITE request on the B leg.', true)
+            +table_row('opts.proxyRequestHeaders', 'Array', 'an array of header names which, if they appear in the INVITE request on the A leg, should be included unchanged on the generated B leg INVITE', true)
+            +table_row('opts.proxyResponseHeaders', 'Array', 'an array of header names which, if they appear in the response to the outgoing INVITE, should be included unchanged on the generated response to the A leg', true)
+            +table_row('opts.passFailure', 'boolean', 'specifies whether to pass a failure returned from B leg back to the A leg. Default: true', true)
+            +table_row('opts.passProvisionalResponses', 'boolean', 'specifies whether to pass provisional responses from B leg back to the A leg. Default: true', true)
+            +table_row('progressCallbacks', 'Object', 'callbacks providing call progress notification.', true)
+            +table_row('progressCallbacks.cbRequest', 'function', 'callback that provides request sent over the wire, with signature (req)', true)
+            +table_row('progressCallbacks.cbProvisional', 'function', 'callback that provides a provisional response with signature (provisionalRes)', true)
+            +table_row('progressCallbacks.cbFinalizedUac', 'function', 'callback that provides the UAC dialog as soon as the 200 OK is received from the B party.  Since the UAC dialog is also returned when the B2B has been completely constructed, this is mainly useful if there is some need to be notified as soon as the B party answers.  The callback signature is (uac).', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, {uac, uas}).', true)
+
+        h5 Returns:
+        p.capt a Promise that resolves to {uac, uas} if no callback is provided, otherwise a reference to the Srf instance.
+        hr
+        h4 Examples
+        .card.code-box
+          .card-header simple B2BUA
+            button.clip-btn(data-clipboard-target="#create-b2b-example-1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-b2b-example-1
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf();
+              
+                srf.invite((req, res) => {
+                  srf.createB2BUA('sip:1234@10.10.100.1', req, res, {localSdpB: req.body})
+                    .then({uas, uac} => {
+                      console.log('call connected');
+              
+                      // when one side terminates, hang up the other
+                      uas.on('destroy', () => { uac.destroy(); });
+                      uac.on('destroy', () => { uas.destroy(); });
+                    })
+                    .catch((err) => {
+                      console.log(`call failed to connect: ${err}`);
+                    });
+                });
+              ```
+
+        .card.code-box
+          .card-header use opts.passFailure to attempt a fallback URI on failure
+            button.clip-btn(data-clipboard-target="#create-b2b-example-2")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-b2b-example-2
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf();
+                
+                function endCall(dlg1, dlg2) {
+                  dlg1.on('destroy', () => {dlg2.destroy();})
+                  dlg2.on('destroy', () => {dlg1.destroy();})
+                }
+                srf.invite((req, res) => {
+                  srf.createB2BUA('sip:1234@10.10.100.1', req, res, {localSdpB: req.body, passFailure: false})
+                    .then({uas, uac} => {
+                      console.log('call connected to primary destination');
+                      endcall(uas, uac);
+                    })
+                    .catch((err) => {
+                      // try backup if we got a sip non-success response and the caller did not hang up
+                      if (err instanceof Srf.SipError && err.status !== 487) {
+                          console.log(`failed connecting to primary, will try backup: ${err}`);
+                          srf.createB2BUA('sip:1234@10.10.100.2', req, res, {
+                            localSdpB: req.body}
+                          })
+                            .then({uas, uac} => {
+                              console.log('call connected to backup destination');
+                              endcall(uas.uac);
+                            })
+                            catch((err) => {
+                              console.log(`failed connecting to backup uri: ${err}`);
+                            });
+                      }
+                    });
+                });
+              ```
+
+        .card.code-box
+          .card-header B2BUA with media proxy using rtpengine
+            button.clip-btn(data-clipboard-target="#create-b2b-example-3")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-b2b-example-3
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf();
+                const config = require('config');
+                const rtpengine = require('rtpengine-client').Client
+                
+                srf.connect(config.get('drachtio'));
+
+                // helper functions
+                
+                // clean up and free rtpengine resources when either side hangs up
+                function endCall(dlg1, dlg2, details) {
+                  [dlg1, dlg2].each((dlg) => {
+                    dlg.on('destroy', () => (dlg === dlg1 ? dlg2 : dlg1).destroy());
+                  });
+                  rtpengine.delete(details);
+                }
+                
+                // function returning a Promise that resolves with the SDP to offer A leg in 18x/200 answer
+                function getSdpA(details, remoteSdp, res) {
+                  return rtpengine.answer(Object.assign(details, {
+                    'sdp': remoteSdp,
+                    'to-tag': res.getParsedHeader('To').params.tag
+                   }))
+                    .then((response) => {
+                      if (response.result !== 'ok') throw new Error(`Error calling answer: ${response['error-reason']}`);
+                      return response.sdp;
+                   })
+                }
+                
+                // handle incoming invite
+                srf.invite((req, res) => {
+                  const from = req.getParsedHeader('From');
+                  const details = {'call-id': req.get('Call-Id'), 'from-tag': from.params.tag};
+                
+                  rtpengine.offer(Object.assign(details, {'sdp': req.body})
+                    .then((rtpResponse) => {
+                      if (rtpResponse && rtpResponse.result === 'ok') return rtpResponse.sdp;
+                      throw new Error('rtpengine failure');
+                    })
+                    .then((sdpB) => {
+                      return srf.createB2BUA('sip:1234@10.10.100.1', req, res, {
+                        localSdpB: sdpB,
+                        localSdpA: getSdpA.bind(null, details)
+                      });
+                    })
+                    .then({uas, uac} => {
+                      console.log('call connected with media proxy');
+                      endcall(uas, uac, details);
+                    })
+                    .catch((err) => {
+                      console.log(`Error proxying call with media: ${err}`);
+                    });
+                });
+              ```
+      
+      .method#srf-endsession(data-name="endSession")
+        h4 endSession(msg)
+        p.capt
+          | release outbound connection from the server.  Note: this is intended to be used with outbound connections; if the connection is an inbound connection calling this method has no affect.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('msg', 'Request|Response', 'A SIP request or response message received through a method event handler', false)
+
+        h5 Returns:
+        p.capt undefined.
+
+      .method#srf-listen(data-name="listen")
+        h4 listen(opts)
+        p.capt
+          | listen for outbound connections from a drachtio server.
+
+        h5 Returns:
+        p.capt Reference to the Srf instance.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('opts', 'Object', 'Configuration options', false)
+            +table_row('opts.host', 'string', 'IP address or DNS name of server to connect to.  Default: 0.0.0.0', true)
+            +table_row('opts.port', 'number', 'tcp port to listen on', false)
+            +table_row('opts.secret', 'string', 'shared secret', false)
+
+      .method#srf-proxy-request(data-name="proxyRequest")
+        h4 proxyRequest(req, [destination], [opts], [callback])
+        p.capt
+          | proxy an incoming request
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('req', 'Request', 'drachtio request object representing an incoming SIP request.', false)
+            +table_row('destination', 'Array|string', 'an IP address[:port], or list of same, to proxy the request to', true)
+            +table_row('opts', 'Object', 'Configuration options.', true)
+            +table_row('opts.forking', 'string', 'when multiple destinations are provided,this option governs whether they are attempted sequentially or in parallel. Valid values are \'sequential\' or \'parallel\'.  Default: sequential', true)
+            +table_row('opts.remainInDialog', 'string', 'if true, add Record-Route header and remain in the SIP dialog (i.e. receiving futher SIP messaging for the dialog, including the terminating BYE request). Alias: \'recordRoute\'.  Default: false', true)
+            +table_row('opts.proxy', 'string', 'send the request through an outbound proxy, specified as full sip uri or address[:port]', true)
+            +table_row('opts.provisionalTimeout', 'string', 'timeout after which to attempt the next destination if no 100 Trying response has been received.  Examples of valid syntax for this property are \'1500ms\', or \'2s\'', true)
+            +table_row('opts.finalTimeout', 'string', 'timeout, in milliseconds, after which to cancel the current request and attempt the next destination if no final response has been received.  Syntax is the same as for the provisionalTimeout property.', true)
+            +table_row('opts.followRedirects', 'boolean', 'if true, handle 3XX redirect responses by generating a new request as per the Contact header; otherwise, proxy the 3XX response back upstream without generating a new response.  Default: false', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, results), where `results` is a JSON object describing the individual sip call attempts and results', true)
+
+        h5 Returns:
+        p.capt a Promise if no callback is provided, otherwise a reference to the Srf instance.
+        hr
+        h4 Examples
+        .card.code-box
+          .card-header simple proxy
+            button.clip-btn(data-clipboard-target="#create-proxy-example-1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-proxy-example-1
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf();
+                
+                srf.invite((req, res) => {
+                  srf.proxyRequest(req, ['sip.example1.com', 'sip.example2.com'], {
+                    recordRoute: true,
+                    followRedirects: true,
+                    provisionalTimeout: '2s'
+                  }).then((results) => {
+                    console.log(JSON.stringify(result)); // {finalStatus: 200, finalResponse:{..}, responses: [..]}
+                  });
+                });
+              ```
+
+      .method#srf-request(data-name="request")
+        h4 request(uri, opts, [callback])
+        p.capt
+          | send a SIP request message
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('uri', 'string', 'sip uri to send the request to.', false)
+            +table_row('opts', 'Object', 'Configuration options.', false)
+            +table_row('opts.method', 'string', 'SIP method to send', false)
+            +table_row('opts.body', 'string', 'the body of the request', true)
+            +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP request.', true)
+            +table_row('opts.auth', 'Object', 'Used for digest authentication.', true)
+            +table_row('opts.auth.username', 'string', 'Username to provide if challenged.', true)
+            +table_row('opts.auth.password', 'string', 'password to provide if challenged.', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, req), where `req` represents the SIP request sent over the wire', true)
+
+        h5 Returns:
+        p.capt undefined.
+        hr
+        h4 Examples
+        .card.code-box
+          .card-header send an OPTIONS ping
+            button.clip-btn(data-clipboard-target="#create-request-example-1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-request-example-1
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf();
+
+                srf.connect({host: '127.0.0.1', port: 9022, secret: 'cymru'});
+
+                srf.on('connect', (err, hp) => {
+                  if (err) return console.log(`Error connecting: ${err}`);
+                  console.log(`connected to server listening on ${hp}`);
+
+                  setInterval(optionsPing, 10000);
+                });
+
+                function optionsPing() {
+                  srf.request('sip:tighthead.drachtio.org', {
+                    method: 'OPTIONS',
+                    headers: {
+                      'Subject': 'OPTIONS Ping'
+                    }
+                  }, (err, req) => {
+                    if (err) return console.log(`Error sending OPTIONS: ${err}`);
+                    req.on('response', (res) => {
+                      console.log(`Response to OPTIONS ping: ${res.status}`);
+                    });
+                  });
+                }
+              ```
+
+      .method#srf-use(data-name="use")
+        h4 use([method], handler)
+        p.capt
+          | installs sip middleware, optionally invoked only for a specific method type.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('method', 'string', 'a method for which the middleware is installed.  Default: all', false)
+            +table_row('handler', 'function', 'a SIP middleware function with signature (req, res, next)', false)
+
+        h5 Returns:
+        p.capt undefined.
+        hr
+        h4 Examples
+        .card.code-box
+          .card-header install middleware to authenticate incoming requests
+            button.clip-btn(data-clipboard-target="#create-use-example-1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#create-use-example-1
+            :markdown-it
+              ```js
+                const Srf = require('drachtio-srf');
+                const srf = new Srf() ;
+                const digestAuth = require('drachtio-mw-digest-auth');
+                const regParser = require('drachtio-mw-registration-parser');
+
+                srf.connect({...}) ;
+                
+                const challenge = digestAuth({
+                  realm: 'sip.drachtio.org',
+                  passwordLookup: function(username, realm, callback) {
+                    // ..lookup password for username in realm
+                    return callback(null, password) ;
+                  }
+                }) ;
+
+                srf.use('register', challenge) ;
+                srf.use('register', regParser) ;
+                srf.register((req, res) => {
+                  // if we reach here we have an authenticated request
+                  // and 'registration' property added to 'req'
+
+                  res.send(200, {
+                    headers: {
+                      'Expires': req.registration.expires
+                    }
+                  });
+                });
+              ```
       .events#events
         h3 Events
-        .event
+        .event#srf-event-cdr-attempt(data-name="cdr:attempt")
+          h4 "cdr:attempt" (source, time, msg)
+          p.capt
+            | a #[code cdr:attempt] event is emitted by an Srf instance when a a call attempt has been received (inbound) or initiated (outbound)
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('source', 'string', '\'network\'|\'application\', depending on whether the INVITE is inbound (received), or outbound (sent), respectively', false)
+              +table_row('time', 'string', 'the time (UTC) recorded by the SIP stack corresponding to the attempt', false)
+              +table_row('msg', 'Object', 'the actual message sent or received', false)
+      
+        .event#srf-event-cdr-start(data-name="cdr:start")
+          h4 "cdr:start" (source, time, role, msg)
+          p.capt
+            | a #[code cdr:start] event is emitted by an Srf instance when a call attempt has been connected successfully
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('source', 'string', '\'network\'|\'application\', depending on whether the INVITE is inbound (received), or outbound (sent), respectively', false)
+              +table_row('time', 'string', 'the time (UTC) recorded by the SIP stack corresponding to the attempt', false)
+              +table_row('role', 'string', '\'uac\'|\'uas\'|\'uac-proxy\'|\'uas-proxy\' indicating whether the application is acting as a user agent client, user agent server, proxy (sending message), or proxy (receiving message) for this cdr', false)
+              +table_row('msg', 'Object', 'the actual message sent or received', false)
+      
+        .event#srf-event-cdr-stop(data-name="cdr:stop")
+          h4 "cdr:stop" (source, time, reason, msg)
+          p.capt
+            | a #[code cdr:stop] event is emitted by an Srf instance when a connected call has ended
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('source', 'string', '\'network\'|\'application\', depending on whether the INVITE is inbound (received), or outbound (sent), respectively', false)
+              +table_row('time', 'string', 'the time (UTC) recorded by the SIP stack corresponding to the attempt', false)
+              +table_row('reason', 'string', 'the reason the call was ended', false)
+              +table_row('msg', 'Object', 'the actual message sent or received', false)
+      
+        .event#srf-event-connect(data-name="connect")
           h4 "connect" (err, hostport)
           p.capt
             | a #[code connect] event is emitted by an Srf instance when a connect method completes with either success or failure
@@ -111,25 +770,43 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('err', 'Errpr', 'Error encountered when attempting to authorize after connecting.', false)
-              +table_row('hostport', 'Array', 'An Array of SIP endpoints that the connected drachtio server is listening on for incoming SIP messages. The format of each endpoint is protcocol/adress:port.', false)
+              +table_row('err', 'Error', 'Error encountered when attempting to authorize after connecting.', false)
+              +table_row('hostport', 'Array', 'An Array of SIP endpoints that the connected drachtio server is listening on for incoming SIP messages. The format of each endpoint is protcocol/adress:port, e.g udp/127.0.0.1:5060.', false)
+      
+        .event#srf-event-connecting(data-name="connecting")
+          h4 "connecting"
+          p.capt
+            | a #[code connecting] event is emitted by an Srf instance when it is attempting to reconnect to a server
+      
+        .event#srf-event-error(data-name="error")
+          h4 "error" (err)
+          p.capt
+            | an #[code error] event is emitted by an Srf instance when when an inbound connection is lost.  Note: the srf instance will try to automatically reconnect if the app has established a listener for the 'error' event.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('err', 'Error', 'specific error information.', false)
       
       .properties#properties
         h3 Properties
-        .property
+        .property#srf-prop-parse-uri(data-name="parseUri")
           h4 #[span.class-name Srf].parseUri
-          p.capt Parses a SIP uri string.
+          p.capt Static property returning a function that parses a SIP uri into components.
           hr
           h5 Returns:
           p 
-            | #[code function] - a function that takes a SIP uri and returns an object
+            | #[code function] - a function that parses a SIP uri and returns an object
           hr
           h4 Examples
           .card.code-box
-            .card-header Connect, etc.
-              button.clip-btn(data-clipboard-target="#parse-uri-body")
-                i.far.fa-clipboard
-            .card-body#parse-uri-body
+            .card-header parse a uri
+              button.clip-btn(data-clipboard-target="#parse-uri-example")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#parse-uri-example
               :markdown-it
                 ```js
                   const Srf = require('drachtio-srf');
@@ -153,27 +830,613 @@ block content
                    // }
                   });
                 ```
-          
+        .property#srf-prop-sip-error(data-name="SipError")
+          h4 #[span.class-name Srf].SipError
+          p.capt Static property returning a SipError class.  A SipError has `status` and `reason` properties corresponding to the sip non-success result.
+          hr
+          h5 Returns:
+          p 
+            | #[code SipError] - a SipError object
+
+  .api-class#dialog(data-name="Dialog")
+    h2 Dialog
+      .type Class
+    p.description 
+      | A SIP Dialog represents a session between two SIP endpoints and is created by successfully
+      | calling #[a(href="#srf-create-uas") Srf#createUAS], #[a(href="#srf-create-uac") Srf#createUAC], 
+      | or #[a(href="#srf-create-b2bua") Srf#createB2BUA].  
+    .sub
+      .methods#methods
+       h3 Methods
+      .method#dialog-destroy(data-name="destroy")
+        h4 destroy(opts, [callback])
+        p.capt
+          | destroy the sip dialog by generating a BYE request (in the case of INVITE dialog),
+          | or NOTIFY (in the case of SUBSCRIBE)
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('opts', 'Object', 'Configuration options.', true)
+            +table_row('opts.headers', 'Object', 'SIP headers to add to the outgoing BYE or NOTIFY.', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, msg) where msg provides the BYE or NOTIFY message that was sent to terminate the dialog.', true)
+
+        h5 Returns:
+        p.capt a Promise that resolves with the SIP request sent if no callback is provided, otherwise a reference to the Dialog instance.
+        hr
+
+      .method#dialog-modify(data-name="modify")
+        h4 modify(sdp, [callback])
+        p.capt
+          | modify the dialog session by changing attributes of the media connection
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('sdp', 'string', '\'hold\', \'unhold\', or a session description protocol', false)
+            +table_row('callback', 'function', 'If provided, callback with signature (err) when operation has completed.', true)
+
+        h5 Returns:
+        p.capt a Promise that resolves when the operation is complete if no callback is provided, otherwise a reference to the Dialog instance.
+        hr
+
+      .method#dialog-request(data-name="request")
+        h4 request(opts, [callback])
+        p.capt
+          | send a request within a dialog.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('opts', 'Object', 'Configuration options', false)
+            +table_row('opts.method', 'string', 'SIP method to use for the request', false)
+            +table_row('opts.headers', 'Object', 'SIP headers to apply on the request', true)
+            +table_row('opts.body', 'string', 'body of the SIP request', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, req) when request has been sent.', true)
+
+        h5 Returns:
+        p.capt a Promise that resolves with the request that has been sent if no callback is provided, otherwise a reference to the Dialog instance.
+        hr
+
+      .events#events
+        h3 Events
+        .event#dialog-event-destroy(data-name="destroy")
+          h4 "destroy" (msg, reason)
+          p.capt
+            | a #[code destroy] event is emitted when the Dialog has been torn down from the far end
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('msg', 'Request', 'the SIP request that tore down the Dialog', false)
+              +table_row('reason', 'string', 'a reason the dialog was destroyed, provided mainly in error cases (e.g. in the case of an ACK timeout)', true)
+      
+        .event#dialog-event-info(data-name="info")
+          h4 "info" (req, res)
+          p.capt
+            | an #[code info] event is emitted when a SIP INFO request is received within the Dialog.
+            | When an application adds a handler for this event it must generate
+            | the SIP response by calling #[code res.send] on the provided drachtio response object.
+            | When no handler is found for this event a 200 OK will be automatically generated.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('req', 'Request', 'a SIP request', false)
+              +table_row('res', 'Response', 'a SIP response', false)
+      
+        .event#dialog-event-messsage(data-name="message")
+          h4 "message" (req, res)
+          p.capt
+            | a #[code message] event is emitted when a SIP MESSAGE request is received within the Dialog.
+            | When an application adds a handler for this event it must generate
+            | the SIP response by calling #[code res.send] on the provided drachtio response object.
+            | When no handler is found for this event a 200 OK will be automatically generated.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('req', 'Request', 'a SIP request', false)
+              +table_row('res', 'Response', 'a SIP response', false)
+
+        .event#dialog-event-modify(data-name="modify")
+          h4 "modify" (req, res)
+          p.capt
+            | a #[code modify] event is triggered when the far end modifies the session by sending a re-INVITE.
+            | When an application adds a handler for this event it must generate
+            | the SIP response by calling <code>res.send</code> on the provided drachtio response object.
+            | When no handler is found for this event a 200 OK with the current local SDP.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('req', 'Request', 'a SIP request', false)
+              +table_row('res', 'Response', 'a SIP response', false)
+
+        .event#dialog-event-notify(data-name="notify")
+          h4 "notify" (req, res)
+          p.capt
+            | a #[code notify] event is emitted when a SIP NOTIFY request is received within the Dialog.
+            | When an application adds a handler for this event it must generate
+            | the SIP response by calling #[code res.send] on the provided drachtio response object.
+            | When no handler is found for this event a 200 OK will be automatically generated.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('req', 'Request', 'a SIP request', false)
+              +table_row('res', 'Response', 'a SIP response', false)
+      
+        .event#dialog-event-options(data-name="options")
+          h4 "options" (req, res)
+          p.capt
+            | an #[code options] event is emitted when a SIP OPTIONS request is received within the Dialog.
+            | When an application adds a handler for this event it must generate
+            | the SIP response by calling #[code res.send] on the provided drachtio response object.
+            | When no handler is found for this event a 200 OK will be automatically generated.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('req', 'Request', 'a SIP request', false)
+              +table_row('res', 'Response', 'a SIP response', false)
+      
+        .event#dialog-event-refer(data-name="refer")
+          h4 "refer" (req, res)
+          p.capt
+            | a #[code refer] event is emitted when a SIP REFER request is received within the Dialog.
+            | When an application adds a handler for this event it must generate
+            | the SIP response by calling #[code res.send] on the provided drachtio response object.
+            | When no handler is found for this event a 200 OK will be automatically generated.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('req', 'Request', 'a SIP request', false)
+              +table_row('res', 'Response', 'a SIP response', false)
+
+        .event#dialog-event-refresh(data-name="refresh")
+          h4 "refresh" (req)
+          p.capt
+            | a #[code refresh] event is emitted when a SIP refreshing re-INVITE is received within the Dialog.
+            | There is no need for the application to respond to this event; this is purely a notification.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('req', 'Request', 'a SIP request', false)
+
+        .event#dialog-event-update(data-name="update")
+          h4 "update" (req, res)
+          p.capt
+            | an #[code update] event is emitted when a SIP UPDATE request is received within the Dialog.
+            | When an application adds a handler for this event it must generate
+            | the SIP response by calling #[code res.send] on the provided drachtio response object.
+            | When no handler is found for this event a 200 OK will be automatically generated.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('req', 'Request', 'a SIP request', false)
+              +table_row('res', 'Response', 'a SIP response', false)
+
+      .properties#properties
+        h3 Properties
+        .property#dialog-property-dialog-type(data-name="dialogType")
+          h4 dialogType
+          p.capt 'INVITE' or 'SUBSCRIBE' depending on the Dialog type.
+          hr
+
+        .property#dialog-property-id(data-name="id")
+          h4 id
+          p.capt String that provides a unique internal id for the Dialog.
+          hr
+
+        .property#dialog-property-local(data-name="local")
+          h4 local
+          p.capt Object containing information about the local side of the Dialog.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('uri', 'string', 'local sip uri', false)
+              +table_row('sdp', 'string', 'local sdp', false)
+              +table_row('contact', 'string', 'local contact header', false)
+          hr
+
+        .property#dialog-property-remote(data-name="remote")
+          h4 remote
+          p.capt Object containing information about the remote side of the Dialog.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('uri', 'string', 'remote sip uri', false)
+              +table_row('sdp', 'string', 'remote sdp', false)
+              +table_row('contact', 'string', 'remote contact header', false)
+          hr
+
+          h4 sip
+          p.capt Object containing information about the SIP details relating to the Dialog.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('callId', 'string', 'SIP Call-ID for the dialog', false)
+              +table_row('localTag', 'string', 'tag generated by local side of the Dialog', false)
+              +table_row('remoteTag', 'string', 'tag generated by remote side of the Dialog', false)
+          hr
+
+        .property#dialog-property-subscribe-event(data-name="subscribeEvent")
+          h4 subscribeEvent
+          p.capt string that indicates the Event subscribed for in a SUBSCRIBE Dialog
+          hr
+
+  .api-class#sip-message(data-name="SipMessage")
+    h2 SipMessage
+      .type Class
+    p.description 
+      | This is a class containing common methods and properties for both 
+      | #[a(href="#sip-request") Request] and #[a(href="sip-response") Response] objects.
+      | You do not directly create SipMessage objects, rather you are handed 
+      | Request or Response objects by the framework.
+    .sub
+      .methods#methods
+       h3 Methods
+      .method#message-get(data-name="get")
+        h4 get(hdr)
+        p.capt
+          | returns a header value as a string
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('hdr', 'string', 'header name.', false)
+
+        h5 Returns:
+        p.capt a string containing the header value, or undefined if no such header exists.
+        hr
+
+      .method#message-get-parsed-header(data-name="getParsedHeader")
+        h4 getParsedHeader(hdr)
+        p.capt
+          | returns a header value as an Object containing individual information elements.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('hdr', 'string', 'header name.', false)
+
+        h5 Returns:
+        p.capt an Object containing the parsed header elements, or undefined if no such header exists.
+        hr
+
+      .method#message-has(data-name="has")
+        h4 has(hdr)
+        p.capt
+          | returns a boolean indicating if a header is present
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('hdr', 'string', 'header name.', false)
+
+        h5 Returns:
+        p.capt boolean indicating presence of header in the message.
+        hr
+
+      .properties#properties
+        h3 Properties
+        .property#message-prop-body(data-name="body")
+          h4 body
+          p.capt string providing the body of the message, if any.
+          hr
+        .property#message-prop-called-number(data-name="calledNumber")
+          h4 calledNumber
+          p.capt string providing the phone number in the request-uri (request only).
+          hr
+        .property#message-prop-calling-number(data-name="callingNumber")
+          h4 callingNumber
+          p.capt string providing the calling phone number found in the P-Asserted-Identity or From header (request only).
+          hr
+        .property#message-prop-headers(data-name="headers")
+          h4 headers
+          p.capt Object containing all of the SIP headers for this message.
+          hr
+        .property#message-prop-method(data-name="method")
+          h4 method
+          p.capt string providing the method (request only).
+          hr
+        .property#message-prop-payload(data-name="payload")
+          h4 payload
+          p.capt Array containing the body of the message organized into parts.
+          hr
+        .property#message-prop-reason(data-name="reason")
+          h4 reason
+          p.capt string that is the SIP reason code (response only).
+          hr
+        .property#message-prop-status(data-name="status")
+          h4 status
+          p.capt number that is the SIP status code (response only).
+          hr
+        .property#message-prop-type(data-name="type")
+          h4 type
+          p.capt 'request' or 'response'
+          hr
+        .property#message-prop-uri(data-name="uri")
+          h4 uri
+          p.capt string containing the request-uri (request only).
+          hr
+
+  .api-class#sip-request(data-name="Request")
+    h2 Request
+      .type Class
+    p.description 
+      | Represents a SIP request that is either received by or sent from an application.  
+      | #[br] Note that all of the methods and properties defined on the #[a(href="#sip-message") SipMessage] class are available
+      | in addition to those listed below.
+    .sub
+      .methods#methods
+       h3 Methods
+      .method#sip-request-cancel(data-name="cancel")
+        h4 cancel([callback])
+        p.capt
+          | cancels a request that was sent by the application.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('callback', 'function', 'Callback that is invoked with signature (err, cancel), where \'cancel\' is the SIP CANCEL request that was sent over the wire', true)
+
+        h5 Returns:
+        p.capt undefined.
+        hr
+
+      .method#sip-request-proxy(data-name="proxy")
+        h4 proxy([opts], [callback])
+        p.capt
+          | Proxy an incoming request.
+          | #[br] Note: it is preferred to use #[a(href="#srf-proxy-request") Srf#proxyRequest].
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('opts', 'Object', 'proxy options, as defined in Srf#proxyRequest', false)
+            +table_row('callback', 'function', 'Callback that is invoked with the results of the proxy operation', true)
+
+        h5 Returns:
+        p.capt A Promise that resolves with the proxy results if no callback is provided, otherwise a reference to the Request.
+        hr
+
+      .properties#properties
+        h3 Properties
+        .property#sip-request-prop-is-new-invite(data-name="isNewInvite")
+          h4 isNewInvite
+          p.capt boolean indicating if this is an INVITE that is not part of an existing Dialog.
+          hr
+
+  .api-class#sip-response(data-name="Response")
+    h2 Response
+      .type Class
+    p.description 
+      | Represents a SIP response that is either received by or sent from an application.  
+      | #[br] Note that all of the methods and properties defined on the #[a(href="#sip-message") SipMessage] class are available
+      | in addition to those listed below.
+    .sub
+      .methods#methods
+       h3 Methods
+      .method#sip-response-send(data-name="send")
+        h4 send(status, [reason], [opts], [callback], [fnAck])
+        p.capt
+          | sends a SIP response.
+
+        table(class="option-1")
+          thead
+            tr
+              th Parameters
+              th Type
+              th Description
+          tbody
+            +table_row('status', 'number', 'SIP status code to send', false)
+            +table_row('reason', 'string', 'SIP reason code to send.  Default: the predefined reason code associated with the provided status', true)
+            +table_row('opts', 'Object', 'Configuration options', true)
+            +table_row('opts.headers', 'Object', 'SIP headers to send with response', true)
+            +table_row('opts.body', 'string', 'body send with response', true)
+            +table_row('callback', 'function', 'callback invoked with signature (err, response), where \'response\' is the SIP response sent over the wire', true)
+            +table_row('fnAck', 'function', 'function to be executed upon receipt of ACK or PRACK', true)
+
+        h5 Returns:
+        p.capt undefined.
+        hr
+
+      .properties#properties
+        h3 Properties
+        .property#sip-response-prop-final-response-sent(data-name="finalResponseSent")
+          h4 finalResponseSent
+          p.capt boolean indicating if a final response has been sent (alias: 'headersSent').
+          hr
+        .property#sip-response-prop-status-code(data-name="statusCode")
+          h4 statusCode
+          p.capt number indicating the SIP status code that was sent or received.
+          hr
+
+
 block scripts
   script.
-    /*var links = [];
-    $('.api-class').each(function (i) {
-        links.push({name: this.id, links: []});
-        $('.method').each(function () {
-            links[i].links.push(this.id);
+    var links = [];
+    $('.api-class').each(function(i) {
+      var ctor;
+      var methods = [];
+      var events = [];
+      var properties = [];
+      var link = {
+        id: this.id,
+        name: $(this).attr('data-name')
+      };
+
+      var self = this;
+      [['.method', methods], ['.event', events], ['.property', properties]]
+        .forEach(function(arr) {
+          $(self).find(arr[0]).each(function(el) {
+            if (this.id) {
+              if ($(this).hasClass('constructor')) {
+                link.ctor = this.id;
+              }
+              else {
+                arr[1].push({
+                  id: this.id,
+                  name: $(this).attr('data-name')
+                });
+              }
+            }
+          });
         });
+        
+        Object.assign(link, {methods: methods, events: events, properties: properties});
+        links.push(link);
     });
-    $(function() {
-        for (var i = 0; i < links.length; i++) {
-          $(".page-nav").append("<li>" + cap(links[i].name) + "</li>");
-          for (var j = 0; j < links[i].links.length; j++) {
-              
-          }
-        }  
+    //console.log('links: ' + JSON.stringify(links));
+
+    //build html for menu
+    var html = $('<ul class="parents page-nav"></ul>');
+    links.forEach(function(link) {
+      var ul = $('<ul class="children" data-gumshoe="">');
+      if (link.ctor) {
+        ul.append('<li><a href="#' + link.ctor + '">Constructor</a>');
+      }
+
+      if (link.methods.length) {
+        ul.append('<li class="menu-subheading">Methods</li>');
+        link.methods.forEach(function(m) {
+          ul.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
+        });
+      }
+      if (link.properties.length) {
+        ul.append('<li class="menu-subheading">Properties</li>');
+        link.properties.forEach(function(m) {
+          ul.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
+        });
+      }
+      if (link.events.length) {
+        ul.append('<li class="menu-subheading">Events</li>');
+        link.events.forEach(function(m) {
+          ul.append($('<li></li>').append('<a href="#' + m.id + '">' + m.name + '</a>'));
+        });
+      }
+
+      var nav = $('<nav/>');
+      nav.append(ul);
+
+      var li = $('<li></li>')
+        .append('<i class="rr up"></i>')
+        .append('<a href="#' + link.id + '">' + link.name + '</a>')
+        .append(nav);
+
+      html.append(li);
     });
-    function cap(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }*/
+    $('#docs-menu')
+      .empty()
+      .append(html);
+
   script.
+    var btns = document.querySelectorAll('.clip-btn');
+    for(var i=0;i<btns.length;i++){
+        btns[i].addEventListener('mouseleave',clearTooltip);
+        btns[i].addEventListener('blur',clearTooltip);
+    }
+    function clearTooltip(e){
+        e.currentTarget.setAttribute('class','clip-btn');
+        e.currentTarget.removeAttribute('aria-label');
+    }
+    function showTooltip(elem,msg){
+        elem.setAttribute('class','clip-btn tooltipped tooltipped-no-delay tooltipped-s');
+        elem.setAttribute('aria-label', msg);
+    }
+    function fallbackMessage(action) {
+        var actionMsg='';
+        var actionKey=(action==='cut'?'X':'C');
+        if(/iPhone|iPad/i.test(navigator.userAgent)){
+            actionMsg='No support :(';
+        }
+        else if(/Mac/i.test(navigator.userAgent)){
+            actionMsg='Press ⌘-'+actionKey+' to '+action;
+        }
+        else{
+            actionMsg='Press Ctrl-'+actionKey+' to '+action;
+        }
+        return actionMsg;
+    }
     hljs.initHighlightingOnLoad();
     var clipboard = new ClipboardJS('.clip-btn');
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+    	showTooltip(e.trigger,'Copied!');
+    });

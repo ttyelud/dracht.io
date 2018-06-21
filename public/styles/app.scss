@@ -1,7 +1,10 @@
 @import "src/variables";
 
 @import "src/animations";
-@import "../../node_modules/spectre.css/src/spectre";
+
+// these are found in node_modules
+@import "spectre.css/src/spectre";
+@import "primer-tooltips/index.scss";
 
 @import "src/base";
 @import "src/elements";

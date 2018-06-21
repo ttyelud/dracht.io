@@ -1,5 +1,5 @@
-# dracht.io
-You can run the dracht.io site using `npm start`. For development you can run `gulp` which uses nodemon and browser-sync.  
+# drachtio
+You can run the drachtio site using `npm start`. For development you can run `gulp` which uses nodemon and browser-sync.  
 
 ## Install
 ```bash

@@ -110,7 +110,7 @@
             }
         }
     });
-
+    
     // Init Smooth Scroll
     smoothScroll.init({
         // This `offset` is the `height` of fixed header

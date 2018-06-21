@@ -1,7 +1,7 @@
 {
   "name": "drachtio",
   "version": "1.0.0",
-  "description": "Client and server for dracht.io",
+  "description": "Client and server for drachtio.org site",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -31,6 +31,7 @@
     "morgan": "^1.9.0",
     "nodemailer": "^4.6.4",
     "npm": "^5.8.0",
+    "primer-tooltips": "^1.5.4",
     "pug": "^2.0.1",
     "serve-favicon": "^2.5.0",
     "spectre.css": "^0.5.1",
