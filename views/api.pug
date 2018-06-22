@@ -7,8 +7,8 @@ mixin table_row(p, t, d, o)
       if o == true
         div optional
     td.description
-      .arg-type= t
-    td= d
+      .arg-type !{t}
+    td !{d}
   
 mixin table(x)
   table(class=x)
@@ -82,7 +82,12 @@ block content
   .api-class#srf(data-name="Srf")
     h2 Srf
       .type Class
-    p.description
+    p.description 
+      | Srf stands for signaling resource framework. You create an instance
+      | of Srf to create and manage SIP dialogs and messages on a drachtio server.
+      | This class provides the high-level API through which you will gain access
+      | to other classes such as #[a(href="#dialog") Dialogs], 
+      | #[a(href="#sip-request") Requests], and #[a(href="#sip-response") Responses].
     .sub
       .methods#constructor
         h3 Constructor
@@ -187,8 +192,8 @@ block content
               th Type
               th Description
           tbody
-            +table_row('req', 'SipRequest', 'The incoming sip request object.', false)
-            +table_row('res', 'SipResponse', 'The sip response object.', false)
+            +table_row('req', '<a href="#sip-request">Request</a>', 'The incoming sip request object.', false)
+            +table_row('res', '<a href="#sip-response">Response</a>', 'The sip response object.', false)
             +table_row('opts', 'Object', 'Configuration options.', false)
             +table_row('opts.localSdp', 'string', 'The local session description protocol to include in the SIP response.', true)
             +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP response to the INVITE.', true)
@@ -361,10 +366,12 @@ block content
               th Type
               th Description
           tbody
+            +table_row('req', '<a href="#sip-request">Request</a>', 'The incoming sip request object.', false)
+            +table_row('res', '<a href="#sip-response">Response</a>', 'The sip response object.', false)
             +table_row('uri', 'string', 'request uri to send to.', false)
-            +table_row('opts', 'Object', 'Configuration options.', false)
+            +table_row('opts', 'Object', 'Configuration options.', true)
             +table_row('opts.localSdpB', 'string', 'the local session description protocol to offer in the SIP INVITE request on the B leg.  Default: the sdp received on A leg.', true)
-            +table_row('opts.localSdpA', 'string|function', 'the local session description protocol to offer in the response to the SIP INVITE request on the A leg; either a string or a function may be provided. If a function is provided, it will be invoked with two parameters (sdp, res) correspnding to the SDP received from the B party, and the sip response object received on the response from B.  The function must return either the SDP (as a string) or a Promise that resolves to the SDP. Default: the SDP returned by the B party in the provisional/final response on the UAC leg.', true)
+            +table_row('opts.localSdpA', 'string&nbsp;|&nbsp;function', 'the local session description protocol to offer in the response to the SIP INVITE request on the A leg; either a string or a function may be provided. If a function is provided, it will be invoked with two parameters (sdp, res) correspnding to the SDP received from the B party, and the sip response object received on the response from B.  The function must return either the SDP (as a string) or a Promise that resolves to the SDP. Default: the SDP returned by the B party in the provisional/final response on the UAC leg.', true)
             +table_row('opts.proxy', 'string', 'send the request through an outbound proxy, specified as full sip uri or address[:port]', true)
             +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP INVITE request on the B leg.', true)
             +table_row('opts.proxyRequestHeaders', 'Array', 'an array of header names which, if they appear in the INVITE request on the A leg, should be included unchanged on the generated B leg INVITE', true)
@@ -510,7 +517,7 @@ block content
       .method#srf-endsession(data-name="endSession")
         h4 endSession(msg)
         p.capt
-          | release outbound connection from the server.  Note: this is intended to be used with outbound connections; if the connection is an inbound connection calling this method has no affect.
+          | release outbound connection from the server.  #[br]#[blockquote Note: this is intended to be used with outbound connections; the method is a no-op if the underlying connection is an inbound connection.]
 
         table(class="option-1")
           thead
@@ -519,7 +526,7 @@ block content
               th Type
               th Description
           tbody
-            +table_row('msg', 'Request|Response', 'A SIP request or response message received through a method event handler', false)
+            +table_row('msg', '<a href="#sip-request">Request</a>&nbsp;|&nbsp;<a href="#sip-response">Response</a>', 'A SIP request or response message received through a method event handler', false)
 
         h5 Returns:
         p.capt undefined.
@@ -556,8 +563,8 @@ block content
               th Type
               th Description
           tbody
-            +table_row('req', 'Request', 'drachtio request object representing an incoming SIP request.', false)
-            +table_row('destination', 'Array|string', 'an IP address[:port], or list of same, to proxy the request to', true)
+            +table_row('req', '<a href="#sip-request">Request</a>', 'drachtio request object representing an incoming SIP request.', false)
+            +table_row('destination', 'Array&nbsp;|&nbsp;string', 'an IP address[:port], or list of same, to proxy the request to', true)
             +table_row('opts', 'Object', 'Configuration options.', true)
             +table_row('opts.forking', 'string', 'when multiple destinations are provided,this option governs whether they are attempted sequentially or in parallel. Valid values are \'sequential\' or \'parallel\'.  Default: sequential', true)
             +table_row('opts.remainInDialog', 'string', 'if true, add Record-Route header and remain in the SIP dialog (i.e. receiving futher SIP messaging for the dialog, including the terminating BYE request). Alias: \'recordRoute\'.  Default: false', true)
@@ -587,7 +594,8 @@ block content
                     followRedirects: true,
                     provisionalTimeout: '2s'
                   }).then((results) => {
-                    console.log(JSON.stringify(result)); // {finalStatus: 200, finalResponse:{..}, responses: [..]}
+                    console.log(JSON.stringify(result)); 
+                    // {finalStatus: 200, finalResponse:{..}, responses: [..]}
                   });
                 });
               ```
@@ -612,7 +620,7 @@ block content
             +table_row('opts.auth', 'Object', 'Used for digest authentication.', true)
             +table_row('opts.auth.username', 'string', 'Username to provide if challenged.', true)
             +table_row('opts.auth.password', 'string', 'password to provide if challenged.', true)
-            +table_row('callback', 'function', 'If provided, callback with signature (err, req), where `req` represents the SIP request sent over the wire', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, req), where `req` represents the <a href="#sip-request">SIP request</a> sent over the wire', true)
 
         h5 Returns:
         p.capt undefined.
@@ -664,7 +672,7 @@ block content
               th Type
               th Description
           tbody
-            +table_row('method', 'string', 'a method for which the middleware is installed.  Default: all', false)
+            +table_row('method', 'string', 'a method for which the middleware is installed.  Default: all methods', false)
             +table_row('handler', 'function', 'a SIP middleware function with signature (req, res, next)', false)
 
         h5 Returns:
@@ -726,7 +734,8 @@ block content
         .event#srf-event-cdr-start(data-name="cdr:start")
           h4 "cdr:start" (source, time, role, msg)
           p.capt
-            | a #[code cdr:start] event is emitted by an Srf instance when a call attempt has been connected successfully
+            | a #[code cdr:start] event is emitted by an Srf instance when a call attempt has been connected successfully;
+            | i.e., a call has started
           table(class="option-1")
             thead
               tr
@@ -742,7 +751,9 @@ block content
         .event#srf-event-cdr-stop(data-name="cdr:stop")
           h4 "cdr:stop" (source, time, reason, msg)
           p.capt
-            | a #[code cdr:stop] event is emitted by an Srf instance when a connected call has ended
+            | a #[code cdr:stop] event is emitted by an Srf instance when a connected call has ended.
+            | #[br] This could either be a connected call that hangs up, or an attempt that rejected with 
+            | a final non-success response.
           table(class="option-1")
             thead
               tr
@@ -777,7 +788,8 @@ block content
         .event#srf-event-error(data-name="error")
           h4 "error" (err)
           p.capt
-            | an #[code error] event is emitted by an Srf instance when when an inbound connection is lost.  Note: the srf instance will try to automatically reconnect if the app has established a listener for the 'error' event.
+            | an #[code error] event is emitted by an Srf instance when when an inbound connection is lost.  
+            | #[blockquote Note: the srf instance will try to automatically reconnect if (and only if) the app has established a listener for the 'error' event.]
           table(class="option-1")
             thead
               tr
@@ -838,9 +850,10 @@ block content
     h2 Dialog
       .type Class
     p.description 
-      | A SIP Dialog represents a session between two SIP endpoints and is created by successfully
-      | calling #[a(href="#srf-create-uas") Srf#createUAS], #[a(href="#srf-create-uac") Srf#createUAC], 
-      | or #[a(href="#srf-create-b2bua") Srf#createB2BUA].  
+      | A SIP Dialog represents a session between two SIP endpoints.#[br]
+      | You do not create a Dialog explicitly (it has no public constructor);
+      | rather, calling #[a(href="#srf-create-uas") srf.createUAS], #[a(href="#srf-create-uac") srf.createUAC], 
+      | or #[a(href="#srf-create-b2bua") srf.createB2BUA] will return you a Dialog upon success.  
     .sub
       .methods#Dialog-methods
        h3 Methods
@@ -859,7 +872,7 @@ block content
           tbody
             +table_row('opts', 'Object', 'Configuration options.', true)
             +table_row('opts.headers', 'Object', 'SIP headers to add to the outgoing BYE or NOTIFY.', true)
-            +table_row('callback', 'function', 'If provided, callback with signature (err, msg) where msg provides the BYE or NOTIFY message that was sent to terminate the dialog.', true)
+            +table_row('callback', 'function', 'If provided, callback with signature (err, msg) where msg provides the BYE or NOTIFY message that was sent over the wire.', true)
 
         h5 Returns:
         p.capt a Promise that resolves with the SIP request sent if no callback is provided, otherwise a reference to the Dialog instance.
@@ -868,7 +881,7 @@ block content
       .method#dialog-modify(data-name="modify")
         h4 modify(sdp, [callback])
         p.capt
-          | modify the dialog session by changing attributes of the media connection
+          | modify a SIP session by changing attributes of the media connection
 
         table(class="option-1")
           thead
@@ -887,7 +900,7 @@ block content
       .method#dialog-request(data-name="request")
         h4 request(opts, [callback])
         p.capt
-          | send a request within a dialog.
+          | send a SIP request within a dialog.
 
         table(class="option-1")
           thead
@@ -919,8 +932,8 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('msg', 'Request', 'the SIP request that tore down the Dialog', false)
-              +table_row('reason', 'string', 'a reason the dialog was destroyed, provided mainly in error cases (e.g. in the case of an ACK timeout)', true)
+              +table_row('msg', '<a href="#sip-request">Request</a>', 'the SIP request that tore down the Dialog', false)
+              +table_row('reason', 'string', 'a reason the dialog was destroyed (this is populated only for error cases; e.g. an ACK timeout)', true)
       
         .event#dialog-event-info(data-name="info")
           h4 "info" (req, res)
@@ -936,8 +949,8 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Request', 'a SIP request', false)
-              +table_row('res', 'Response', 'a SIP response', false)
+              +table_row('req', '<a href="#sip-request">Request</a>', 'a SIP request', false)
+              +table_row('res', '<a href="#sip-response">Response</a>', 'a SIP response', false)
       
         .event#dialog-event-messsage(data-name="message")
           h4 "message" (req, res)
@@ -953,8 +966,8 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Request', 'a SIP request', false)
-              +table_row('res', 'Response', 'a SIP response', false)
+              +table_row('req', '<a href="#sip-request">Request</a>', 'a SIP request', false)
+              +table_row('res', '<a href="#sip-response">Response</a>', 'a SIP response', false)
 
         .event#dialog-event-modify(data-name="modify")
           h4 "modify" (req, res)
@@ -970,8 +983,8 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Request', 'a SIP request', false)
-              +table_row('res', 'Response', 'a SIP response', false)
+              +table_row('req', '<a href="#sip-request">Request</a>', 'a SIP request', false)
+              +table_row('res', '<a href="#sip-response">Response</a>', 'a SIP response', false)
 
         .event#dialog-event-notify(data-name="notify")
           h4 "notify" (req, res)
@@ -987,8 +1000,8 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Request', 'a SIP request', false)
-              +table_row('res', 'Response', 'a SIP response', false)
+              +table_row('req', '<a href="#sip-request">Request</a>', 'a SIP request', false)
+              +table_row('res', '<a href="#sip-response">Response</a>', 'a SIP response', false)
       
         .event#dialog-event-options(data-name="options")
           h4 "options" (req, res)
@@ -1004,8 +1017,8 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Request', 'a SIP request', false)
-              +table_row('res', 'Response', 'a SIP response', false)
+              +table_row('req', '<a href="#sip-request">Request</a>', 'a SIP request', false)
+              +table_row('res', '<a href="#sip-response">Response</a>', 'a SIP response', false)
       
         .event#dialog-event-refer(data-name="refer")
           h4 "refer" (req, res)
@@ -1021,8 +1034,8 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Request', 'a SIP request', false)
-              +table_row('res', 'Response', 'a SIP response', false)
+              +table_row('req', '<a href="#sip-request">Request</a>', 'a SIP request', false)
+              +table_row('res', '<a href="#sip-response">Response</a>', 'a SIP response', false)
 
         .event#dialog-event-refresh(data-name="refresh")
           h4 "refresh" (req)
@@ -1036,7 +1049,7 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Request', 'a SIP request', false)
+              +table_row('req', '<a href="#sip-request">Request</a>', 'a SIP request', false)
 
         .event#dialog-event-update(data-name="update")
           h4 "update" (req, res)
@@ -1052,8 +1065,8 @@ block content
                 th Type
                 th Description
             tbody
-              +table_row('req', 'Request', 'a SIP request', false)
-              +table_row('res', 'Response', 'a SIP response', false)
+              +table_row('req', '<a href="#sip-request">Request</a>', 'a SIP request', false)
+              +table_row('res', '<a href="#sip-response">Response</a>', 'a SIP response', false)
 
       .properties#Dialog-properties
         h3 Properties
@@ -1120,10 +1133,10 @@ block content
     h2 SipMessage
       .type Class
     p.description 
-      | This is a class containing common methods and properties for both 
-      | #[a(href="#sip-request") Request] and #[a(href="sip-response") Response] objects.
-      | You do not directly create SipMessage objects, rather you are handed 
-      | Request or Response objects by the framework.
+      | This is a mix-in class containing common methods and properties for 
+      | #[a(href="#sip-request") Request] and #[a(href="sip-response") Response] objects.#[br]
+      | You generally do not work directly with SipMessage objects, rather with 
+      | Request or Response objects provided via callbacks or Promises.
     .sub
       .methods#SipMessage-methods
        h3 Methods
@@ -1229,8 +1242,8 @@ block content
       .type Class
     p.description 
       | Represents a SIP request that is either received by or sent from an application.  
-      | #[br] Note that all of the methods and properties defined on the #[a(href="#sip-message") SipMessage] class are available
-      | in addition to those listed below.
+      | #[br] Note that #[a(href="#sip-message") SipMessage] is mixed into this class, 
+      | so all of those methods and properties are available as well.
     .sub
       .methods#Request-methods
        h3 Methods
@@ -1246,7 +1259,7 @@ block content
               th Type
               th Description
           tbody
-            +table_row('callback', 'function', 'Callback that is invoked with signature (err, cancel), where \'cancel\' is the SIP CANCEL request that was sent over the wire', true)
+            +table_row('callback', 'function', 'Callback that is invoked with signature (err, cancel), where \'cancel\' is the SIP CANCEL <a href="#sip-request">request</a> that was sent over the wire', true)
 
         h5 Returns:
         p.capt undefined.
@@ -1256,7 +1269,7 @@ block content
         h4 proxy([opts], [callback])
         p.capt
           | Proxy an incoming request.
-          | #[br] Note: it is preferred to use #[a(href="#srf-proxy-request") Srf#proxyRequest].
+          | #[br] #[blockquote Note: it is generally preferred to call #[a(href="#srf-proxy-request") srf.proxyRequest].]
 
         table(class="option-1")
           thead
@@ -1265,13 +1278,13 @@ block content
               th Type
               th Description
           tbody
-            +table_row('opts', 'Object', 'proxy options, as defined in Srf#proxyRequest', false)
+            +table_row('opts', 'Object', 'proxy options, as defined in <a href="#srf-proxy-request">srf.proxyRequest</a>', false)
             +table_row('callback', 'function', 'Callback that is invoked with the results of the proxy operation', true)
 
         h5 Returns:
         p.capt A Promise that resolves with the proxy results if no callback is provided, otherwise a reference to the Request.
         hr
-
+      
       .properties#Request-properties
         h3 Properties
         .property#sip-request-prop-is-new-invite(data-name="isNewInvite")
@@ -1279,13 +1292,33 @@ block content
           p.capt boolean indicating if this is an INVITE that is not part of an existing Dialog.
           hr
 
+      .events#Request-events
+        h3 Events
+        .event#request-event-cancel(data-name="cancel")
+          h4 "cancel"
+          p.capt
+            | a #[code cancel] event is emitted when an incoming Request has been canceled by the sender
+      
+        .event#request-event-response(data-name="response")
+          h4 "response(msg)"
+          p.capt
+            | a #[code response] event is emitted when a response has been received for the request which has been sent by the application.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('msg', '<a href="#sip-response">Response</a>', 'a SIP response message that was received in response to a request sent by the app', false)
+
   .api-class#sip-response(data-name="Response")
     h2 Response
       .type Class
     p.description 
       | Represents a SIP response that is either received by or sent from an application.  
-      | #[br] Note that all of the methods and properties defined on the #[a(href="#sip-message") SipMessage] class are available
-      | in addition to those listed below.
+      | #[br] Note that #[a(href="#sip-message") SipMessage] is mixed into this class, 
+      | so all of those methods and properties are available as well.
     .sub
       .methods#Response-methods
        h3 Methods
