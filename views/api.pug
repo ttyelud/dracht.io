@@ -1242,8 +1242,8 @@ block content
       .type Class
     p.description 
       | Represents a SIP request that is either received by or sent from an application.  
-      | #[br] Note that all of the methods and properties defined on the #[a(href="#sip-message") SipMessage] class are available
-      | in addition to those listed below.
+      | #[br] Note that #[a(href="#sip-message") SipMessage] is mixed into this class, 
+      | so all of those methods and properties are available as well.
     .sub
       .methods#Request-methods
        h3 Methods
@@ -1284,7 +1284,7 @@ block content
         h5 Returns:
         p.capt A Promise that resolves with the proxy results if no callback is provided, otherwise a reference to the Request.
         hr
-
+      
       .properties#Request-properties
         h3 Properties
         .property#sip-request-prop-is-new-invite(data-name="isNewInvite")
@@ -1292,13 +1292,33 @@ block content
           p.capt boolean indicating if this is an INVITE that is not part of an existing Dialog.
           hr
 
+      .events#Request-events
+        h3 Events
+        .event#request-event-cancel(data-name="cancel")
+          h4 "cancel"
+          p.capt
+            | a #[code cancel] event is emitted when an incoming Request has been canceled by the sender
+      
+        .event#request-event-response(data-name="response")
+          h4 "response(msg)"
+          p.capt
+            | a #[code response] event is emitted when a response has been received for the request which has been sent by the application.
+          table(class="option-1")
+            thead
+              tr
+                th Parameters
+                th Type
+                th Description
+            tbody
+              +table_row('msg', '<a href="#sip-response">Response</a>', 'a SIP response message that was received in response to a request sent by the app', false)
+
   .api-class#sip-response(data-name="Response")
     h2 Response
       .type Class
     p.description 
       | Represents a SIP response that is either received by or sent from an application.  
-      | #[br] Note that all of the methods and properties defined on the #[a(href="#sip-message") SipMessage] class are available
-      | in addition to those listed below.
+      | #[br] Note that #[a(href="#sip-message") SipMessage] is mixed into this class, 
+      | so all of those methods and properties are available as well.
     .sub
       .methods#Response-methods
        h3 Methods
