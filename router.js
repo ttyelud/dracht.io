@@ -10,13 +10,13 @@ const docsTree = mdTree('./docs', './views');
 // Home
 
 router.get('/', function(req, res) {
-  const t = 'Welcome to dracht.io';
+  const t = 'Welcome to drachtio';
   const d = 'The node.js SIP application server framework.';
   res.render('index', {title : t, description : d});
 });
 
 router.get('/api-test', function(req, res) {
-  const t = 'Welcome to dracht.io';
+  const t = 'Welcome to drachtio';
   const d = 'The node.js SIP application server framework.';
   res.render('api', {title : t, description : d});
 });
@@ -25,14 +25,14 @@ router.get('/api-test', function(req, res) {
 // Interior Pages
 
 router.get('/about', function(req, res) {
-  const t = 'About - dracht.io';
-  const d = 'Learn more about dracht.io, the node.js SIP application server framework.';
+  const t = 'About - drachtio';
+  const d = 'Learn more about drachtio, the node.js SIP application server framework.';
   res.render('about', {title : t, description : d});
 });
 
 router.get('/features', function(req, res) {
-  const t = 'Features - dracht.io';
-  const d = 'Learn more about what dracht.io has to offer.';
+  const t = 'Features - drachtio';
+  const d = 'Learn more about what drachtio has to offer.';
   res.render('features', {title : t, description : d});
 });
 
@@ -48,17 +48,23 @@ router.get('/apps', function(req, res) {
   res.render('apps', {title : t, description : d});
 });
 
+router.get('/api', function(req, res) {
+  const t = 'drachtio API';
+  const d = 'drachtio API documentation';
+  res.render('api', {title : t, description : d});
+});
+
 // Contact
 
 router.get('/contact', function(req, res) {
-  const t = 'Contact - dracht.io';
+  const t = 'Contact - drachtio';
   const d = 'Have a question? Contact us.';
   res.render('contact', {title : t, description : d, submitted: false});
 });
 
 router.post('/contact', function(req, res) {
   const mailgun = Mailgun(config.get('mailgun'));
-  const t = 'Contact - dracht.io';
+  const t = 'Contact - drachtio';
   const d = 'Have a question? Contact us.';
   console.log(req.body);
 
@@ -93,8 +99,8 @@ router.get('/docs', (req, res) => {
 
 
 router.get('/docs/:folder', (req, res) => {
-  const t = 'Documentation - dracht.io';
-  const d = 'Documentation for dracht.io, the node.js SIP application server framework.';
+  const t = 'Documentation - drachtio';
+  const d = 'Documentation for drachtio, the node.js SIP application server framework.';
 
   const tree = _.find(docsTree.children, (c) => c.file === req.params.folder);
   if (tree) {
