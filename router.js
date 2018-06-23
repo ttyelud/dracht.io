@@ -10,13 +10,13 @@ const docsTree = mdTree('./docs', './views');
 // Home
 
 router.get('/', function(req, res) {
-  const t = 'Welcome to drachtio';
+  const t = 'drachtio: the Node.js SIP application server';
   const d = 'The node.js SIP application server framework.';
   res.render('index', {title : t, description : d});
 });
 
 router.get('/api-test', function(req, res) {
-  const t = 'Welcome to drachtio';
+  const t = 'drachtio: the Node.js SIP application server';
   const d = 'The node.js SIP application server framework.';
   res.render('api', {title : t, description : d});
 });
@@ -43,7 +43,7 @@ router.get('/middleware', function(req, res) {
 });
 
 router.get('/apps', function(req, res) {
-  const t = 'Reference applications';
+  const t = 'drachtio reference applications';
   const d = 'Reference applications';
   res.render('apps', {title : t, description : d});
 });
@@ -90,7 +90,7 @@ router.post('/contact', function(req, res) {
 
 router.get('/docs', (req, res) => {
   res.render('docs', {
-    title : 'Documentation - dracht.io',
+    title : 'drachtio developer docs',
     description : 'Documentation for dracht.io, the node.js SIP application server framework.',
     tree: docsTree.children,
     active: 'developer-guide'
@@ -99,7 +99,7 @@ router.get('/docs', (req, res) => {
 
 
 router.get('/docs/:folder', (req, res) => {
-  const t = 'Documentation - drachtio';
+  const t = 'drachtio developer docs';
   const d = 'Documentation for drachtio, the node.js SIP application server framework.';
 
   const tree = _.find(docsTree.children, (c) => c.file === req.params.folder);
