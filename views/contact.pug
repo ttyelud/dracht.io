@@ -60,3 +60,17 @@ block scripts
 
     // Run once, so subsequent input will be show error message upon validation
     validateForm('#formId');
+
+  script(type="application/ld+json").
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "url": "http://www.drachtio.org",
+      "contactPoint": [
+        { "@type": "ContactPoint",
+          "telephone": "+1 508 308 4809",
+          "email": "daveh@beachdognet.com",
+          "contactType": "customer service"
+        }
+      ]
+    }

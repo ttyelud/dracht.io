@@ -10,7 +10,7 @@ const docsTree = mdTree('./docs', './views');
 // Home
 
 router.get('/', function(req, res) {
-  const t = 'drachtio';
+  const t = 'drachtio - the open source SIP application server framework';
   const d = 'drachtio - making SIP server apps as easy to build as web apps.';
   const k = 'drachtio, SIP, sip, Node.js, nodejs, sofia, drachtio-srf';
   res.render('index', {title : t, description : d, keywords: k});
