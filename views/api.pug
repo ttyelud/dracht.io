@@ -84,7 +84,7 @@ block content
                   }) ;
                 ```
           .card.code-box
-            .card-header Create an Srf instance and listen for outbound connections
+            .card-header Create an Srf instance and listen for #[a(href="/docs/developer-guide#advanced-topics") outbound connections]
               button.clip-btn(data-clipboard-target="#srf-constructor2")
                 img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
             .card-body#srf-constructor2
@@ -1109,7 +1109,18 @@ block content
         h5 Returns:
         p.capt a string containing the header value, or undefined if no such header exists.
         hr
-
+        h4 Examples
+        .card.code-box
+          .card-header Getting a header value
+            button.clip-btn(data-clipboard-target="#message-get-example1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#message-get-example1
+            :markdown-it
+              ```js
+                srf.invite((req, res) => {
+                  console.log(req.get('Via'));
+                  // SIP/2.0/UDP 172.16.0.129:5061;branch=z9hG4bK-1859-1-0;received=127.0.0.1;rport=5061
+                ```
       .method#message-get-parsed-header(data-name="getParsedHeader")
         h4 getParsedHeader(hdr)
         p.capt
@@ -1127,6 +1138,30 @@ block content
         h5 Returns:
         p.capt an Object containing the parsed header elements, or undefined if no such header exists.
         hr
+        h4 Examples
+        .card.code-box
+          .card-header Getting a parsed header
+            button.clip-btn(data-clipboard-target="#message-get-parsed-example1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#message-get-parsed-example1
+            :markdown-it
+              ```js
+                srf.invite((req, res) => {
+                  console.log(JSON.stringify(req.getParsedHeader('Via')));
+                  /*
+                  [{
+                    "version": "2.0",
+                    "protocol": "UDP",
+                    "host": "172.16.0.129",
+                    "port": 5061,
+                    "params": {
+                      "branch": "z9hG4bK-2070-1-0",
+                      "received": "127.0.0.1",
+                      "rport": "5061"
+                    }
+                  }]
+                  */
+                ```
 
       .method#message-has(data-name="has")
         h4 has(hdr)
@@ -1170,8 +1205,40 @@ block content
           hr
         .property#message-prop-payload(data-name="payload")
           h4 payload
-          p.capt Array containing the body of the message organized into parts.
+          p.capt 
+          | Array containing the body of the message organized into parts. 
+          | #[br]#[br]
+          | The #[code payload] property is similar to the #[code body] property, 
+          | in that both provide access to the information carried in the body of the request.
+          | #[br]However, whereas #[code req.body] provides the raw utf-8 string as carried on the wire,
+          | #[code req.payload] structures the information into parts.  
+          | #[br]This is primarily useful
+          | when dealing with multipart bodies.
           hr
+          h4 Examples
+          .card.code-box
+            .card-header using req.payload to work with multipart content
+              button.clip-btn(data-clipboard-target="#message-payload-example1")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#message-payload-example1
+              :markdown-it
+                ```js
+                  // e.g., siprec INVITE has multipart content
+                  srf.invite((req, res) => {
+                    if (req.payload.length > 1) {
+                      console.log(`we have multipart content: ${JSON.stringify(req.payload)}`);
+                    }
+                    /*
+                    we have multipart content: 
+                    [{
+                      "type": "application/sdp",
+                      "content": "v=0\r\no=Sonus_UAC 328001 655768 .."
+                    }, {
+                      "type": "application/rs-metadata+xml",
+                      "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<tns:recording ..."
+                    }]                  
+                    */
+                  ```
         .property#message-prop-reason(data-name="reason")
           h4 reason
           p.capt string that is the SIP reason code (response only).
