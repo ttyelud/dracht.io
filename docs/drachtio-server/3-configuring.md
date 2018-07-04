@@ -22,7 +22,7 @@ The **admin** section is required and specifies how the drachtio server will lis
 <admin port="9022" secret="cymru">0.0.0.0</admin>
 ```
 #### request-handlers section
-The **request-handlers** section is optional and configures the drachtio process to establish **outbound connections** to drachtio servers for some or all SIP methods instead of **inbound connections**.
+The **request-handlers** section is optional and configures the drachtio process to establish [outbound connections](/docs#outbound-connections) to drachtio servers for some or all SIP methods instead of **inbound connections**.
 
 The `<request-handlers>` element can have zero or more child `<request-handler>` elements. Each `<request-handlers>` defines a specific SIP method (or `*` to wildcard all methods) and an http(s) web callback to invoke when a new request of the specified method type arrives.  It is the responsibility of the user-supplied web callback to return information in an HTTP 200 OK response indicating how to route the call.
 
@@ -92,14 +92,24 @@ Example JSON responses for each of the above action are illustrated below (note:
 }
 
 // this causes the request to be delivered to a drachtio app for further processing.
-// the drachtio app must be listening on the uri provided
+// the drachtio app must be listening on the uri provided; i.e an outbound connection.
 {
   "route":
   "data": {
       "uri": "call-recording.default.svc.cluster.local:4000"
   }
 }
+
+// this causes the request to be delivered to a drachtio app for further processing.
+// the drachtio app must be using tagged inbound connections.
+{
+  "route":
+  "data": {
+      "tag": "conferencing-app"
+  }
+}
 ```
+> Note: the last stanza above applies to using tagged inbound connections, which were added recently.  For more details, [see here](https://drachtio.org/blog/introducing-tagged-inbound-connections/)
 
 #### sip section
 

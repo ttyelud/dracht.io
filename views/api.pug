@@ -34,47 +34,7 @@ mixin table(x)
 block sidebar
   nav#docs-menu
     ul#api-side.parents.page-nav
-      li.active
-        i.rr.down
-        a(href="#srf") Srf
-        nav(): ul.children(data-gumshoe="")
 
-      li
-        i.rr.down
-        a(href="#dialog") Dialog
-        //
-          nav(): ul.children(data-gumshoe="")
-            li.active: a(href="#constructor") Constructor
-            li: a(href="#methods") Methods
-            li: a(href="#events") Events
-            li: a(href="#properties") Properties
-      li
-        i.rr.down
-        a(href="#sip-message") SipMessage
-        //
-          nav(): ul.children(data-gumshoe="")
-            li.active: a(href="#constructor") Constructor
-            li: a(href="#methods") Methods
-            li: a(href="#events") Events
-            li: a(href="#properties") Properties
-      li
-        i.rr.down
-        a(href="#sip-request") Request
-        //
-          nav(): ul.children(data-gumshoe="")
-            li.active: a(href="#constructor") Constructor
-            li: a(href="#methods") Methods
-            li: a(href="#events") Events
-            li: a(href="#properties") Properties
-      li
-        i.rr.down
-        a(href="#sip-response") Response
-        //
-          nav(): ul.children(data-gumshoe="")
-            li.active: a(href="#constructor") Constructor
-            li: a(href="#methods") Methods
-            li: a(href="#events") Events
-            li: a(href="#properties") Properties
 block content
   span.start
     img(src='/images/circle.svg')
@@ -116,7 +76,6 @@ block content
                 ```js
                   const Srf = require('drachtio-srf');
                   const srf = new Srf() ;
-                  const config = require('config');
 
                   srf.connect({
                     host: '192.168.32.5',
@@ -125,7 +84,7 @@ block content
                   }) ;
                 ```
           .card.code-box
-            .card-header Create an Srf instance and listen for outbound connections
+            .card-header Create an Srf instance and listen for #[a(href="/docs/developer-guide#advanced-topics") outbound connections]
               button.clip-btn(data-clipboard-target="#srf-constructor2")
                 img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
             .card-body#srf-constructor2
@@ -133,7 +92,6 @@ block content
                 ```js
                   const Srf = require('drachtio-srf');
                   const srf = new Srf() ;
-                  const config = require('config');
 
                   srf.listen({
                     port: 3000,
@@ -149,7 +107,6 @@ block content
                 ```js
                   const Srf = require('drachtio-srf');
                   const srf = new Srf('conference-app') ;
-                  const config = require('config');
 
                   srf.connect({
                     host: '192.168.32.5',
@@ -211,13 +168,14 @@ block content
             :markdown-it
               ```js
                 srf.invite((req, res) => {
-                  const mySdp; // populated somehow with SDP we want to answer in 200 OK
+                  let mySdp; // populated somehow with SDP we want to answer in 200 OK
                   srf.createUas(req, res, {localSdp: mySdp})
                     .then((uas) => {
                       console.log(`dialog established, remote uri is ${uas.remote.uri}`);
                       uas.on('destroy', () => {
                         console.log('caller hung up');
                       });
+                      return;
                     })
                     .catch((err) => {
                       console.log(`Error establishing dialog: ${err}`);
@@ -232,7 +190,7 @@ block content
             :markdown-it
               ```js
                 srf.invite((req, res) => {
-                  const mySdp; // populated somehow with SDP we want to answer in 200 OK
+                  let mySdp; // populated somehow with SDP we want to answer in 200 OK
                   srf.createUas(req, res, {
                     localSdp: mySdp,
                     headers: {
@@ -242,9 +200,8 @@ block content
                   }, (err, uas) => {
                     if (err) return console.log(`Error creating dialog: ${err}`);
                     console.log(`dialog established, local tag is ${uas.sip.localTag}`);
-                    uas.on('destroy', () => {
-                      console.log('caller hung up');
-                    });
+
+                    uas.on('destroy', () => console.log('caller hung up'));
                   });
                 });
                 ```
@@ -283,22 +240,18 @@ block content
           .card-body#create-uac-example-1
             :markdown-it
               ```js
-                const Srf = require('drachtio-srf');
-                const srf = new Srf();
-
-                const mySdp; // populated somehow with SDP we want to offer
-                srf.createUac('sip:1234@10.10.100.1', {localSdp: mySdp})
-                 .then((uac) => {
-                   console.log(`dialog established, call-id is ${uac.sip.callId}`);
-                   uac.on('destroy', () => {
-                     console.log('called party hung up');
-                   });
-                 })
-                 .catch((err) => {
-                   console.log(`INVITE rejected with status: ${err.status}`);
-                 });
-                });
-              ```
+                let mySdp; // populated somehow with SDP we want to offer
+                srf.createUAC('sip:1234@10.10.100.1', {localSdp: mySdp})
+                  .then((uac) => {
+                    console.log(`dialog established, call-id is ${uac.sip.callId}`);
+                    uac.on('destroy', () => console.log('called party hung up'));
+                    return;
+                  })
+                  .catch((err) => {
+                    console.error(`INVITE rejected with status: ${err}`);
+                    console.log(err.stack);
+                  });
+                ```
         .card.code-box
           .card-header Using a callback
             button.clip-btn(data-clipboard-target="#create-uac-example-2")
@@ -306,18 +259,12 @@ block content
           .card-body#create-uac-example-2
             :markdown-it
               ```js
-                const Srf = require('drachtio-srf');
-                const srf = new Srf();
-              
-                const mySdp; // populated somehow with SDP we want to offer
+                let mySdp; // populated somehow with SDP we want to offer
                 srf.createUac('sip:1234@10.10.100.1', {localSdp: mySdp},
                    (err, uac) => {
-                     if (err) {
-                       return console.log(`INVITE rejected with status: ${err.status}`);
-                     }
-                    uac.on('destroy', () => {
-                      console.log('called party hung up');
-                    });
+                     if (err) return console.log(`INVITE rejected with status: ${err.status}`);
+                    
+                    uac.on('destroy', () => console.log('called party hung up'));
                   });
               ```
 
@@ -330,25 +277,25 @@ block content
               ```js
                 const Srf = require('drachtio-srf');
                 const srf = new Srf();
-              
-                const mySdp; // populated somehow with SDP we want to offer
+                const assert = require('assert');
+
+                let mySdp; // populated somehow with SDP we want to offer
                 let inviteSent;
-                srf.createUac('sip:1234@10.10.100.1', {localSdp: mySdp},
+                srf.createUAC('sip:1234@10.10.100.1', {localSdp: mySdp},
                   {
-                   cbRequest: (reqSent) => { inviteSent = req; }
+                    cbRequest: (reqSent) => { inviteSent = reqSent; }
                   })
                   .then((uac) => {
                     // unexpected, in this case
-                    console.log('dialog established before we could cancel');
+                    return console.log('dialog established before we could cancel');
                   })
                   .catch((err) => {
                     assert(err.status === 487); // expected sip response to a CANCEL
                   });
-                });
-              
+
                 // cancel the request after 0.5s
                 setTimeout(() => {
-                  inviteSent.cancel();
+                  if (inviteSent) inviteSent.cancel();
                 }, 500);
               ```
 
@@ -397,15 +344,18 @@ block content
               ```js
                 const Srf = require('drachtio-srf');
                 const srf = new Srf();
-              
+
+                srf.connect({..});
+
                 srf.invite((req, res) => {
                   srf.createB2BUA('sip:1234@10.10.100.1', req, res, {localSdpB: req.body})
-                    .then({uas, uac} => {
+                    .then(({uas, uac}) => {
                       console.log('call connected');
-              
+
                       // when one side terminates, hang up the other
                       uas.on('destroy', () => { uac.destroy(); });
                       uac.on('destroy', () => { uas.destroy(); });
+                      return;
                     })
                     .catch((err) => {
                       console.log(`call failed to connect: ${err}`);
@@ -422,32 +372,32 @@ block content
               ```js
                 const Srf = require('drachtio-srf');
                 const srf = new Srf();
-                
+
+                srf.connect({..});
+
                 function endCall(dlg1, dlg2) {
-                  dlg1.on('destroy', () => {dlg2.destroy();})
-                  dlg2.on('destroy', () => {dlg1.destroy();})
+                  dlg1.on('destroy', () => dlg2.destroy());
+                  dlg2.on('destroy', () => dlg1.destroy());
                 }
                 srf.invite((req, res) => {
                   srf.createB2BUA('sip:1234@10.10.100.1', req, res, {localSdpB: req.body, passFailure: false})
-                    .then({uas, uac} => {
-                      console.log('call connected to primary destination');
-                      endcall(uas, uac);
-                    })
                     .catch((err) => {
                       // try backup if we got a sip non-success response and the caller did not hang up
                       if (err instanceof Srf.SipError && err.status !== 487) {
-                          console.log(`failed connecting to primary, will try backup: ${err}`);
-                          srf.createB2BUA('sip:1234@10.10.100.2', req, res, {
-                            localSdpB: req.body}
-                          })
-                            .then({uas, uac} => {
-                              console.log('call connected to backup destination');
-                              endcall(uas.uac);
-                            })
-                            catch((err) => {
-                              console.log(`failed connecting to backup uri: ${err}`);
-                            });
+                        console.log(`failed connecting to primary, will try backup: ${err}`);
+                        return {};
                       }
+                      throw err;
+                    })
+                    .then(({uas, uac}) => {
+                      if (!uas) return srf.createB2BUA('sip:1234@10.10.100.2', req, res, {localSdpB: req.body});
+                      return {uas, uac};
+                    })
+                    .then(({uas, uac}) => {
+                      return endCall({uas, uac});
+                    })
+                    .catch((err) => {
+                      console.log(`failed connecting to backup uri: ${err}`);
                     });
                 });
               ```
@@ -462,51 +412,48 @@ block content
                 const Srf = require('drachtio-srf');
                 const srf = new Srf();
                 const config = require('config');
-                const rtpengine = require('rtpengine-client').Client
-                
+                const Client = require('rtpengine-client').Client;
+                const rtpengine = new Client();
+
                 srf.connect(config.get('drachtio'));
 
-                // helper functions
-                
                 // clean up and free rtpengine resources when either side hangs up
                 function endCall(dlg1, dlg2, details) {
-                  [dlg1, dlg2].each((dlg) => {
-                    dlg.on('destroy', () => (dlg === dlg1 ? dlg2 : dlg1).destroy());
-                  });
-                  rtpengine.delete(details);
+                  [dlg1, dlg2].each((dlg) => dlg.on('destroy', () => (dlg === dlg1 ? dlg2 : dlg1).destroy()));
+                  rtpengine.delete(config.get('rtpengine'), details);
                 }
-                
+
                 // function returning a Promise that resolves with the SDP to offer A leg in 18x/200 answer
                 function getSdpA(details, remoteSdp, res) {
-                  return rtpengine.answer(Object.assign(details, {
+                  return rtpengine.answer(config.get('rtpengine'), Object.assign(details, {
                     'sdp': remoteSdp,
                     'to-tag': res.getParsedHeader('To').params.tag
-                   }))
+                  }))
                     .then((response) => {
                       if (response.result !== 'ok') throw new Error(`Error calling answer: ${response['error-reason']}`);
                       return response.sdp;
-                   })
+                    });
                 }
-                
+
                 // handle incoming invite
                 srf.invite((req, res) => {
                   const from = req.getParsedHeader('From');
                   const details = {'call-id': req.get('Call-Id'), 'from-tag': from.params.tag};
-                
-                  rtpengine.offer(Object.assign(details, {'sdp': req.body})
+
+                  rtpengine.offer(config.get('rtpengine'), Object.assign(details, {'sdp': req.body}))
                     .then((rtpResponse) => {
                       if (rtpResponse && rtpResponse.result === 'ok') return rtpResponse.sdp;
                       throw new Error('rtpengine failure');
                     })
                     .then((sdpB) => {
-                      return srf.createB2BUA('sip:1234@10.10.100.1', req, res, {
+                      return srf.createB2BUA(config.get('uri'), req, res, {
                         localSdpB: sdpB,
                         localSdpA: getSdpA.bind(null, details)
                       });
                     })
-                    .then({uas, uac} => {
+                    .then(({uas, uac}) => {
                       console.log('call connected with media proxy');
-                      endcall(uas, uac, details);
+                      return endCall(uas, uac, details);
                     })
                     .catch((err) => {
                       console.log(`Error proxying call with media: ${err}`);
@@ -819,23 +766,28 @@ block content
                 ```js
                   const Srf = require('drachtio-srf');
                   const srf = new Srf();
+                  const config = require('config');
                   const parseUri = Srf.parseUri;
 
-                  // connect, etc..
+                  srf.connect(config.get('drachtio'));
 
                   srf.invite((req, res) => {
-                   const uri = parseUri(req.get('From'));
-                   console.log(`parsed From header: ${JSON.stringify(uri)}`);
-                   // {
-                   //   "scheme": "sip",
-                   //   "family": "ipv4",
-                   //   "user": "+15083084807",
-                   //   "host": "192.168.1.100",
-                   //   "port": 5080,
-                   //   "params": {
-                   //      "tag": "3yid87"
-                   //    }
-                   // }
+                    //INVITE sip:5083084809@127.0.0.1:5060;tgrp=NYC-2 SIP/2.0
+
+                    console.log(JSON.stringify(parseUri(req.uri)));
+                    // {
+                    //   "family": "ipv4",
+                    //   "schema": "sip",
+                    //   "user": "5083084809",
+                    //   "host": "127.0.0.1",
+                    //   "port": 5060,
+                    //    "params": {
+                    //      "tgrp": "NYC-2"
+                    //    },
+                    //    "headers": {}
+                    // }
+                    //
+                    res.send(480);
                   });
                 ```
         .property#srf-prop-sip-error(data-name="SipError")
@@ -1157,7 +1109,18 @@ block content
         h5 Returns:
         p.capt a string containing the header value, or undefined if no such header exists.
         hr
-
+        h4 Examples
+        .card.code-box
+          .card-header Getting a header value
+            button.clip-btn(data-clipboard-target="#message-get-example1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#message-get-example1
+            :markdown-it
+              ```js
+                srf.invite((req, res) => {
+                  console.log(req.get('Via'));
+                  // SIP/2.0/UDP 172.16.0.129:5061;branch=z9hG4bK-1859-1-0;received=127.0.0.1;rport=5061
+                ```
       .method#message-get-parsed-header(data-name="getParsedHeader")
         h4 getParsedHeader(hdr)
         p.capt
@@ -1175,6 +1138,30 @@ block content
         h5 Returns:
         p.capt an Object containing the parsed header elements, or undefined if no such header exists.
         hr
+        h4 Examples
+        .card.code-box
+          .card-header Getting a parsed header
+            button.clip-btn(data-clipboard-target="#message-get-parsed-example1")
+              img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+          .card-body#message-get-parsed-example1
+            :markdown-it
+              ```js
+                srf.invite((req, res) => {
+                  console.log(JSON.stringify(req.getParsedHeader('Via')));
+                  /*
+                  [{
+                    "version": "2.0",
+                    "protocol": "UDP",
+                    "host": "172.16.0.129",
+                    "port": 5061,
+                    "params": {
+                      "branch": "z9hG4bK-2070-1-0",
+                      "received": "127.0.0.1",
+                      "rport": "5061"
+                    }
+                  }]
+                  */
+                ```
 
       .method#message-has(data-name="has")
         h4 has(hdr)
@@ -1218,8 +1205,40 @@ block content
           hr
         .property#message-prop-payload(data-name="payload")
           h4 payload
-          p.capt Array containing the body of the message organized into parts.
+          p.capt 
+          | Array containing the body of the message organized into parts. 
+          | #[br]#[br]
+          | The #[code payload] property is similar to the #[code body] property, 
+          | in that both provide access to the information carried in the body of the request.
+          | #[br]However, whereas #[code req.body] provides the raw utf-8 string as carried on the wire,
+          | #[code req.payload] structures the information into parts.  
+          | #[br]This is primarily useful
+          | when dealing with multipart bodies.
           hr
+          h4 Examples
+          .card.code-box
+            .card-header using req.payload to work with multipart content
+              button.clip-btn(data-clipboard-target="#message-payload-example1")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#message-payload-example1
+              :markdown-it
+                ```js
+                  // e.g., siprec INVITE has multipart content
+                  srf.invite((req, res) => {
+                    if (req.payload.length > 1) {
+                      console.log(`we have multipart content: ${JSON.stringify(req.payload)}`);
+                    }
+                    /*
+                    we have multipart content: 
+                    [{
+                      "type": "application/sdp",
+                      "content": "v=0\r\no=Sonus_UAC 328001 655768 .."
+                    }, {
+                      "type": "application/rs-metadata+xml",
+                      "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<tns:recording ..."
+                    }]                  
+                    */
+                  ```
         .property#message-prop-reason(data-name="reason")
           h4 reason
           p.capt string that is the SIP reason code (response only).
