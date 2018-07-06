@@ -6,6 +6,7 @@ const config = require('config');
 const Mailgun = require('mailgun-js');
 
 const docsTree = mdTree('./docs', './views');
+const releaseTree = mdTree('./releases', './views');
 
 // Home
 
@@ -79,6 +80,45 @@ router.post('/contact', function(req, res) {
     else {
       res.render('contact', {title : t, description : d, submitted: true});
     }
+  });
+});
+//
+// Releases
+
+router.get('/releases', (req, res) => {
+  var len = releaseTree.children.length;
+  var children = JSON.parse(JSON.stringify(releaseTree.children));
+
+  var pageSize = 2,
+    pageCount = len/2,
+    currentPage = 1,
+    currentType = 'drachtio-srf',
+    data = [];
+  
+  for (var i = 0; i < children.length; i++) {
+    data.push([]);
+    while (children[i].children.length > 0) {
+        data[i].push(children[i].children.splice(0, pageSize));
+    }
+  }
+
+  if (typeof req.query.page !== 'undefined') {
+      currentPage = req.query.page;
+  }
+  if (typeof req.query.type !== 'undefined') {
+      currentType = req.query.type;
+  }
+
+  res.render('releases', {
+    title : 'drachtio - releases',
+    description : 'Release notes for drachtio.',
+    tree: releaseTree.children,
+    data: data, 
+    pageSize: pageSize,
+    total: len,
+    pageCount: pageCount,
+    currentPage: currentPage,
+    currentType: currentType
   });
 });
 
