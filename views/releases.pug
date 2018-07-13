@@ -14,7 +14,7 @@ mixin tab-content(file, data, stuff, currentPage)
 
 mixin release(name, description)
   .release
-    .info= "Version " + name.replace(/-/g,'.')
+    .info= "Version " + name.replace(/-/g,'.').replace('.rc', '-rc')
     .notes!= description 
 
 block header
