@@ -1239,9 +1239,50 @@ block content
                     }]                  
                     */
                   ```
+        .property#message-prop-protocol(data-name="protocol")
+          h4 protcol
+          p.capt string indicating the transport protocol used (e.g. "udp", "tcp").
+          hr
         .property#message-prop-reason(data-name="reason")
           h4 reason
           p.capt string that is the SIP reason code (response only).
+          hr
+        .property#message-prop-source(data-name="source")
+          h4 source
+          p.capt string that indicates source of message: "network" or "application".
+          hr
+        .property#message-prop-source-address(data-name="source_address")
+          h4 source_address
+          p.capt string that indicates the sending IP address.
+          hr
+          h4 Example
+          .card.code-box
+            .card-header accessing IP address and port of sender
+              button.clip-btn(data-clipboard-target="#message-source-example1")
+                img.clippy(src="images/clippy.svg" width="13" alt="Copy to clipboard")
+            .card-body#message-source-example1
+              :markdown-it
+                ```js
+                  srf.invite((req, res) => {
+                    console.log(`received INVITE from ${req.source_address}:${req.source_port}`);
+                    .. etc
+                  });
+                  ```
+        .property#message-prop-source-port(data-name="source_port")
+          h4 source_port
+          p.capt string that indicates the sending IP port.
+          hr
+        .property#message-prop-stack-time(data-name="stackTime")
+          h4 stackTime
+          p.capt string that indicates the time the SIP stack handled the message.
+          hr
+        .property#message-prop-stack-dialog-id(data-name="stackDialogId")
+          h4 stackDialogId
+          p.capt string that indicates the unique id assigned to the Dialog by the SIP stack (INVITE or SUBSCRIBE only).
+          hr
+        .property#message-prop-stack-txn-id(data-name="stackTxnId")
+          h4 stackTxnId
+          p.capt string that indicates the unique id assigned to the transaction by the SIP stack.
           hr
         .property#message-prop-status(data-name="status")
           h4 status
