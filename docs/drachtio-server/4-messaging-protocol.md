@@ -86,7 +86,7 @@ With that as background, let's examine the message trace.  To make it interestin
 
 We will also see now our first example of messages containining multiple lines, since we are now carrying SIP messages back and forth between client and server:
 ```
-866#83936ddb-523a-4cd0-886e-92b484905d85|sip|network|732|udp|127.0.0.1|50500|16:06:41.114233|8f62909b-0f25-4bb8-b0fc-2c0ec88a4afe|\r\n
+<===866#83936ddb-523a-4cd0-886e-92b484905d85|sip|network|732|udp|127.0.0.1|50500|16:06:41.114233|8f62909b-0f25-4bb8-b0fc-2c0ec88a4afe|\r\n
 INVITE sip:15083084809@127.0.0.1 SIP/2.0\r\n
 Via: SIP/2.0/UDP 127.0.0.1:50500;branch=z9hG4bK-524287-1---f8002e51f06e3b38;rport=50500\r\n
 Max-Forwards: 70\r\n
@@ -110,7 +110,7 @@ a=rtpmap:101 telephone-event/8000\r\n
 a=fmtp:101 0-15\r\n
 a=sendrecv\r\n
 
-332#829ba63e-5010-4719-b72f-cb3cf6f4aab2|sip|8f62909b-0f25-4bb8-b0fc-2c0ec88a4afe|\r\n
+===>332#829ba63e-5010-4719-b72f-cb3cf6f4aab2|sip|8f62909b-0f25-4bb8-b0fc-2c0ec88a4afe|\r\n
 SIP/2.0 486 Busy Here\r\n
 Call-ID: 92383ZWEzZGI3MTY4NDRiMGI1ZTRhYjc2YWQ4ZTE1OWY4N2E\r\n
 cseq: 1 INVITE\r\n
@@ -119,7 +119,7 @@ to: <sip:15083084809@127.0.0.1>\r\n
 Content-Length: 0\r\nuser-agent: drachtio\r\n
 X-custom: my custom header value\r\n
 
-600#d04f4d88-108c-4d93-a3f9-e9967b63ff55|response|829ba63e-5010-4719-b72f-cb3cf6f4aab2|OK|application|359|udp|127.0.0.1|50500|16:06:41.127954|8f62909b-0f25-4bb8-b0fc-2c0ec88a4afe|92383ZWEzZGI3MTY4NDRiMGI1ZTRhYjc2YWQ4ZTE1OWY4N2E;uas||Msg sent:|\r\n
+<===600#d04f4d88-108c-4d93-a3f9-e9967b63ff55|response|829ba63e-5010-4719-b72f-cb3cf6f4aab2|OK|application|359|udp|127.0.0.1|50500|16:06:41.127954|8f62909b-0f25-4bb8-b0fc-2c0ec88a4afe|92383ZWEzZGI3MTY4NDRiMGI1ZTRhYjc2YWQ4ZTE1OWY4N2E;uas||Msg sent:|\r\n
 SIP/2.0 486 Busy Here\r\n
 Via: SIP/2.0/UDP 127.0.0.1:50500;branch=z9hG4bK-524287-1---f8002e51f06e3b38;rport=50500\r\n
 From: <sip:dhorton@127.0.0.1>;tag=ce2ff21e\r\n
@@ -154,7 +154,7 @@ In the case of a new incoming 'sip' request sent by the drachtio server we have 
 * source port
 * time message was received (as reported by the sofia sip stack)
 * unique id assigned by the server for this SIP transaction
-* unique id assigned by the server for this SIP Dialog (optional)
+* unique id assigned by the server for this SIP Dialog (not always present, since a Dialog may not exist for this request)
 
 Following the first line of payload the incoming SIP message in its entirety is provided.
 
