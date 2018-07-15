@@ -175,8 +175,8 @@ This final message has the following payload:
 * message source ('application', indicating this was a message sent by the application)
 * length of the SIP message
 * transport protocol used
-* sending address
-* sending port
+* remote address sent to
+* remote port sent to
 * time message was sent (as reported by the sofia sip stack)
 * related transaction id
 * unique dialog id created by the server to represent this SIP Dialog
