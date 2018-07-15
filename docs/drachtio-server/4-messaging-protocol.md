@@ -6,7 +6,7 @@ The drachtio server is controlled by drachtio-srf applications using a utf8-base
 
 Because some developers have expressed an interest in integrating other language frameworks (e.g. go) to the drachtio server, this section aims to give some details of that protocol.  As highlighted above, it is a work in progress.
 
-As per the documention found elsewhere on this site, drachtio supports both inbound and (outbound)[/docs/developer-guide#advanced-topics] connections.  To begin with, we will focus here on describing the message flows for inbound connections.
+As per the documention found elsewhere on this site, drachtio supports both inbound and [outbound](/docs/developer-guide#advanced-topics) connections.  To begin with, we will focus here on describing the message flows for inbound connections.
 
 ## Basic message format
 Messages are utf8-encoded.  (This was not always the case - originally ascii was used, but this broke down with applications that needed to receive and send information like emojis!).  
