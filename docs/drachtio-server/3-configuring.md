@@ -206,6 +206,15 @@ The drachtio server can be configured to send to [Homer](http://www.sipcapture.o
 <capture-server port="9060" hep-version="3" id="101">127.0.0.1</capture-server>
 ```
 
+##### udp-mtu
+*Added in version 0.7.3-rc2*
+
+sofia-sip has an annoying feature where it forces an outbound request to go out TCP if the packet size exceeds a specific threshold (usually 1300 bytes). Tis configuration setting allows users to increase this threshold to an arbitrary value.
+
+```xml
+<udp-mtu>4096</udp-mtu>
+```
+
 #### logging section
 
 The `<logging>` section defines where drachtio server will send logging information, including sip traces.
@@ -286,6 +295,7 @@ The supported drachtio command-line arguments are:
 * `--homer ip-address:port` ip address of homer capture server to send to. HEP3  and udp transport will be used
 * `--homer-id id` id to use to represent this server when sending messages to homer
 * `--version` print the drachtio server version to console and exit.
+* `--mtu` specifies a message size, in bytes, for requests such that when outgoing requests exceed this threshold use of tcp is forced (this overrides the default sofia stack setting for the same). &nbsp;*Added in version 0.7.3-rc2*.
 
 
 
