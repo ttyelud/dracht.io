@@ -85,3 +85,78 @@ There are two primary scenarios in which to use outbound connections:
 In general, outbound connections can make it easier to independently scale drachtio servers and groups of drachtio applications, since you do not need to explicitly "tie" drachtio applications to specific servers.
 
 For more information on configuring drachtio server for outbound connections refer to the [drachtio server configuration documentation](/docs/drachtio-server#request-handlers-section).
+
+## Using TLS to encrypt messages between application and server
+
+As of drachtio server release 0.8.0-rc1 and drachtio-srf release 4.4.0, it is possible to encrypt the messages between the drachtio server and your application.  This may be useful in situations where applications are running remotely and you prefer to encrypt the control messages as they pass through intervening networks.  Both inbound and outbound connections can use TLS encryption, though the configuration steps are different as described below.
+
+### Securing inbound connections using TLS
+
+To use TLS on inbound connections, simply configure the drachtio server to listen on a specific port for TLS traffic, in addition to (or in place of) TCP traffic.  For example:
+```
+<admin port="9022" tls-port="9023" secret="cymru">127.0.0.1</admin>
+```
+would cause the server to listen for tcp connections on port 9022 and tls connections on port 9023.
+
+You can also specify the port on the command line:
+```
+drachtio --tls-port 9023
+```
+In addition to specifying a port to listen for tls traffic, you must specify minimally a server key, a certificate, and a dhparam file.  These are specified in the 'tls' section of the config file:
+```
+<tls>
+    <key-file>/etc/letsencrypt/live/example.org/privkey.pem</key-file>
+    <cert-file>/etc/letsencrypt/live/example.org/cert.pem</cert-file>
+    <chain-file>/etc/letsencrypt/live/example.org/chain.pem</chain-file>
+    <dh-param>/var/local/private/dh4096.pem</dh-param>
+</tls>
+```
+Of course, these can also be specified via the command line as well:
+```
+drachtio --dh-param /var/local/private/dh4096.pem \
+  --cert-file /etc/letsencrypt/live/example.org/cert.pem \
+  --chain-file /etc/letsencrypt/live/example.org/chain.pem \
+  --key-file /etc/letsencrypt/live/example.org/privkey.pem
+```
+#### drachtio-srf app configuration
+On the client side, when connecting to a TLS port the [Srf#connect](/api#srf-connect) function call must include a 'tls' object parameter in the options passed:
+```
+    this.srf.connect({
+      host: '127.0.0.1',
+      port: 9023, 
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+```
+Any of the node.js tls options that can be passed to [tls.createSecureContext](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) can be passed. Even if you do not need to include any options, you must still include an empty object as the `opts.tls` param in order to signal the underlying library that you wish to establish a TLS connection.
+
+#### Using self-signed certificate on the server
+If you are using a self-signed certificate on the server, then you must load that same certificate on the client, as below:
+```
+    this.srf.connect({
+      host: '127.0.0.1',
+      port: 9023, 
+      tls: {
+        ca: fs.readFileSync('server.crt'),
+        rejectUnauthorized: false
+      }
+    });
+```
+### Securing outbound connections using TLS
+To use TLS to secure outbound connections, there is no specific configuration needed on the server.  You just need your http request handler to return a uri with a `transport=tls` parameter, e.g.:
+```
+{"uri": "10.32.100.2:808;transport=tls"}
+```
+#### drachtio-srf configuration
+On the application side, to listen for TLS connections you will need to modify the [Srf#listen](/api#srf-listen) function to pass tls options.  Minimally, you must specify a private key and certificate.
+```
+  srf.listen({
+    port: 8080,
+    tls: {
+      key: fs.readFileSync('server.key'),
+      cert: fs.readFileSync('server.crt'),
+      rejectUnauthorized: false      
+    }
+  });
+```

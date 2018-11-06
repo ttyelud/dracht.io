@@ -18,8 +18,10 @@ A drachtio configuration file has the following high-level structure:
 ```
 #### admin section
 The **admin** section is required and specifies how the drachtio server will listen for incoming connections from drachtio applications. The information includes the tcp port to listen on, the address(es) to listen on (0.0.0.0 means all available interfaces), and the shared secret that is used for authentication.
+
+Note that as of release 0.8.0, there is also an option to use tls encryption on connections.  For inbound connections, this is specified by providing a 'tls-port' option.  The server can be configured to handle either, or both, tcp and tls connections.
 ```xml
-<admin port="9022" secret="cymru">0.0.0.0</admin>
+<admin port="9022" tls-port="9023" secret="cymru">0.0.0.0</admin>
 ```
 #### request-handlers section
 The **request-handlers** section is optional and configures the drachtio process to establish [outbound connections](/docs#outbound-connections) to drachtio servers for some or all SIP methods instead of **inbound connections**.
@@ -56,6 +58,8 @@ Based on the information above provided in the HTTP request, the user-supplied c
 The first three actions completely disposition the incoming SIP request -- i.e. no further interaction with a drachtio application occurs.  
 
 The final action (route to an application) causes the drachtio server to establish an outbound tcp connection to a drachtio application listening on a specified port, which then receives and processes the request normally (e.g. in a `srf.invite((req, res)))` or equivalent).
+
+Note that as of release 0.8.0, it is possible route to a drachtio application over an outbound connection using tls.  This is specified by appending a `transport` attribute to the uri and specifying 'tls', e.g. `uri:myapp.example.com;transport=tls`.
 
 Example JSON responses for each of the above action are illustrated below (note: a response should include only one of the JSON payloads below):
 ```js
@@ -170,11 +174,14 @@ The [SIP spec contains definitions for timers](https://tools.ietf.org/html/rfc32
 ##### tls
 If you are using either TLS or WSS as a transport, then you must specify where the associated tls certificates are stored on the server.
 
+Additionally, when using tls on admin connections from applications, you must specify a dhparam file that contains the Diffie-Hellman (dh) parameters.  (This is not required if you are only using TLS to secure SIP connections)
+
 ```xml
 <tls>
   <key-file>/etc/letsencrypt/live/yourdomain/privkey.pem</key-file>
   <cert-file>/etc/letsencrypt/live/yourdomain/cert.pem</cert-file>
   <chain-file>/etc/letsencrypt/live/yourdomain/chain.pem</chain-file>
+  <dh-param>/var/local/private/dh4096.pem</dh-param>
 </tls>
 ```
 
@@ -284,7 +291,8 @@ The supported drachtio command-line arguments are:
 * `--noconfig` ignore any logging configuration in the configuration file
 * `--file|-f filename` read configuration from specified file rather that `/etc/drachtio.conf.xml`
 * `--user|-u user` run as the named user rather than root
-* `--port|-p port` listen for admin connections on the named port
+* `--port|-p port` listen for tcp admin connections on the named port
+* `--tls-port` listen for tls admin connections on the named port. &nbsp;*Added in version 0.8.0-rc1*.
 * `--contact|-c` specifies a listening address/port/protocol.  Multiple instances of this parameter may be provided
 * `--external-ip ip-address` specifies an external address that the drachtio server should advertise in the SIP signaling. This parameter applies to the `--contact` parameter that it follows in the command line.
 * `dns-name name` a dns name that refer to the local server. This parameter applies to the `--contact` parameter that it follows in the command line.
@@ -296,6 +304,8 @@ The supported drachtio command-line arguments are:
 * `--homer-id id` id to use to represent this server when sending messages to homer
 * `--version` print the drachtio server version to console and exit.
 * `--mtu` specifies a message size, in bytes, for requests such that when outgoing requests exceed this threshold use of tcp is forced (this overrides the default sofia stack setting for the same). &nbsp;*Added in version 0.7.3-rc2*.
+* `--dh-param` dhparam file used for inbound tls admin connections. &nbsp;*Added in version 0.8.0-rc1*.
+
 
 
 
