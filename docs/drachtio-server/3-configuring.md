@@ -1,8 +1,13 @@
 # Configuring
 
-The drachtio process can either be configured via command-line parameters, a configuration file, or a combination of the two.
+The drachtio process can either be configured via command-line parameters, environment variables, a configuration file -- or a combination of all three.  The order of precedence of configuration settings is as follows:
+* command-line parameters, if provided, always take precedence
+* otherwise environment variables, if provided, take precedence
+* otherwise configuration file settings are used.
 
-The configuration file is installed by default at `/etc/drachtio.conf.xml`.  As the name suggests, it's an XML file.  The structure of the file is described below, and [a heavily commented version of the file can be found here](https://github.com/davehorton/drachtio-server/blob/develop/drachtio.conf.xml) that provides additional detail to the summary provided below. 
+By default, the server will look for a configuration file at `/etc/drachtio.conf.xml`.  This can be changed by passing the configuration file path as a command line argument `-f`; e.g., `drachtio -f /tmp/drachtio.conf.xml`
+
+As the name suggests, the configuration file is in XML format.  The structure of the file is described below, and [a heavily commented version of the file can be found here](https://github.com/davehorton/drachtio-server/blob/develop/drachtio.conf.xml) that provides additional detail to the summary provided below. 
 
 ### drachtio.conf.xml
 
@@ -13,15 +18,28 @@ A drachtio configuration file has the following high-level structure:
   <request-handlers/>
   <sip/>
   <cdrs/>
+  <monitoring/>
   <logging/>
 </drachtio>
 ```
+Each section is described below, along with the command line parameters and environemnt variables that can be used to configure the same settings.
+
 #### admin section
 The **admin** section is required and specifies how the drachtio server will listen for incoming connections from drachtio applications. The information includes the tcp port to listen on, the address(es) to listen on (0.0.0.0 means all available interfaces), and the shared secret that is used for authentication.
 
 Note that as of release 0.8.0, there is also an option to use tls encryption on connections.  For inbound connections, this is specified by providing a 'tls-port' option.  The server can be configured to handle either, or both, tcp and tls connections.
 ```xml
 <admin port="9022" tls-port="9023" secret="cymru">0.0.0.0</admin>
+```
+or, using command-line parameters:
+```bash
+drachtio --port 9022 --tls-port 9023 --secret cymru
+```
+or, using environment variables
+```bash
+DRACHTIO_ADMIN_TCP_PORT=9022 \
+DRACHTIO_ADMIN_TLS_PORT=9023 \
+DRACHTIO_SECRET=cymru drachtio
 ```
 #### request-handlers section
 The **request-handlers** section is optional and configures the drachtio process to establish [outbound connections](/docs#outbound-connections) to drachtio servers for some or all SIP methods instead of **inbound connections**.
@@ -30,7 +48,7 @@ The `<request-handlers>` element can have zero or more child `<request-handler>`
 
 ```xml
 <request-handlers>
-    <request-handler sip-method="INVITE">http://38.187.89.96:8080</request-handler>
+    <request-handler sip-method="INVITE" http-method="GET" verify-peer="false">https://38.187.89.96:8080</request-handler>
 </request-handlers>
 ```
 With the configuration above in place, when the drachtio server receives a new incoming INVITE request, it will send an HTTP GET to the URL above, with HTTP query arguments
@@ -44,8 +62,12 @@ With the configuration above in place, when the drachtio server receives a new i
 * `contentType`: the Content-Type header in the request, if any
 * `uri`: the full Request-URI
 
+> Note: either HTTP or HTTPS URIs are supported.  If using self-signed certificates with HTTPS, set `verify-peer` to false, as above.
+
+> Note: setting `http-method="POST"` will cause an HTTP POST top be sent to the user-supplied web callback.  All of the information supplied below will be provided (e.g. query args) but additionally the body of the request will have a full copy of the incoming SIP request message.  This is useful in more complex routing scenarios which may, for instance, depend on examining specific values in the SIP headers of the incoming message.
+
 An example HTTP URL that gets sent out looks like this:
-```bash
+```
  http://38.187.89.96:8080/?method=INVITE&domain=server-01.drachtio.org&protocol=udp&source_address=10.132.0.29&fromUser=%2b15083084809&toUser=calltest&uriUser=r-ee78299f-2f85-4d92-97ab-24f1d11e2b69&contentType=application%2fsdp&uri=sip%3ar-ee78299f-2f85-4d92-97ab-24f1d11e2b69%server-01.drachtio.org%3bdst%3d%2b15083084809%2540139.59.165.83%3a5060&dst=%2b15083084809%2540139.59.165.83%3a5060
  ```
 
@@ -62,6 +84,7 @@ The final action (route to an application) causes the drachtio server to establi
 Note that as of release 0.8.0, it is possible route to a drachtio application over an outbound connection using tls.  This is specified by appending a `transport` attribute to the uri and specifying 'tls', e.g. `uri:myapp.example.com;transport=tls`.
 
 Example JSON responses for each of the above action are illustrated below (note: a response should include only one of the JSON payloads below):
+
 ```js
 // this would reject the call with a "503 Max Calls Exceeded" response
 // note: reason is optional
@@ -113,7 +136,13 @@ Example JSON responses for each of the above action are illustrated below (note:
   }
 }
 ```
-> Note: the last stanza above applies to using tagged inbound connections, which were added recently.  For more details, [see here](https://drachtio.org/blog/introducing-tagged-inbound-connections/)
+> Note: the last stanza above applies to using tagged inbound connections.  For more details, [see here](https://drachtio.org/blog/introducing-tagged-inbound-connections/)
+
+A request handler for all incoming SIP requests can be configured via the command-line as well:
+```bash
+drachtio --http-handler "http://38.187.89.96:8080" --http-method "GET"
+```
+
 
 #### sip section
 
@@ -159,6 +188,10 @@ Furthermore, if the drachtio server has an assigned DNS name, this should be con
 ```
 > Note: multiple DNS names can be provided in comma-separated format.
 
+SIP contacts can be supplied via command line as follows
+```
+drachtio --contact "sip:10.132.0.22;transport=udp" --external-ip 35.195.28.194
+```
 ##### timers
 The [SIP spec contains definitions for timers](https://tools.ietf.org/html/rfc3261#page-265) governing retransmissions of SIP requests and the like.  Generally, there is no need to modify the setting for these timers, but if desired this can be done as follows:
 ```xml
@@ -183,6 +216,10 @@ Additionally, when using tls on admin connections from applications, you must sp
   <chain-file>/etc/letsencrypt/live/yourdomain/chain.pem</chain-file>
   <dh-param>/var/local/private/dh4096.pem</dh-param>
 </tls>
+```
+or, via command-line
+```
+drachtio --key-file <keyfile> --cert-file <certfile> --chain-file <chainfile> --dh-param <dhparamfile
 ```
 
 ##### outbound-proxy
@@ -212,6 +249,16 @@ The drachtio server can be configured to send to [Homer](http://www.sipcapture.o
 ```xml
 <capture-server port="9060" hep-version="3" id="101">127.0.0.1</capture-server>
 ```
+or, via command line
+```
+drachtio --homer "127.0.0.1:9060" --homer-id 101
+```
+or, via environment variables:
+```
+DRACHTIO_HOMER_ADDRESS=127.0.0.1 \
+DRACHTIO_HOMER_PORT=9060 \
+DRACHTIO_HOMER_ID=101 drachtio
+```
 
 ##### udp-mtu
 *Added in version 0.7.3-rc2*
@@ -221,7 +268,36 @@ sofia-sip has an annoying feature where it forces an outbound request to go out 
 ```xml
 <udp-mtu>4096</udp-mtu>
 ```
+or, via command line
+```
+drachtio --mtu 4096
+```
+or, via environment variables
+```
+DRACHTIO_UDP_MTU=4096 drachtio
+```
+#### monitoring section
+drachtio supports [prometheus](https://prometheus.io) monitoring by optionally exposing a /metrics endpoint.  [See here](https://github.com/davehorton/drachtio-server/blob/develop/docs/prometheus.md) for a list of the metrics provided
+```xml
+<monitoring>
+  <prometheus port="9090">127.0.0.1</prometheus>
+</monitoring>
+```
+> Note: if the address is not provided, the `/metrics` endpoints will be available on all interfaces (e.g. 0.0.0.0).
 
+or, via command line:
+```
+drachtio --prometheus-scrape-port "9090"
+# above implies 0.0.0.0:9090, we can be more explicit
+drachtio --prometheus-scrape-port "10.0.1.5:9090"
+```
+or, via environment variables
+```
+DRACHTIO_PROMETHEUS_SCRAPE_PORT=9090 drachtio
+# or
+DRACHTIO_PROMETHEUS_SCRAPE_PORT=10.0.1.5:9090 drachtio
+
+```
 #### logging section
 
 The `<logging>` section defines where drachtio server will send logging information, including sip traces.
@@ -282,6 +358,7 @@ The drachtio server uses the [sofia](https://github.com/davehorton/sofia-sip) li
 <sofia-loglevel>3</sofia-loglevel>
 ```
 
+
 ### command-line arguments
 
 The `drachtio` executable can accept command-line arguments that specify some configuration parameters.  If provided, the command-line configuration parameters take preference over those specified in the configuration file.
@@ -297,6 +374,7 @@ The supported drachtio command-line arguments are:
 * `--external-ip ip-address` specifies an external address that the drachtio server should advertise in the SIP signaling. This parameter applies to the `--contact` parameter that it follows in the command line.
 * `dns-name name` a dns name that refer to the local server. This parameter applies to the `--contact` parameter that it follows in the command line.
 * `http-handler url` an HTTP URL of a web callback that will be invoked for all new incoming requests.  Setting this parameter turns on outbound connections for all SIP request types.
+* `http-method` either 'GET' or 'PUT'
 * `--loglevel level` the overall log level to set
 * `--sofia-loglevel level` the log level of the sofia library
 * `--stdout` write log output to console
