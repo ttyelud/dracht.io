@@ -17,12 +17,12 @@ const Srf = require('drachtio-srf');
 const srf = new Srf();
 const registrationParser = require('drachtio-mw-registration-parser');
 
-srf.use((req, res, next) => console.log(`incoming ${req.method from ${req.source_address}}`));
+srf.use((req, res, next) => console.log(`incoming ${req.method} from ${req.source_address}}`));
 srf.use('register', registrationParser);
 
 srf.register((req, res) => {
   // middleware has populated req.registration
-  console.log(`registration info: ${req.registration});
+  console.log(`registration info: ${req.registration}`);
 
     // {
     //    type: 'register' or 'unregister'
