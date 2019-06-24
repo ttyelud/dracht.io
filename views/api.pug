@@ -230,7 +230,7 @@ block content
             +table_row('opts.auth.username', 'string', 'sip username', true)
             +table_row('opts.auth.password', 'string', 'sip password', true)
             +table_row('progressCallbacks', 'Object', 'callbacks providing call progress notification.', true)
-            +table_row('progressCallbacks.cbRequest', 'function', 'callback that provides request sent over the wire, with signature (req)', true)
+            +table_row('progressCallbacks.cbRequest', 'function', 'callback that provides request sent over the wire, with signature (err, req)', true)
             +table_row('progressCallbacks.cbProvisional', 'function', 'callback that provides a provisional response with signature (provisionalRes)', true)
             +table_row('callback', 'function', 'If provided, callback with signature (err, dialog).', true)
 
@@ -357,7 +357,7 @@ block content
                 srf.connect({..});
 
                 srf.invite((req, res) => {
-                  srf.createB2BUA('sip:1234@10.10.100.1', req, res, {localSdpB: req.body})
+                  srf.createB2BUA(req, res, 'sip:1234@10.10.100.1', {localSdpB: req.body})
                     .then(({uas, uac}) => {
                       console.log('call connected');
 
@@ -389,7 +389,7 @@ block content
                   dlg2.on('destroy', () => dlg1.destroy());
                 }
                 srf.invite((req, res) => {
-                  srf.createB2BUA('sip:1234@10.10.100.1', req, res, {localSdpB: req.body, passFailure: false})
+                  srf.createB2BUA(req, res, 'sip:1234@10.10.100.1', {localSdpB: req.body, passFailure: false})
                     .catch((err) => {
                       // try backup if we got a sip non-success response and the caller did not hang up
                       if (err instanceof Srf.SipError && err.status !== 487) {
@@ -399,7 +399,7 @@ block content
                       throw err;
                     })
                     .then(({uas, uac}) => {
-                      if (!uas) return srf.createB2BUA('sip:1234@10.10.100.2', req, res, {localSdpB: req.body});
+                      if (!uas) return srf.createB2BUA(req, res, 'sip:1234@10.10.100.2', {localSdpB: req.body});
                       return {uas, uac};
                     })
                     .then(({uas, uac}) => {
@@ -455,7 +455,7 @@ block content
                       throw new Error('rtpengine failure');
                     })
                     .then((sdpB) => {
-                      return srf.createB2BUA(config.get('uri'), req, res, {
+                      return srf.createB2BUA(req, res, config.get('uri'), {
                         localSdpB: sdpB,
                         localSdpA: getSdpA.bind(null, details)
                       });

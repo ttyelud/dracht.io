@@ -218,7 +218,7 @@ Sometimes, we may want to cancel an INVITE that we have sent before it is answer
 ```js
 let invite, dlg;
 srf.createUac('sip:1234@10.10.100.1', {localSdp: mySdp}, {
-    cbRequest: (req) => invite = req),
+    cbRequest: (err, req) => invite = req),
     cbProvisional: (res) => console.log(`got provisional response: ${res.status}`))
   })
   .then((dialog) => {
@@ -352,7 +352,7 @@ As with the UAC scenario, the simplest usage is to provide the Request-URI to se
 
 ```js
 srf.invite((req, res) => {
-  srf.createB2BUA('sip:1234@10.10.100.1', req, res, {localSdpB: req.body})
+  srf.createB2BUA(req, res, 'sip:1234@10.10.100.1', {localSdpB: req.body})
     .then({uas, uac} => {
       console.log('call successfully connected');
 
@@ -374,7 +374,7 @@ The example below illustrates a B2BUA app that wants to pass authentication head
 
 ```js
 srf.invite((req, res) => {
-  srf.createB2BUA('sip:1234@10.10.100.1', req, res, {
+  srf.createB2BUA(req, res, 'sip:1234@10.10.100.1' {
     localSdpB: req.body,
     proxyRequestHeaders: ['Proxy-Authorization', 'Authorization'],
     proxyResponseHeaders: ['WWW-Authenticate', 'Proxy-Authentication']
@@ -399,7 +399,7 @@ For this need, similar to [Srf#createUAC](/docs/api#Srf+createUAC), there is an 
 
 ```js
 srf.invite((req, res) => {
-  srf.createB2BUA('sip:1234@10.10.100.1', req, res, {
+  srf.createB2BUA(req, res, 'sip:1234@10.10.100.1', {
     localSdpB: req.body
   }, {
     cbFinalizedUac: (uac) => {
@@ -432,7 +432,7 @@ Setting `opts.passFailure` to value of false enables this behavior.
 
 ```js
 srf.invite((req, res) => {
-  srf.createB2BUA('sip:1234@10.10.100.1', req, res, {localSdpB: req.body, passFailure: false})
+  srf.createB2BUA(req, res, 'sip:1234@10.10.100.1', {localSdpB: req.body, passFailure: false})
     .then({uas, uac} => {
       console.log('call connected to primary destination');
     })
@@ -440,7 +440,7 @@ srf.invite((req, res) => {
       // try backup if we got a sip non-success response and the caller did not hang up
       if (err.status !== 487) {
         console.log(`failed connecting to primary, will try backup: ${err}`);
-        srf.createB2BUA('sip:1234@10.10.100.2', req, res, {
+        srf.createB2BUA(req, res, 'sip:1234@10.10.100.2', {
           localSdpB: req.body}
         })
         .then({uas, uac} => {
