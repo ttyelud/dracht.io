@@ -288,7 +288,7 @@ block content
                 let inviteSent;
                 srf.createUAC('sip:1234@10.10.100.1', {localSdp: mySdp},
                   {
-                    cbRequest: (reqSent) => { inviteSent = reqSent; }
+                    cbRequest: (err, reqSent) => { inviteSent = reqSent; }
                   })
                   .then((uac) => {
                     // unexpected, in this case
@@ -335,7 +335,7 @@ block content
             +table_row('opts.passFailure', 'boolean', 'specifies whether to pass a failure returned from B leg back to the A leg. Default: true', true)
             +table_row('opts.passProvisionalResponses', 'boolean', 'specifies whether to pass provisional responses from B leg back to the A leg. Default: true', true)
             +table_row('progressCallbacks', 'Object', 'callbacks providing call progress notification.', true)
-            +table_row('progressCallbacks.cbRequest', 'function', 'callback that provides request sent over the wire, with signature (req)', true)
+            +table_row('progressCallbacks.cbRequest', 'function', 'callback that provides request sent over the wire, with signature (err, req)', true)
             +table_row('progressCallbacks.cbProvisional', 'function', 'callback that provides a provisional response with signature (provisionalRes)', true)
             +table_row('progressCallbacks.cbFinalizedUac', 'function', 'callback that provides the UAC dialog as soon as the 200 OK is received from the B party.  Since the UAC dialog is also returned when the B2B has been completely constructed, this is mainly useful if there is some need to be notified as soon as the B party answers.  The callback signature is (uac).', true)
             +table_row('callback', 'function', 'If provided, callback with signature (err, {uac, uas}).', true)
