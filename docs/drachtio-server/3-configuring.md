@@ -25,22 +25,26 @@ A drachtio configuration file has the following high-level structure:
 Each section is described below, along with the command line parameters and environemnt variables that can be used to configure the same settings.
 
 #### admin section
-The **admin** section is required and specifies how the drachtio server will listen for incoming connections from drachtio applications. The information includes the tcp port to listen on, the address(es) to listen on (0.0.0.0 means all available interfaces), and the shared secret that is used for authentication.
+The **admin** section is required and specifies how the drachtio server will listen for incoming connections from drachtio applications. The information includes the tcp port to listen on, the address(es) to listen on (0.0.0.0 means all available interfaces), the shared secret that is used for authentication, and whether tcp keep alives will be sent on these connections.
 
 Note that as of release 0.8.0, there is also an option to use tls encryption on connections.  For inbound connections, this is specified by providing a 'tls-port' option.  The server can be configured to handle either, or both, tcp and tls connections.
 ```xml
-<admin port="9022" tls-port="9023" secret="cymru">0.0.0.0</admin>
+<admin port="9022" tls-port="9023" secret="cymru" tcp-keepalive-interval="30">0.0.0.0</admin>
 ```
 or, using command-line parameters:
 ```bash
-drachtio --port 9022 --tls-port 9023 --secret cymru
+drachtio --port 9022 --tls-port 9023 --secret cymru --tcp-keepalive-interval 30
 ```
 or, using environment variables
 ```bash
 DRACHTIO_ADMIN_TCP_PORT=9022 \
 DRACHTIO_ADMIN_TLS_PORT=9023 \
+DRACHTIO_TCP_KEEPALIVE_INTERVAL=30 \
 DRACHTIO_SECRET=cymru drachtio
 ```
+
+Note that by default, tcp keepalives are enabled with an interval of 45 seconds.  The value can be changed, as above, or disabled by setting it to a value of zero.
+
 #### request-handlers section
 The **request-handlers** section is optional and configures the drachtio process to establish [outbound connections](/docs#outbound-connections) to drachtio servers for some or all SIP methods instead of **inbound connections**.
 
