@@ -90,30 +90,30 @@ router.get('/releases', (req, res) => {
   var children = JSON.parse(JSON.stringify(releaseTree.children));
 
   var pageSize = 2,
-    pageCount = len/2,
+    pageCount = len / 2,
     currentPage = 1,
     currentType = 'drachtio-srf',
     data = [];
-  
+
   for (var i = 0; i < children.length; i++) {
     data.push([]);
     while (children[i].children.length > 0) {
-        data[i].push(children[i].children.splice(0, pageSize));
+      data[i].push(children[i].children.splice(0, pageSize));
     }
   }
 
   if (typeof req.query.page !== 'undefined') {
-      currentPage = req.query.page;
+    currentPage = req.query.page;
   }
   if (typeof req.query.type !== 'undefined') {
-      currentType = req.query.type;
+    currentType = req.query.type;
   }
 
   res.render('releases', {
     title : 'drachtio - releases',
     description : 'Release notes for drachtio.',
     tree: releaseTree.children,
-    data: data, 
+    data: data,
     pageSize: pageSize,
     total: len,
     pageCount: pageCount,

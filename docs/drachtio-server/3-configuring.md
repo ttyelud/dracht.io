@@ -211,10 +211,13 @@ The [SIP spec contains definitions for timers](https://tools.ietf.org/html/rfc32
 ##### tls
 If you are using either TLS or WSS as a transport, then you must specify where the associated tls certificates are stored on the server.
 
-Additionally, when using tls on admin connections from applications, you must specify a dhparam file that contains the Diffie-Hellman (dh) parameters.  (This is not required if you are only using TLS to secure SIP connections)
+Additionally, when using tls on admin connections from applications, you must specify a dhparam file that contains the Diffie-Hellman (dh) parameters.  (This is not required if you are only using TLS to secure SIP connections).
+
+Finally, you can optionally specify the minimum acceptable TLS version (1.0, 1,1, 1,2).  If not specified, TLS 1.0 and above will be accepted
 
 ```xml
 <tls>
+  <min-tls-version>1.2</min-tls-version>
   <key-file>/etc/letsencrypt/live/yourdomain/privkey.pem</key-file>
   <cert-file>/etc/letsencrypt/live/yourdomain/cert.pem</cert-file>
   <chain-file>/etc/letsencrypt/live/yourdomain/chain.pem</chain-file>
@@ -223,7 +226,21 @@ Additionally, when using tls on admin connections from applications, you must sp
 ```
 or, via command-line
 ```
-drachtio --key-file <keyfile> --cert-file <certfile> --chain-file <chainfile> --dh-param <dhparamfile
+drachtio --key-file /etc/letsencrypt/live/yourdomain/privkey.pem \
+--cert-file/etc/letsencrypt/live/yourdomain/cert.pem \
+--chain-file /etc/letsencrypt/live/yourdomain/chain.pem \
+--dh-param /var/local/private/dh4096.pem \
+--min-tls-version 1.2
+```
+
+or, via environment variables
+```
+DRACHTIO_TLS_CERT_FILE=/etc/letsencrypt/live/yourdomain/cert.pem \
+DRACHTIO_TLS_CHAIN_FILE=/etc/letsencrypt/live/yourdomain/chain.pem \
+DRACHTIO_TLS_KEY_FILE=/etc/letsencrypt/live/yourdomain/privkey.pem \
+DRACHTIO_TLS_DH_PARAM_FILE=/var/local/private/dh4096.pem \
+DRACHTIO_MIN_TLS_VERSION=1.2 \
+drachtio
 ```
 
 ##### outbound-proxy
@@ -387,6 +404,7 @@ The supported drachtio command-line arguments are:
 * `--version` print the drachtio server version to console and exit.
 * `--mtu` specifies a message size, in bytes, for requests such that when outgoing requests exceed this threshold use of tcp is forced (this overrides the default sofia stack setting for the same). &nbsp;*Added in version 0.7.3-rc2*.
 * `--dh-param` dhparam file used for inbound tls admin connections. &nbsp;*Added in version 0.8.0-rc1*.
+* `--min-tls-version` minimum allowed TLS version for connecting clients (default: 1.0, allowed values: 1.0, 1,1, 1,2)  &nbsp;*Added in version 0.8.7-rc4*.
 
 
 
