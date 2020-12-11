@@ -156,6 +156,7 @@ block content
             +table_row('opts', 'Object', 'Configuration options.', false)
             +table_row('opts.localSdp', 'string', 'The local session description protocol to include in the SIP response.', true)
             +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP response to the INVITE.', true)
+            +table_row('opts.dialogStateEmitter', 'EventEmitter', 'emits "stateChange" events for the dialog, per RFC 4235.', true)
             +table_row('callback', 'function', 'If provided, callback with signature (err, dialog).', true)
 
         h5 Returns:
@@ -226,6 +227,7 @@ block content
             +table_row('opts.localSdp', 'string', 'the local session description protocol to include in the SIP INVITE request', true)
             +table_row('opts.proxy', 'string', 'send the request through an outbound proxy, specified as full sip uri or address[:port]', true)
             +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP request.', true)
+            +table_row('opts.dialogStateEmitter', 'EventEmitter', 'emits "stateChange" events for the dialog, per RFC 4235.', true)
             +table_row('opts.auth', 'Object | Function', 'Object containing sip credentials to use if challenged, or a function that returns the same.  If a function is provided, it will be called with (req, res, callback) - the request that was sent as well as the response received; the function must invoke the callback with signature (err, username, password)', true)
             +table_row('opts.auth.username', 'string', 'sip username', true)
             +table_row('opts.auth.password', 'string', 'sip password', true)
@@ -326,6 +328,7 @@ block content
             +table_row('opts.localSdpA', 'string&nbsp;|&nbsp;function', 'the local session description protocol to offer in the response to the SIP INVITE request on the A leg; either a string or a function may be provided. If a function is provided, it will be invoked with two parameters (sdp, res) correspnding to the SDP received from the B party, and the sip response object received on the response from B.  The function must return either the SDP (as a string) or a Promise that resolves to the SDP. Default: the SDP returned by the B party in the provisional/final response on the UAC leg.', true)
             +table_row('opts.proxy', 'string', 'send the request through an outbound proxy, specified as full sip uri or address[:port]', true)
             +table_row('opts.headers', 'Object', 'SIP headers to include on the SIP INVITE request on the B leg.', true)
+            +table_row('opts.dialogStateEmitter', 'EventEmitter', 'emits "stateChange" events for the dialog, per RFC 4235.', true)
             +table_row('opts.auth', 'Object | Function', 'Object containing sip credentials to use if challenged, or a function that returns the same.  If a function is provided, it will be called with (req, res, callback) - the request that was sent as well as the response received; the function must invoke the callback with signature (err, username, password)', true)
             +table_row('opts.auth.username', 'string', 'sip username', true)
             +table_row('opts.auth.password', 'string', 'sip password', true)

@@ -213,7 +213,7 @@ If you are using either TLS or WSS as a transport, then you must specify where t
 
 Additionally, when using tls on admin connections from applications, you must specify a dhparam file that contains the Diffie-Hellman (dh) parameters.  (This is not required if you are only using TLS to secure SIP connections).
 
-Finally, you can optionally specify the minimum acceptable TLS version (1.0, 1,1, 1,2).  If not specified, TLS 1.0 and above will be accepted
+Finally, you can optionally specify the minimum acceptable TLS version (1.0, 1.1, or 1.2).  If not specified, TLS 1.0 and above will be accepted
 
 ```xml
 <tls>
