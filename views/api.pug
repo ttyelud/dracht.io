@@ -845,7 +845,7 @@ block content
         hr
 
       .method#dialog-modify(data-name="modify")
-        h4 modify(sdp, [callback])
+        h4 modify([sdp], [opts], [callback])
         p.capt
           | modify a SIP session by changing attributes of the media connection
 
@@ -857,6 +857,7 @@ block content
               th Description
           tbody
             +table_row('sdp', 'string', '\'hold\', \'unhold\', or a session description protocol', false)
+            +table_row('opts.noAck', 'object', 'if provided, and no sdp is provided this will be a 3pcc re-invite; and the Promise returned will resolve with  {res, ack}; i.e. the 200 OK received and a function to call that generates the ACK.  You must provide the sdp to send as a parameter to the ack function.', true)
             +table_row('callback', 'function', 'If provided, callback with signature (err) when operation has completed.', true)
 
         h5 Returns:
